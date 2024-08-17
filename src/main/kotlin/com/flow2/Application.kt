@@ -2,7 +2,6 @@ package com.flow2
 
 import com.flow2.plugin.*
 import com.flow2.repository.MongoPostRepository
-import com.flow2.repository.PostRepository
 import com.flow2.repository.PostRepositoryInterface
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
