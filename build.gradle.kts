@@ -7,6 +7,7 @@ val koin_version: String by project
 plugins {
     kotlin("jvm") version "2.0.0"
     id("io.ktor.plugin") version "2.3.12"
+    kotlin("plugin.serialization") version "2.0.0"
 }
 
 group = "com"
@@ -30,7 +31,8 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml")
     implementation("io.ktor:ktor-server-thymeleaf:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-
+    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     // MONGODB
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.1.2")

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="post" type="com.flow2.plugin.Post"*/-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
 <head>
 
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
@@ -29,7 +29,7 @@
 
 <header class="site-header group">
 
-    <p class="site-logo"><a href="/" class="site-name"><img src="/assets/images/logo.png" /></a></p>
+    <p class="site-logo"><a href="/" class="site-name"><img src="/assets/images/logo.png"  alt="site logo"/></a></p>
     <p class="site-title"><a href="/" class="site-name">flow2</a></p>
     <p class="site-description">software & books</p>
 
@@ -76,9 +76,9 @@
     <!-- TODO: Social links -->
     <div class="social-menu mobile">
         <ul class="social-menu-inner">
-            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
-            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
-            <li id="" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+            <li id="s1" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+            <li id="s2" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+            <li id="s3" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
         </ul>
     </div>
 
@@ -91,6 +91,7 @@
 
 
     <form role="search" method="get" class="search-form" action="/">
+        <label for="search-form-66833426afb39"></label>
         <input type="search" id="search-form-66833426afb39" class="search-field" placeholder="Enter your search query" value="" name="s" autocomplete="off" />
     </form>
 
@@ -105,6 +106,7 @@
 <div class="search-overlay">
 
     <form role="search" method="get" class="search-form" action="/">
+        <label for="search-form"></label>
         <input type="search" id="search-form" class="search-field" placeholder="Enter your search query" value="" name="s" autocomplete="off" />
     </form>
 
@@ -116,7 +118,7 @@
     <article class="post type-post status-publish format-standard">
 
         <div class="featured-image">
-            <img width="5472" height="3648" th:src="${post.banner}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
+            <img width="5472" height="3648" th:src="${post.bannerImage}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
         </div>
 
         <header class="entry-header section-inner">
@@ -129,7 +131,7 @@
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
         </header>
 
-        <div class="entry-content section-inner" th:utext="${post.content}">Post content</div>
+        <div class="entry-content section-inner" th:utext="${post.htmlContent}">Post content</div>
 
 
         <div class="meta bottom section-inner">

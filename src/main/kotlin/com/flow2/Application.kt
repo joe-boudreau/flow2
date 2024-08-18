@@ -3,9 +3,13 @@ package com.flow2
 import com.flow2.plugin.*
 import com.flow2.repository.MongoPostRepository
 import com.flow2.repository.PostRepositoryInterface
+import com.flow2.service.MarkdownService
+import com.flow2.service.PostService
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.thymeleaf.*
 import org.koin.dsl.module
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver
@@ -25,22 +29,29 @@ fun Application.module() {
     }
     install(Koin) {
         slf4jLogger()
-        modules(mymodule)
+        modules(module)
+    }
+    install(ContentNegotiation) {
+        json()
     }
 }
 
-private val mymodule =  module {
+private val module =  module {
 
     // The MongoClient instance actually represents a pool of connections to the database;
     // you will only need one instance of class MongoClient even with multiple threads.
     single<MongoClient> {
         //TODO: replace with secrets
-        val uri = "mongodb://localhost:<port>"
+        val uri = "mongodb://localhost:27017"
         MongoClient.create(uri)
     }
 
     factory<MongoDatabase> { get<MongoClient>().getDatabase("flow2") }
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
+
+    single<MarkdownService>{ MarkdownService() }
+    single<PostService>{ PostService(get(), get()) }
+
 }
 
 private fun getTemplateResolver(): AbstractConfigurableTemplateResolver {

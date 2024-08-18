@@ -13,10 +13,7 @@ data class Post(
     val category: Category,
     val publishedAt: Long,
     val updatedAt: Long,
-) {
-
-    val slug: String
-        get() = title.replace(Regex("[^\\x00-\\x7F]"), "")
-            .replace(" ", "-")
-            .lowercase()
-}
+    val slug: String = title.replace(Regex("[^\\x00-\\x7F]"), "")
+        .replace(" ", "-")
+        .lowercase()
+)
