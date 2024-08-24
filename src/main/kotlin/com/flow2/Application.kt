@@ -1,6 +1,8 @@
 package com.flow2
 
 import com.flow2.plugin.*
+import com.flow2.repository.MediaRepository
+import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.repository.MongoPostRepository
 import com.flow2.repository.PostRepositoryInterface
 import com.flow2.service.MarkdownService
@@ -49,9 +51,10 @@ private val module =  module {
     factory<MongoDatabase> { get<MongoClient>().getDatabase("flow2") }
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
 
+    single<MediaRepositoryInterface> { MediaRepository() }
+
     single<MarkdownService>{ MarkdownService() }
     single<PostService>{ PostService(get(), get()) }
-
 }
 
 private fun getTemplateResolver(): AbstractConfigurableTemplateResolver {

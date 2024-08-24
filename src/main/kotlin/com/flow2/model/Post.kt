@@ -6,14 +6,16 @@ import org.bson.types.ObjectId
 data class Post(
     @BsonId val id: String = ObjectId().toString(),
     val title: String,
-    val mdContent: String,
-    val htmlContent: String,
-    val bannerImage: String,
+    val mdContent: String?,
+    val htmlContent: String?,
     val tags: List<String>,
     val category: Category,
     val publishedAt: Long,
     val updatedAt: Long,
-    val slug: String = title.replace(Regex("[^\\x00-\\x7F]"), "")
-        .replace(" ", "-")
-        .lowercase()
+    val slug: String = slugify(title)
 )
+
+private fun slugify(title: String) = title
+    .replace(Regex("[^\\x00-\\x7F]"), "")
+    .replace(" ", "-")
+    .lowercase()

@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 data class CreatePostRequest(
     val title: String,
     val mdContent: String,
-    val bannerImage: String,
     val tags: List<String>,
     val category: Category
 )

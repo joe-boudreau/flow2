@@ -2,6 +2,7 @@ package com.flow2.plugin
 
 import com.flow2.request.CreatePostRequest
 import com.flow2.service.PostService
+import com.flow2.repository.MediaRepositoryInterface
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -13,16 +14,25 @@ import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
 
-    // inject HelloService
     val postService by inject<PostService>()
+    val mediaRepository by inject<MediaRepositoryInterface>()
 
     routing {
+        get("/admin") {
+            val allPosts = postService.getAllPosts()
+            call.respond(ThymeleafContent("admin", mapOf("posts" to allPosts)))
+        }
+
         get("/post/{slug}") {
             val slug = call.parameters["slug"] ?: ""
             val post = postService.getPostBySlug(slug)
 
             if (post != null) {
-                call.respond(ThymeleafContent("index", mapOf("post" to post)))
+                val bannerFilePath = mediaRepository.getPostBannerFilePath(post.id)
+                call.respond(ThymeleafContent("index", mapOf(
+                    "post" to post,
+                    "bannerFilePath" to bannerFilePath,
+                )))
             } else {
                 call.respond(ThymeleafContent("404", emptyMap()))
             }
@@ -34,7 +44,6 @@ fun Application.configureRouting() {
             val post = postService.createPost(
                 request.title,
                 request.mdContent,
-                request.bannerImage,
                 request.tags,
                 request.category
             )

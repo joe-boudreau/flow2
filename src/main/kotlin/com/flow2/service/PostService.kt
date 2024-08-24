@@ -10,14 +10,15 @@ class PostService(
 ) {
     suspend fun getPostBySlug(slug: String): Post? = postRepository.getPostBySlug(slug)
 
+    suspend fun getAllPosts(includeContent: Boolean = false): List<Post> = postRepository.getAllPosts(includeContent)
+
     suspend fun createPost(
         title: String,
         mdContent: String,
-        bannerImage: String,
         tags: List<String>,
         category: Category
     ): Post {
         val htmlContent = mdService.parseToHtml(mdContent)
-        return postRepository.createPost(title, mdContent, htmlContent, bannerImage, tags, category)
+        return postRepository.createPost(title, mdContent, htmlContent, tags, category)
     }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
+<!--/*@thymesVar id="bannerFilePath" type="String"*/-->
 <head>
 
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
@@ -118,7 +119,7 @@
     <article class="post type-post status-publish format-standard">
 
         <div class="featured-image">
-            <img width="5472" height="3648" th:src="${post.bannerImage}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
+            <img width="5472" height="3648" th:src="${bannerFilePath}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
         </div>
 
         <header class="entry-header section-inner">
