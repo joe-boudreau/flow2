@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
 <head>
     <meta charset="UTF-8">
     <title>Blog Post Management</title>
-    <script>
-        function updatePostId() {
-            const postId = document.getElementById("postSelect").value;
-            document.getElementById("postIdBanner").value = postId;
-            document.getElementById("postIdMedia").value = postId;
-        }
-    </script>
 </head>
 <body>
     <h1>Manage Blog Post</h1>
 
     <label for="postSelect">Select Post:</label>
-    <select id="postSelect" name="postId" onchange="updatePostId()">
-        <option value="1">Post 1</option>
-        <option value="2">Post 2</option>
-        <!-- Add more options dynamically -->
+    <select id="postSelect" name="postId" th:each="post: ${posts}" onblur="updatePostId()">
+        <option th:attr="selected=${postStat.first}" th:value="${post.id}" th:text="${post.title}">Post 1 title</option>
     </select>
 
-    <form action="/uploadBanner" method="post" enctype="multipart/form-data">
+    <form action="/admin/post/banner" method="post" enctype="multipart/form-data">
         <input type="hidden" id="postIdBanner" name="postId">
         <label for="bannerImage">Upload Main Banner Image:</label>
         <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
         <button type="submit">Upload Banner</button>
     </form>
 
-    <form action="/uploadMedia" method="post" enctype="multipart/form-data">
+    <form action="/admin/post/media" method="post" enctype="multipart/form-data">
         <input type="hidden" id="postIdMedia" name="postId">
         <label for="mediaImages">Upload Media Images:</label>
         <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
         <button type="submit">Upload Media</button>
     </form>
 </body>
+<script>
+    function updatePostId() {
+        const postId = document.getElementById("postSelect").value;
+        document.getElementById("postIdBanner").value = postId;
+        document.getElementById("postIdMedia").value = postId;
+    }
+    updatePostId();
+</script>
 </html>

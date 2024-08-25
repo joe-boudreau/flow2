@@ -1,24 +1,44 @@
 package com.flow2.repository
 
+import com.flow2.plugin.ASSETS_RESOURCE_PATH
 import java.io.File
 
 class MediaRepository: MediaRepositoryInterface {
 
-    // TODO: replace with config value
-    private val mediaDir = "/resources/assets/media"
+    // TODO: replace with config values
+    private val publicResourceDir = ASSETS_RESOURCE_PATH
+    private val internalResourceDir = "src/main/resources/assets"
+
+    private val publicMediaDir = "$publicResourceDir/media"
+    private val internalMediaDir = "$internalResourceDir/media"
+
     private val bannerFileName = "banner"
     private val defaultBannerFilePath = "/assets/images/banner_image_ex.jpg"
 
     override fun savePostMedia(postId: String, filename: String, fileContent: ByteArray) {
-        File(getFilePathForPostMedia(postId, filename)).writeBytes(fileContent)
+        File(getInternalPostMediaDir(postId)).mkdirs()
+        File(getInternalFilePathForPostMedia(postId, filename)).writeBytes(fileContent)
     }
 
-    override fun getPostBannerFilePath(postId: String): String {
-        File(getFilePathForPostMedia(postId, bannerFileName))
-            .takeIf { it.exists() }
-            ?.let { return it.path } ?: return defaultBannerFilePath
+    override fun savePostBanner(postId: String, fileContent: ByteArray) {
+        savePostMedia(postId, bannerFileName, fileContent)
     }
 
+    override fun getPublicPostBannerResourcePath(postId: String): String {
+        File(getInternalFilePathForPostMedia(postId, bannerFileName)).let {
+            return if (it.exists()) {
+                getPublicFilePathForPostMedia(postId, bannerFileName)
+            } else {
+                defaultBannerFilePath
+            }
+        }
+    }
 
-    private fun getFilePathForPostMedia(postId: String, filename: String) = "$mediaDir/$postId/$filename"
+    private fun getInternalFilePathForPostMedia(postId: String, filename: String) = "${getInternalPostMediaDir(postId)}/$filename"
+
+    private fun getInternalPostMediaDir(postId: String) = "$internalMediaDir/$postId"
+
+    private fun getPublicFilePathForPostMedia(postId: String, filename: String) = "${getPublicPostMediaDir(postId)}/$filename"
+
+    private fun getPublicPostMediaDir(postId: String) = "$publicMediaDir/$postId"
 }
