@@ -9,8 +9,13 @@
     <h1>Manage Blog Post</h1>
 
     <label for="postSelect">Select Post:</label>
-    <select id="postSelect" name="postId" th:each="post: ${posts}" onblur="updatePostId()">
-        <option th:attr="selected=${postStat.first}" th:value="${post.id}" th:text="${post.title}">Post 1 title</option>
+    <select id="postSelect" name="postId" onblur="updatePostId()">
+        <option  th:each="post: ${posts}"
+                 th:attr="selected=${postStat.first}"
+                 th:value="${post.id}"
+                 th:text="${post.title}">
+            Post title
+        </option>
     </select>
 
     <form action="/admin/post/banner" method="post" enctype="multipart/form-data">
