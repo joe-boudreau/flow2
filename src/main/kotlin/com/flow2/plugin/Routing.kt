@@ -39,14 +39,15 @@ fun Application.configureRouting() {
         }
 
         post("/admin/post/media") {
-            val multipart = call.receiveMultipart()
-            val postId = call.parameters["postId"] ?: ""
+            val multiparts = call.receiveMultipart().readAllParts()
 
-            multipart.forEachPart { part ->
-                if (part is PartData.FileItem) {
-                    val mediaContent = part.streamProvider().readBytes()
-                    mediaRepository.savePostMedia(postId, part.originalFileName!!, mediaContent)
-                }
+            val mediaParts = multiparts.filterIsInstance<PartData.FileItem>()
+            val postIdPart = multiparts.first { it is PartData.FormItem } as PartData.FormItem
+            val postId = postIdPart.value
+
+            mediaParts.forEach { part ->
+                val mediaContent = part.streamProvider().readBytes()
+                mediaRepository.savePostMedia(postId, part.originalFileName!!, mediaContent)
             }
 
             call.respond(HttpStatusCode.Created)

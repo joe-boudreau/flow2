@@ -54,7 +54,7 @@ private val module =  module {
     single<MediaRepositoryInterface> { MediaRepository() }
 
     single<MarkdownService>{ MarkdownService() }
-    single<PostService>{ PostService(get(), get()) }
+    single<PostService>{ PostService(get(), get(), get()) }
 }
 
 private fun getTemplateResolver(): AbstractConfigurableTemplateResolver {

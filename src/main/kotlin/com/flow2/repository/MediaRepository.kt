@@ -34,11 +34,13 @@ class MediaRepository: MediaRepositoryInterface {
         }
     }
 
+    override fun getPublicPostMediaDir(postId: String) = "$publicMediaDir/$postId"
+
     private fun getInternalFilePathForPostMedia(postId: String, filename: String) = "${getInternalPostMediaDir(postId)}/$filename"
 
     private fun getInternalPostMediaDir(postId: String) = "$internalMediaDir/$postId"
 
     private fun getPublicFilePathForPostMedia(postId: String, filename: String) = "${getPublicPostMediaDir(postId)}/$filename"
 
-    private fun getPublicPostMediaDir(postId: String) = "$publicMediaDir/$postId"
+
 }

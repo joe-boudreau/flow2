@@ -31,6 +31,7 @@ class MongoPostRepository(
 
 
     override suspend fun createPost(
+        id: String,
         title: String,
         mdContent: String,
         htmlContent: String,
@@ -39,6 +40,7 @@ class MongoPostRepository(
     ): Post {
         val currentTime = System.currentTimeMillis()
         val post = Post(
+            id = id,
             title = title,
             mdContent = mdContent,
             htmlContent = htmlContent,
