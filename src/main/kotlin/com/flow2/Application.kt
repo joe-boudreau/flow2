@@ -26,6 +26,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    install(Resources)
     configureRouting()
     install(Thymeleaf) {
         setTemplateResolver(getTemplateResolver())
@@ -37,7 +38,6 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
-    install(Resources)
 }
 
 private val module =  module {

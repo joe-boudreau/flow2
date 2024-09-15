@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
+<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
 <head>
 
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
@@ -120,8 +121,9 @@
             <ul>
                 <li><h2 class="page-subtitle">Recent Posts</h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
-                    <a th:href="/posts/" title="2023 in review: Unmasking">
-                        <h2 class="title"><span>2023 in review: Unmasking</span></h2>                            </a>
+                    <a th:href="${postUrls[post.id]}">
+                        <h2 class="title" th:text="${post.title}"></h2>
+                    </a>
                 </li>
             </ul>
         </div>
