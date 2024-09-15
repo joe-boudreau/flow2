@@ -64,7 +64,7 @@ fun Application.configureRouting() {
                 { application.href(GetPostRequest(it.slug)) }
             )
 
-            call.respond(ThymeleafContent("home", mapOf(
+            call.respond(ThymeleafContent("index", mapOf(
                 "posts" to allPosts,
                 "postUrls" to postUrls
             )))

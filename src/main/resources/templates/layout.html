@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
-<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
 
-    <title>flow2</title>
+    <title th:replace="${title}">flow2</title>
 
     <!-- TODO: SEO Opengraph tags-->
     <link rel='stylesheet' href='/assets/css/style.css' type='text/css' media='all' />
@@ -115,25 +113,14 @@
 
 
 <main class="site-content" id="site-content">
-
-    <div class="section-inner">
-        <div class="posts" id="posts">
-            <ul>
-                <li><h2 class="page-subtitle">Recent Posts</h2></li>
-                <li th:each="post: ${posts}" class="post-preview post type-post">
-                    <a th:href="${postUrls[post.id]}">
-                        <h2 class="title" th:text="${post.title}"></h2>
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div th:replace="${content}">
+        Page content
     </div>
-
-    <footer class="site-footer section-inner">
-        <!-- TODO: footer -->
-    </footer>
-
 </main>
+
+<!--    <footer class="site-footer section-inner">-->
+<!--        &lt;!&ndash; TODO: footer &ndash;&gt;-->
+<!--    </footer>-->
 
 <script type="text/javascript" defer src="/assets/js/imagesloaded.pkgd.min.js" id="imagesloaded-js"></script>
 <script type="text/javascript" defer src="/assets/js/masonry.pkgd.min.js" id="masonry-js"></script>
