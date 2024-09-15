@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
+<head>
+
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+
+    <title>flow2</title>
+
+    <!-- TODO: SEO Opengraph tags-->
+    <link rel='stylesheet' href='/assets/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/assets/css/style2.css' type='text/css' media='all' />
+    <script type="text/javascript" defer src="/assets/js/jquery-3.7.1.min.js" id="jquery-core-js"></script>
+
+    <!-- TODO: icons -->
+    <!--    <link rel="icon" href="" sizes="32x32" />-->
+    <!--    <link rel="icon" href="" sizes="192x192" />-->
+    <!--    <link rel="apple-touch-icon" href="" />-->
+
+    <!-- TODO: fonts -->
+    <!--    <link rel="preload" as="font" type="font/woff2" href="" crossorigin>-->
+
+    <!-- TODO: analytics -->
+
+</head>
+
+<body class="post-template-default single single-post single-format-standard">
+
+<header class="site-header group">
+
+    <p class="site-logo"><a href="/" class="site-name"><img src="/assets/images/logo.png"  alt="site logo"/></a></p>
+    <p class="site-title"><a href="/" class="site-name">flow2</a></p>
+    <p class="site-description">software & books</p>
+
+
+    <div class="nav-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div class="menu-wrapper">
+        <ul class="main-menu desktop">
+            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/bookshelf">Bookshelf</a></li>
+            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archive">Archive</a></li>
+            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+            <li><a href="/search?q=">Search</a></li>
+        </ul>
+    </div>
+
+    <!-- TODO: Social links -->
+    <div class="social-menu desktop">
+        <ul class="social-menu-inner">
+            <li id="menu-item-2672" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2672"><a href=""></a></li>
+            <li id="menu-item-2673" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2673"><a href=""></a></li>
+            <li id="menu-item-2674" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2674"><a href=""></a></li>
+        </ul>
+    </div>
+
+
+</header>
+
+<div class="mobile-menu-wrapper">
+
+    <ul class="main-menu mobile">
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/bookshelf">Bookshelf</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archive">Archive</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+        <li class="toggle-mobile-search-wrapper"><a href="#" class="toggle-mobile-search">Search</a></li>
+    </ul>
+
+
+    <!-- TODO: Social links -->
+    <div class="social-menu mobile">
+        <ul class="social-menu-inner">
+            <li id="s1" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+            <li id="s2" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+            <li id="s3" class="menu-item menu-item-type-custom menu-item-object-custom"><a href=""></a></li>
+        </ul>
+    </div>
+
+
+</div><!-- .mobile-menu-wrapper -->
+
+<div class="mobile-search">
+
+    <div class="untoggle-mobile-search"></div>
+
+
+    <form role="search" method="get" class="search-form" action="/">
+        <label for="search-form-66833426afb39"></label>
+        <input type="search" id="search-form-66833426afb39" class="search-field" placeholder="Enter your search query" value="" name="s" autocomplete="off" />
+    </form>
+
+    <div class="mobile-results">
+
+        <div class="results-wrapper"></div>
+
+    </div>
+
+</div>
+
+<div class="search-overlay">
+
+    <form role="search" method="get" class="search-form" action="/">
+        <label for="search-form"></label>
+        <input type="search" id="search-form" class="search-field" placeholder="Enter your search query" value="" name="s" autocomplete="off" />
+    </form>
+
+</div>
+
+
+<main class="site-content" id="site-content">
+
+    <div class="section-inner">
+        <div class="posts" id="posts">
+            <ul>
+                <li><h2 class="page-subtitle">Recent Posts</h2></li>
+                <li th:each="post: ${posts}" class="post-preview post type-post">
+                    <a th:href="/posts/" title="2023 in review: Unmasking">
+                        <h2 class="title"><span>2023 in review: Unmasking</span></h2>                            </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="site-footer section-inner">
+        <!-- TODO: footer -->
+    </footer>
+
+</main>
+
+<script type="text/javascript" defer src="/assets/js/imagesloaded.pkgd.min.js" id="imagesloaded-js"></script>
+<script type="text/javascript" defer src="/assets/js/masonry.pkgd.min.js" id="masonry-js"></script>
+<script type="text/javascript" defer src="/assets/js/global.js" id="global-js"></script>
+
+</body>
+</html>
+

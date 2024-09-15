@@ -59,7 +59,7 @@ fun Application.configureRouting() {
 
             if (post != null) {
                 val bannerFilePath = mediaRepository.getPublicPostBannerResourcePath(post.id)
-                call.respond(ThymeleafContent("index", mapOf(
+                call.respond(ThymeleafContent("post", mapOf(
                     "post" to post,
                     "bannerFilePath" to bannerFilePath,
                 )))
