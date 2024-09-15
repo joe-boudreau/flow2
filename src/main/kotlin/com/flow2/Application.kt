@@ -19,6 +19,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import org.thymeleaf.templateresolver.FileTemplateResolver
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
+import io.ktor.server.resources.Resources
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -36,6 +37,7 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
+    install(Resources)
 }
 
 private val module =  module {

@@ -1,15 +1,19 @@
 package com.flow2.plugin
 
-import com.flow2.request.CreatePostRequest
+import com.flow2.request.api.CreatePostRequest
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
+import com.flow2.request.web.GetPostRequest
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
+import io.ktor.server.resources.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post as postRoute
 import io.ktor.server.thymeleaf.*
 import org.koin.ktor.ext.inject
 
@@ -26,7 +30,7 @@ fun Application.configureRouting() {
             call.respond(ThymeleafContent("admin", mapOf("posts" to allPosts)))
         }
 
-        post("/admin/post/banner") {
+        postRoute("/admin/post/banner") {
             val multiparts = call.receiveMultipart().readAllParts()
 
             val bannerPart = multiparts.first { it is PartData.FileItem } as PartData.FileItem
@@ -38,7 +42,7 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.Created)
         }
 
-        post("/admin/post/media") {
+        postRoute("/admin/post/media") {
             val multiparts = call.receiveMultipart().readAllParts()
 
             val mediaParts = multiparts.filterIsInstance<PartData.FileItem>()
@@ -53,9 +57,21 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.Created)
         }
 
-        get("/post/{slug}") {
-            val slug = call.parameters["slug"] ?: ""
-            val post = postService.getPostBySlug(slug)
+        get("/") {
+            val allPosts = postService.getAllPosts()
+            val postUrls = allPosts.associateBy(
+                { it.id },
+                { application.href(GetPostRequest(it.slug)) }
+            )
+
+            call.respond(ThymeleafContent("home", mapOf(
+                "posts" to allPosts,
+                "postUrls" to postUrls
+            )))
+        }
+
+        get<GetPostRequest> { req ->
+            val post = postService.getPostBySlug(req.slug)
 
             if (post != null) {
                 val bannerFilePath = mediaRepository.getPublicPostBannerResourcePath(post.id)
@@ -68,14 +84,12 @@ fun Application.configureRouting() {
             }
         }
 
-        post("/post") {
-            val request = call.receive<CreatePostRequest>()
-
+        post<CreatePostRequest> { req ->
             val post = postService.createPost(
-                request.title,
-                request.mdContent,
-                request.tags,
-                request.category
+                req.title,
+                req.mdContent,
+                req.tags,
+                req.category
             )
             call.respond(HttpStatusCode.Created, "Post created with id: ${post.id}")
         }

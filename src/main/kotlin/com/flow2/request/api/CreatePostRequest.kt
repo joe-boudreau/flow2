@@ -1,9 +1,9 @@
-package com.flow2.request
+package com.flow2.request.api
 
 import com.flow2.model.Category
-import kotlinx.serialization.Serializable
+import io.ktor.resources.*
 
-@Serializable
+@Resource("/post")
 data class CreatePostRequest(
     val title: String,
     val mdContent: String,
