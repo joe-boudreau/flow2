@@ -1,36 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
+<!--/*@thymesVar id="categories" type="kotlin.collections.List<String>"*/-->
 <head>
     <meta charset="UTF-8">
-    <title>Blog Post Management</title>
+    <title>Blog Content Management</title>
 </head>
 <body>
-    <h1>Manage Blog Post</h1>
+    <div>
+        <h1>Upload Post Media</h1>
+        <label for="postSelect">Select Post:</label>
+        <select id="postSelect" name="postId" onblur="updatePostId()">
+            <option  th:each="post: ${posts}"
+                     th:attr="selected=${postStat.first}"
+                     th:value="${post.id}"
+                     th:text="${post.title}">
+                Post title
+            </option>
+        </select>
 
-    <label for="postSelect">Select Post:</label>
-    <select id="postSelect" name="postId" onblur="updatePostId()">
-        <option  th:each="post: ${posts}"
-                 th:attr="selected=${postStat.first}"
-                 th:value="${post.id}"
-                 th:text="${post.title}">
-            Post title
-        </option>
-    </select>
+        <div>
+            <form action="/admin/post/banner" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="postIdBanner" name="postId">
+                <label for="bannerImage">Upload Main Banner Image:</label>
+                <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
+                <button type="submit">Upload Banner</button>
+            </form>
+        </div>
+        <div>
+            <form action="/admin/post/media" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="postIdMedia" name="postId">
+                <label for="mediaImages">Upload Media Images:</label>
+                <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
+                <button type="submit">Upload Media</button>
+            </form>
+        </div>
+    </div>
 
-    <form action="/admin/post/banner" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="postIdBanner" name="postId">
-        <label for="bannerImage">Upload Main Banner Image:</label>
-        <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
-        <button type="submit">Upload Banner</button>
-    </form>
+    <hr/>
 
-    <form action="/admin/post/media" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="postIdMedia" name="postId">
-        <label for="mediaImages">Upload Media Images:</label>
-        <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
-        <button type="submit">Upload Media</button>
-    </form>
+    <div>
+        <h1>Upload New Post</h1>
+        <form action="/admin/post" method="post" enctype="multipart/form-data">
+            <label for="mdFile">Select markdown file:</label>
+            <input type="file" id="mdFile" name="mdFile" accept="*/*">
+            <label for="title">Post title:</label>
+            <input type="text" id="title" name="title">
+            <label for="tags">Specify tags for post (comma separated):</label>
+            <input type="text" id="tags" name="tags">
+            <label for="category">Select Category:</label>
+            <select id="category" name="category">
+                <option  th:each="category: ${categories}"
+                         th:value="${category}"
+                         th:text="${category}">
+                    Post title
+                </option>
+            </select>
+
+            <button type="submit">Upload new post</button>
+        </form>
+    </div>
 </body>
 <script>
     function updatePostId() {

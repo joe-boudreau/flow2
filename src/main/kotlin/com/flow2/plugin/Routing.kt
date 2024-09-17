@@ -1,6 +1,6 @@
 package com.flow2.plugin
 
-import com.flow2.request.api.CreatePostRequest
+import com.flow2.model.Category
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.request.web.GetPostRequest
@@ -27,7 +27,26 @@ fun Application.configureRouting() {
     routing {
         get("/admin") {
             val allPosts = postService.getAllPosts()
-            call.respond(ThymeleafContent("admin", mapOf("posts" to allPosts)))
+            call.respond(ThymeleafContent("admin", mapOf(
+                "posts" to allPosts,
+                "categories" to Category.entries
+            )))
+        }
+
+        postRoute("/admin/post") {
+            val multiparts = call.receiveMultipart().readAllParts()
+
+            val mdFilePart = multiparts.first { it.name == "mdFile" } as PartData.FileItem
+
+            val mdContent = mdFilePart.streamProvider().bufferedReader().use { it.readText() }
+
+            val title = (multiparts.first { it.name == "title" } as PartData.FormItem).value
+            val categoryStr = (multiparts.first { it.name == "category" } as PartData.FormItem).value
+            val category = Category.valueOf(categoryStr)
+            val tags = (multiparts.first { it.name == "tags" } as PartData.FormItem).value.split(",")
+
+            postService.createPost(title, mdContent, tags, category)
+            call.respond(HttpStatusCode.Created)
         }
 
         postRoute("/admin/post/banner") {
@@ -50,8 +69,10 @@ fun Application.configureRouting() {
             val postId = postIdPart.value
 
             mediaParts.forEach { part ->
-                val mediaContent = part.streamProvider().readBytes()
-                mediaRepository.savePostMedia(postId, part.originalFileName!!, mediaContent)
+                val streamProvider = part.streamProvider()
+                val bytes = streamProvider.readBytes()
+                streamProvider.close()
+                mediaRepository.savePostMedia(postId, part.originalFileName!!, bytes)
             }
 
             call.respond(HttpStatusCode.Created)
@@ -82,16 +103,6 @@ fun Application.configureRouting() {
             } else {
                 call.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
             }
-        }
-
-        post<CreatePostRequest> { req ->
-            val post = postService.createPost(
-                req.title,
-                req.mdContent,
-                req.tags,
-                req.category
-            )
-            call.respond(HttpStatusCode.Created, "Post created with id: ${post.id}")
         }
 
         staticResources(ASSETS_RESOURCE_PATH, "assets")
