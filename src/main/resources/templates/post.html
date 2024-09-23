@@ -18,7 +18,7 @@
 
 
             <div class="meta">
-                <p>In <span><a href="/category/book-reviews">Book Reviews</a></span></p>
+                <p>In <span><a th:href="@{'~/category/'+${post.category.urlName}}" th:text="${post.category.displayName}">Category</a></span></p>
             </div>
 
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
@@ -28,7 +28,7 @@
 
 
         <div class="meta bottom section-inner">
-            <p class="tags"> #<a href="/tag/programming/" rel="tag">Programming</a> </p>
+            <span th:each="tag: ${post.tags}" class="tags"><a th:href="@{'~/tag/'+${tag}}" th:text="'#' + ${tag}" rel="tag">Tag name</a> </span>
         </div>
 
 
