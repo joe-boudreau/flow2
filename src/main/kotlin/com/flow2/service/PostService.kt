@@ -22,8 +22,8 @@ class PostService(
         category: Category
     ): Post {
         val postId = ObjectId().toString()
-        val imgSrcPrefix = mediaRepository.getPublicPostMediaDir(postId)
-        val htmlContent = mdService.parseHtmlContent(mdContent, imgSrcPrefix)
+        val postMediaDir = mediaRepository.getPublicPostMediaDir(postId)
+        val htmlContent = mdService.parseHtmlContent(mdContent, postMediaDir)
         return postRepository.createPost(postId, title, mdContent, htmlContent, tags, category)
     }
 }
