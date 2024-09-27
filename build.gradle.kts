@@ -1,8 +1,8 @@
-
 val kotlin_version: String by project
 val logback_version: String by project
 val ktor_version: String by project
 val koin_version: String by project
+val flexmark_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -46,7 +46,8 @@ dependencies {
     implementation("io.insert-koin:koin-ktor:$koin_version")
 
     // MARKDOWN
-    implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
+    implementation("com.vladsch.flexmark:flexmark-all:$flexmark_version")
+    implementation("com.vladsch.flexmark:flexmark-ext-wikilink:$flexmark_version")
 
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")
