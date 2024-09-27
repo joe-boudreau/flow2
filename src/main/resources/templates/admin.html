@@ -20,7 +20,7 @@
         </select>
 
         <div>
-            <form action="/admin/post/banner" method="post" enctype="multipart/form-data">
+            <form id="uploadBanner" action="/admin/post/banner" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdBanner" name="postId">
                 <label for="bannerImage">Upload Main Banner Image:</label>
                 <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
@@ -28,7 +28,7 @@
             </form>
         </div>
         <div>
-            <form action="/admin/post/media" method="post" enctype="multipart/form-data">
+            <form id="uploadMedia" action="/admin/post/media" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdMedia" name="postId">
                 <label for="mediaImages">Upload Media Images:</label>
                 <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
@@ -41,7 +41,7 @@
 
     <div>
         <h1>Upload New Post</h1>
-        <form action="/admin/post" method="post" enctype="multipart/form-data">
+        <form id="newPost" action="/admin/post" method="post" enctype="multipart/form-data">
             <label for="mdFile">Select markdown file:</label>
             <input type="file" id="mdFile" name="mdFile" accept="*/*">
             <label for="title">Post title:</label>
@@ -67,6 +67,31 @@
         document.getElementById("postIdBanner").value = postId;
         document.getElementById("postIdMedia").value = postId;
     }
+
     updatePostId();
+
+    document.getElementById('newPost').addEventListener('submit', submitForm);
+    document.getElementById('uploadMedia').addEventListener('submit', submitForm);
+    document.getElementById('uploadBanner').addEventListener('submit', submitForm);
+
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data here
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 </html>
