@@ -4,6 +4,7 @@ import com.flow2.model.Category
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.request.web.GetPostRequest
+import com.flow2.request.CreatePostRequest
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -13,11 +14,14 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.post as postRoute
 import io.ktor.server.thymeleaf.*
 import org.koin.ktor.ext.inject
+import java.io.File
 
 const val ASSETS_RESOURCE_PATH = "/assets"
+const val MEDIA_RESOURCE_PATH = "/media"
 
 fun Application.configureRouting() {
 
@@ -105,6 +109,19 @@ fun Application.configureRouting() {
             }
         }
 
+        post("/api/post") {
+            val request = call.receive<CreatePostRequest>()
+
+            val post = postService.createPost(
+                request.title,
+                request.mdContent,
+                request.tags,
+                request.category
+            )
+            call.respond(HttpStatusCode.Created, "Post created with id: ${post.id}")
+        }
+
         staticResources(ASSETS_RESOURCE_PATH, "assets")
+        staticFiles(MEDIA_RESOURCE_PATH, File(""))
     }
 }
