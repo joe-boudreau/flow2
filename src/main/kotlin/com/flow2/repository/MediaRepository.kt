@@ -1,16 +1,14 @@
 package com.flow2.repository
 
-import com.flow2.plugin.ASSETS_RESOURCE_PATH
+import com.flow2.plugin.MEDIA_RESOURCE_PATH
 import java.io.File
 
-class MediaRepository: MediaRepositoryInterface {
+const val INTERNAL_MEDIA_DIR = "src/main/resources/media"
 
-    // TODO: replace with config values
-    private val publicResourceDir = ASSETS_RESOURCE_PATH
-    private val internalResourceDir = "src/main/resources/assets"
+class MediaRepository : MediaRepositoryInterface {
 
-    private val publicMediaDir = "$publicResourceDir/media"
-    private val internalMediaDir = "$internalResourceDir/media"
+    // TODO replace with config values
+    private val publicMediaDir = "$MEDIA_RESOURCE_PATH/"
 
     private val bannerFileName = "banner"
     private val defaultBannerFilePath = "/assets/images/banner_image_ex.jpg"
@@ -36,11 +34,11 @@ class MediaRepository: MediaRepositoryInterface {
 
     override fun getPublicPostMediaDir(postId: String) = "$publicMediaDir/$postId"
 
-    private fun getInternalFilePathForPostMedia(postId: String, filename: String) = "${getInternalPostMediaDir(postId)}/$filename"
+    private fun getInternalFilePathForPostMedia(postId: String, filename: String) =
+        "${getInternalPostMediaDir(postId)}/$filename"
 
-    private fun getInternalPostMediaDir(postId: String) = "$internalMediaDir/$postId"
+    private fun getInternalPostMediaDir(postId: String) = "$INTERNAL_MEDIA_DIR/$postId"
 
-    private fun getPublicFilePathForPostMedia(postId: String, filename: String) = "${getPublicPostMediaDir(postId)}/$filename"
-
-
+    private fun getPublicFilePathForPostMedia(postId: String, filename: String) =
+        "${getPublicPostMediaDir(postId)}/$filename"
 }

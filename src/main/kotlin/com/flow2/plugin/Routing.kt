@@ -1,6 +1,7 @@
 package com.flow2.plugin
 
 import com.flow2.model.Category
+import com.flow2.repository.INTERNAL_MEDIA_DIR
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.request.web.GetPostRequest
@@ -122,6 +123,6 @@ fun Application.configureRouting() {
         }
 
         staticResources(ASSETS_RESOURCE_PATH, "assets")
-        staticFiles(MEDIA_RESOURCE_PATH, File(""))
+        staticFiles(MEDIA_RESOURCE_PATH, File(INTERNAL_MEDIA_DIR))
     }
 }
