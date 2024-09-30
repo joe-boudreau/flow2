@@ -61,10 +61,6 @@ img.circle {
     height:22px;
 }
 
-.entry-header .meta {
-    margin: 0 0 10px 0;
-}
-
 .featured-image {
     max-height: 600px;
     overflow: hidden;

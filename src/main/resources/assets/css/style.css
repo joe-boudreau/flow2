@@ -1,3 +1,7 @@
+:root {
+    --background-main-color: rgb(250, 250, 250);
+}
+
 /*---------------------------------------------------------------------------------
 
 	Theme Name: McLuhan
@@ -133,7 +137,7 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 body {
-    background: rgb(250, 250, 250);
+    background: var(--background-main-color);
     border: none;
     color: #121212;
     font-family: 'Archivo', 'Helvetica Neue', sans-serif;
@@ -221,7 +225,7 @@ a {
 /* Base Typography ----------------------------- */
 
 .entry-title {
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 600;
     letter-spacing: -.45px;
     line-height: 1.25;
@@ -656,6 +660,10 @@ body.hide-social .social-menu {
     margin-top: 15px;
 }
 
+.entry-header .meta {
+    margin: 10px 0;
+}
+
 
 /* Meta ----------------------------- */
 
@@ -958,93 +966,6 @@ body.hide-social .social-menu {
 .comments-pagination .next { right: 0; }
 
 
-/* Respond ---------------------------- */
-
-
-.comment-respond .logged-in-as {
-    font-size: 1em;
-    line-height: 1.25;
-    margin: 0 0 50px 0;
-}
-
-.comment-respond p + p {
-    margin-top: 20px;
-}
-
-.comment-respond .comment-form-author,
-.comment-respond .comment-form-email {
-    float: left;
-    margin: 20px 0;
-    width: calc( 50% - 10px );
-}
-
-.comment-respond .comment-form-email {
-    margin-left: 20px;
-}
-
-.comment-respond label {
-    display: block;
-}
-
-.comment-respond input[type="checkbox"] + label {
-    display: inline;
-    font-size: 14px;
-    margin: 0 0 0 5px;
-}
-
-.comment-respond .form-submit {
-    text-align: right;
-}
-
-.comment-respond .form-submit #submit {
-    background: transparent url( ./assets/images/arrow-black-right.svg ) no-repeat right center;
-    background-size: auto 12px;
-    border-bottom: 1px solid transparent;
-    color: #121212;
-    font-size: 1em;
-    font-weight: 600;
-    padding: 0 25px 0 0;
-    transition: border-color .15s linear;
-}
-
-.comment-respond .form-submit #submit:hover {
-    border-bottom-color: #121212;
-}
-
-
-/* Reply Respond ---------------------------- */
-
-.comments .comment-respond {
-    border: none;
-    margin: 50px 0;
-    padding: 0;
-}
-
-.comments .comment-respond .comment-reply-title {
-    position: static;
-    width: 100%;
-}
-
-.comments .comment-respond .comment-reply-title small a {
-    color: #999;
-    font-size: 0.8em;
-    font-weight: 600;
-    margin-left: 5px;
-}
-
-.comments .comment-respond .comment-reply-title + form > p:first-child {
-    margin-top: 8px;
-}
-
-.comments .comment-respond .comment-reply-title + form > p:not(.logged-in-as):first-child {
-    margin-top: 30px;
-}
-
-.comments .comment-respond .logged-in-as {
-    margin-bottom: 30px;
-}
-
-
 /* -------------------------------------------------------------------------------- */
 /*	6.	Entry Content
 /* -------------------------------------------------------------------------------- */
@@ -1054,6 +975,7 @@ body.hide-social .social-menu {
     position: relative;
     -ms-word-break: break-word;
     word-break: break-word;
+    margin-bottom: 100px;
 }
 
 .entry-content a { border-bottom: 1px solid rgba( 0, 0, 0, 1 ); }
@@ -1186,47 +1108,6 @@ pre {
 p.has-drop-cap:not(:focus):first-letter {
     font-size: 7.5em;
     margin: .1em .05em 0 -.075em;
-}
-
-
-/* Quotes ----------------------------- */
-
-blockquote {
-    margin: 0 0 30px 0;
-    padding: 0 0 0 30px;
-}
-
-blockquote p {
-    font-weight: 700;
-    hanging-punctuation: first;
-}
-
-blockquote cite:before {
-    content: "— ";
-}
-
-
-/* Pull Quotes ----------------------------- */
-
-.entry-content .pull {
-    font-size: 29px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    width: 280px;
-}
-
-.entry-content .pull.left {
-    float: left;
-    hanging-punctuation: first;
-    margin: 2px 25px 20px -80px;
-}
-
-.entry-content .pull.right {
-    float: right;
-    hanging-punctuation: last;
-    margin: 2px -80px 25px 20px;
-    text-align: right;
 }
 
 
@@ -1614,67 +1495,34 @@ tbody > tr:nth-child(odd) {
 
 /* Block: Quote --------------------------------------- */
 
-.entry-content .wp-block-quote.is-large,
-.entry-content .wp-block-quote.is-style-large {
-    margin: 0 0 30px 0;
-    padding: 0 0 0 30px;
+/* Quotes ----------------------------- */
+
+blockquote {
+    font-family: 'Arial', sans-serif;
+    margin: 30px;
 }
 
-.entry-content blockquote p:last-child {
+.entry-content blockquote p:first-child {
+    padding-top: 20px;
+}
+.entry-content blockquote p {
+    font-size: 95%;
+    background-color: rgba(86, 165, 255, 0.05);
+    padding: 0 20px;
+}
+
+.entry-content blockquote p:nth-last-child(2) {
+    padding-bottom: 20px;
     margin-bottom: 0;
 }
 
-.wp-block-quote.is-large p,
-.wp-block-quote.is-style-large p {
-    font-size: 1.25em;
-    font-style: normal;
-    line-height: 1.5;
-}
-
-.wp-block-quote.is-large cite,
-.wp-block-quote.is-style-large cite {
-    display: block;
-    font-size: 1em;
-    text-align: left;
-}
-
-
-/* Block: Pullquote --------------------------------------- */
-
-.wp-block-pullquote,
-.wp-block-pullquote blockquote {
-    background: none;
-    border: none;
+.entry-content blockquote p:last-child {
+    font-size: 85%;
+    font-style: italic;
+    text-align: right;
+    background-color: var(--background-main-color);
     padding: 0;
 }
-
-.wp-block-pullquote blockquote {
-    margin: 0;
-}
-
-.wp-block-pullquote blockquote:before {
-    content: none;
-}
-
-.wp-block-pullquote.alignleft,
-.wp-block-pullquote.alignright {
-    max-width: 60%;
-}
-
-.wp-block-pullquote blockquote p,
-.wp-block-pullquote.alignleft blockquote p,
-.wp-block-pullquote.alignright blockquote p {
-    font-size: 1.25em;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    margin-bottom: 1em;
-}
-
-.wp-block-pullquote.alignleft blockquote p,
-.wp-block-pullquote.alignright blockquote p {
-    line-height: 1.3;
-}
-
 
 /* Block: Gallery --------------------------------------- */
 
