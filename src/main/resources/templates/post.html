@@ -22,6 +22,10 @@
             </div>
 
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
+
+            <div class="meta">
+                <p><span th:text="${#dates.format(post.getPublishDate(), 'MMMM d, yyyy')}">April 20, 2024</span></p>
+            </div>
         </header>
 
         <div class="entry-content section-inner" th:utext="${post.htmlContent}">Post content</div>
