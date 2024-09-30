@@ -133,7 +133,7 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 body {
-    background: #fff;
+    background: rgb(250, 250, 250);
     border: none;
     color: #121212;
     font-family: 'Archivo', 'Helvetica Neue', sans-serif;
@@ -1908,9 +1908,8 @@ input.search-field::-moz-placeholder { color: #121212; }
 .site-footer {
     border-top: 1px solid rgba( 0, 0, 4, 0.125 );
     display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    font-size: 16px;
+    display: block;
+    font-size: 10px;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
@@ -1918,17 +1917,13 @@ input.search-field::-moz-placeholder { color: #121212; }
     max-width: 800px;
     padding: 25px 0 80px;
     text-align: center;
+    color: #454545;
 }
 
 .site-footer p {
     line-height: 1;
     text-align: left;
-}
-
-.site-footer .theme-by {
-    color: rgba( 0, 0, 4, 0.4 );
-    margin-left: 20px;
-    text-align: right;
+    padding: 5px 0;
 }
 
 .site-footer a {
@@ -1939,16 +1934,8 @@ input.search-field::-moz-placeholder { color: #121212; }
     text-decoration: none;
 }
 
-.site-footer .theme-by a {
-    color: inherit;
-}
-
 .site-footer .copyright a:hover {
     border-bottom-color: #121212;
-}
-
-.site-footer .theme-by a:hover {
-    border-bottom-color: rgba( 0, 0, 4, 0.4 );
 }
 
 
