@@ -974,7 +974,7 @@ body.hide-social .social-menu {
 .entry-content {
     position: relative;
     -ms-word-break: break-word;
-    word-break: break-word;
+    hyphens: none;
     margin-bottom: 100px;
 }
 
