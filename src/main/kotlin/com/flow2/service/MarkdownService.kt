@@ -1,5 +1,6 @@
 package com.flow2.service
 
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
 import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension
 import com.vladsch.flexmark.formatter.Formatter
 import com.vladsch.flexmark.formatter.internal.MergeLinkResolver
@@ -23,7 +24,10 @@ class MarkdownService {
             .set(WikiLinkExtension.IMAGE_PREFIX_ABSOLUTE, imgUrlPrefix)
 
         options
-            .set(Parser.EXTENSIONS, listOf(WikiLinkExtension.create()));
+            .set(Parser.EXTENSIONS, listOf(
+                WikiLinkExtension.create(),
+                StrikethroughExtension.create()
+            ));
 
         val parser = Parser
             .builder(options)

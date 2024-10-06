@@ -21,6 +21,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 dependencies {
     // KTOR
     implementation("io.ktor:ktor-server-core-jvm")
@@ -45,8 +49,9 @@ dependencies {
     // MARKDOWN
     implementation("com.vladsch.flexmark:flexmark-all:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-wikilink:$flexmark_version")
+    implementation("com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:$flexmark_version")
 
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation(kotlin("test"))
 }
