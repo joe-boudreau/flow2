@@ -1,5 +1,6 @@
 :root {
     --background-main-color: rgb(250, 250, 250);
+    --blockquote-background-color: rgba(86, 165, 255, 0.05);
 }
 
 /*---------------------------------------------------------------------------------
@@ -1502,26 +1503,30 @@ blockquote {
     margin: 30px;
 }
 
-.entry-content blockquote p:first-child {
-    padding-top: 20px;
-}
-.entry-content blockquote p {
-    font-size: 95%;
-    background-color: rgba(86, 165, 255, 0.05);
-    padding: 0 20px;
-}
-
-.entry-content blockquote p:nth-last-child(2) {
-    padding-bottom: 20px;
-    margin-bottom: 0;
-}
-
 .entry-content blockquote p:last-child {
     font-size: 85%;
     font-style: italic;
     text-align: right;
     background-color: var(--background-main-color);
     padding: 0;
+}
+
+.entry-content blockquote p:first-child {
+    font-size: 95%;
+    background-color: var(--blockquote-background-color);
+    padding: 20px 20px 0 20px;
+    font-style: normal;
+    text-align: left;
+}
+.entry-content blockquote p {
+    font-size: 95%;
+    background-color: var(--blockquote-background-color);
+    padding: 0 20px;
+}
+
+.entry-content blockquote p:nth-last-child(2) {
+    padding-bottom: 20px;
+    margin-bottom: 0;
 }
 
 /* Block: Gallery --------------------------------------- */

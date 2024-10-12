@@ -122,7 +122,12 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.Created, "Post created with id: ${post.id}")
         }
 
-        staticResources(ASSETS_RESOURCE_PATH, "assets")
+        if (developmentMode) {
+            staticFiles(ASSETS_RESOURCE_PATH, File("src/main/resources/assets"))
+        } else {
+            staticResources(ASSETS_RESOURCE_PATH, "assets")
+        }
+
         staticFiles(MEDIA_RESOURCE_PATH, File(INTERNAL_MEDIA_DIR))
     }
 }
