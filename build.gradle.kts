@@ -46,10 +46,11 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
 
-    // MARKDOWN
+    // FLEXMARK
     implementation("com.vladsch.flexmark:flexmark-all:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-wikilink:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:$flexmark_version")
+    implementation("com.vladsch.flexmark:flexmark-ext-attributes:$flexmark_version")
 
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")

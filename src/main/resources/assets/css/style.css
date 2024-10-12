@@ -171,7 +171,7 @@ body a:hover {
 img {
     display: block;
     height: auto;
-    max-width: 100%;
+    width: 100%;
 }
 
 .group:after,
@@ -1514,7 +1514,7 @@ blockquote {
 .entry-content blockquote p:first-child {
     font-size: 95%;
     background-color: var(--blockquote-background-color);
-    padding: 20px 20px 0 20px;
+    padding: 20px;
     font-style: normal;
     text-align: left;
 }

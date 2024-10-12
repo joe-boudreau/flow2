@@ -1,6 +1,7 @@
 package com.flow2.service
 
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
+import com.vladsch.flexmark.ext.attributes.AttributesExtension
 import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension
 import com.vladsch.flexmark.formatter.Formatter
 import com.vladsch.flexmark.formatter.internal.MergeLinkResolver
@@ -26,7 +27,8 @@ class MarkdownService {
         options
             .set(Parser.EXTENSIONS, listOf(
                 WikiLinkExtension.create(),
-                StrikethroughExtension.create()
+                StrikethroughExtension.create(),
+                AttributesExtension.create(),
             ));
 
         val parser = Parser
