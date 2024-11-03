@@ -26,4 +26,12 @@ class PostService(
         val htmlContent = mdService.parseHtmlContent(mdContent, postMediaDir)
         return postRepository.createPost(postId, title, mdContent, htmlContent, tags, category)
     }
+
+    suspend fun getPostsByCategory(category: Category): List<Post> {
+        return postRepository.getPostsByCategory(category)
+    }
+
+    suspend fun getPostsByTag(tag: String): List<Post> {
+        return postRepository.getPostsByTag(tag)
+    }
 }

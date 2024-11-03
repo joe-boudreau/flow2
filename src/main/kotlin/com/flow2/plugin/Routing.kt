@@ -1,11 +1,14 @@
 package com.flow2.plugin
 
 import com.flow2.model.Category
+import com.flow2.model.Post
 import com.flow2.repository.INTERNAL_MEDIA_DIR
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.request.web.GetPostRequest
 import com.flow2.request.CreatePostRequest
+import com.flow2.request.GetPostsByCategory
+import com.flow2.request.GetPostsByTag
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -18,6 +21,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.post as postRoute
 import io.ktor.server.thymeleaf.*
+import io.ktor.util.pipeline.*
 import org.koin.ktor.ext.inject
 import java.io.File
 
@@ -85,29 +89,63 @@ fun Application.configureRouting() {
 
         get("/") {
             val allPosts = postService.getAllPosts()
-            val postUrls = allPosts.associateBy(
-                { it.id },
-                { application.href(GetPostRequest(it.slug)) }
-            )
 
             call.respond(ThymeleafContent("index", mapOf(
                 "posts" to allPosts,
-                "postUrls" to postUrls
+                "postUrls" to getPostUrlMap(allPosts)
             )))
         }
 
         get<GetPostRequest> { req ->
             val post = postService.getPostBySlug(req.slug)
 
-            if (post != null) {
-                val bannerFilePath = mediaRepository.getPublicPostBannerResourcePath(post.id)
-                call.respond(ThymeleafContent("post", mapOf(
-                    "post" to post,
-                    "bannerFilePath" to bannerFilePath,
-                )))
-            } else {
-                call.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
+            if (post == null) {
+                call.respond404()
+                return@get
             }
+
+            val bannerFilePath = mediaRepository.getPublicPostBannerResourcePath(post.id)
+            call.respond(ThymeleafContent("post", mapOf(
+                "post" to post,
+                "bannerFilePath" to bannerFilePath,
+            )))
+        }
+
+        get<GetPostsByCategory> { req ->
+            val category = Category.getByUrlName(req.category)
+
+            if (category == null) {
+                call.respond404()
+                return@get
+            }
+
+            val posts = postService.getPostsByCategory(category)
+
+            if (posts.isEmpty()) {
+                call.respond404()
+                return@get
+            }
+
+            call.respond(ThymeleafContent("category", mapOf(
+                "posts" to posts,
+                "postUrls" to getPostUrlMap(posts),
+                "category" to category,
+            )))
+        }
+
+        get<GetPostsByTag> { req ->
+            val posts = postService.getPostsByTag(req.tag)
+
+            if (posts.isEmpty()) {
+                call.respond404()
+                return@get
+            }
+
+            call.respond(ThymeleafContent("tag", mapOf(
+                "posts" to posts,
+                "postUrls" to getPostUrlMap(posts),
+                "tag" to req.tag,
+            )))
         }
 
         post("/api/post") {
@@ -131,3 +169,12 @@ fun Application.configureRouting() {
         staticFiles(MEDIA_RESOURCE_PATH, File(INTERNAL_MEDIA_DIR))
     }
 }
+
+private suspend fun ApplicationCall.respond404() {
+    this.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
+}
+
+private fun PipelineContext<Unit, ApplicationCall>.getPostUrlMap(posts: List<Post>) = posts.associateBy(
+        { it.id },
+        { application.href<GetPostRequest>(GetPostRequest(it.slug)) }
+)

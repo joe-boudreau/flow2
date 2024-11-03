@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog Content Management</title>
+    <link rel='stylesheet' href='/assets/css/admin.css' type='text/css' media='all' />
 </head>
 <body>
     <div>
@@ -19,27 +20,29 @@
             </option>
         </select>
 
-        <div>
+        <div id="uploadBannerForm">
             <form id="uploadBanner" action="/admin/post/banner" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdBanner" name="postId">
                 <label for="bannerImage">Upload Main Banner Image:</label>
                 <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
                 <button type="submit">Upload Banner</button>
             </form>
+            <p class="resultMsg"></p>
         </div>
-        <div>
+        <div id="uploadMediaForm">
             <form id="uploadMedia" action="/admin/post/media" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdMedia" name="postId">
                 <label for="mediaImages">Upload Media Images:</label>
                 <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
                 <button type="submit">Upload Media</button>
             </form>
+            <p class="resultMsg"></p>
         </div>
     </div>
 
     <hr/>
 
-    <div>
+    <div id="newPostForm">
         <h1>Upload New Post</h1>
         <form id="newPost" action="/admin/post" method="post" enctype="multipart/form-data">
             <label for="mdFile">Select markdown file:</label>
@@ -59,6 +62,7 @@
 
             <button type="submit">Upload new post</button>
         </form>
+        <p class="resultMsg"></p>
     </div>
 </body>
 <script>
@@ -80,17 +84,21 @@
         const form = event.target;
         const formData = new FormData(form);
 
+        let resultElem = form.parentElement.querySelector('.resultMsg');
+
         fetch(form.action, {
             method: form.method,
             body: formData
         })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response data here
-                console.log('Success:', data);
+            .then(response => {
+                console.log('Success:', response);
+                resultElem.textContent = 'Success!';
+                setTimeout(() => resultElem.textContent = '', 5000);
             })
             .catch(error => {
                 console.error('Error:', error);
+                resultElem.textContent = 'Error!';
+                setTimeout(() => resultElem.textContent = '', 5000);
             });
     }
 </script>

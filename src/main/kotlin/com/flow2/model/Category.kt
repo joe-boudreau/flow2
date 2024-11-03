@@ -11,5 +11,15 @@ enum class Category(
     TECH("Tech", "tech"),
     TRAVEL("Travel", "travel"),
     PERSONAL("Personal", "personal"),
-    SIDI("SIDI", "sidi"),
+    SIDI("SIDI", "sidi");
+
+    companion object {
+        fun getByUrlName(urlName: String): Category? {
+            return entries.find { it.urlName == urlName }
+        }
+
+        fun getByDisplayName(displayName: String): Category? {
+            return entries.find { it.displayName == displayName }
+        }
+    }
 }

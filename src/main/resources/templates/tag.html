@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-
-<html th:replace="~{layout :: layout(${'home'}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html th:replace="~{layout :: layout(${tag}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
 <!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+<!--/*@thymesVar id="tag" type="String"*/-->
 
 <main class="site-content" id="site-content">
 
     <div class="section-inner">
         <div class="posts" id="posts">
             <ul>
-                <li><h2 class="page-subtitle">Recent Posts</h2></li>
+                <li><h2 class="page-subtitle">Posts with tag: <span th:text="${tag}">Tag</span></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
                     <a th:href="${postUrls[post.id]}">
                         <h2 class="title" th:text="${post.title}"></h2>

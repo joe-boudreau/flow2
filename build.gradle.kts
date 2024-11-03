@@ -51,6 +51,7 @@ dependencies {
     implementation("com.vladsch.flexmark:flexmark-ext-wikilink:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-attributes:$flexmark_version")
+    testImplementation("com.vladsch.flexmark:flexmark-html2md-converter:$flexmark_version")
 
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")
