@@ -143,8 +143,12 @@ img.circle {
     padding-right: 6px;
 }
 
-.search-results .posts ul > li:last-of-type {
+.search-results .post-list ul > li:last-of-type {
     border-bottom: 1px solid rgba(0, 0, 4, .125);
+}
+
+.post-list h4 {
+    font-weight: lighter;
 }
 
 .section-inner {
@@ -157,8 +161,11 @@ img.circle {
 
 .social-menu a[href*="/feed"]:after { content: '\f09e'; }
 
-.ymir-powered {
-    font-size: 14px;
+.flex-block {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 @media (min-width: 1000px) {
@@ -178,16 +185,6 @@ img.circle {
 
     .site-title {
         display: none;
-    }
-}
-
-@media (max-width: 620px) {
-    .site-footer {
-        display: flex;
-    }
-
-    .site-footer .theme-by {
-        margin: 0;
     }
 }
 

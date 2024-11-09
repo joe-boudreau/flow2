@@ -7,12 +7,12 @@
 <main class="site-content" id="site-content">
 
     <div class="section-inner">
-        <div class="posts" id="posts">
+        <div class="post-list" id="posts">
             <ul>
                 <li><h2 class="page-subtitle">Recent Posts</h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
                     <a th:href="${postUrls[post.id]}">
-                        <h2 class="title" th:text="${post.title}"></h2>
+                        <h4 class="title" th:text="${post.title}"></h4>
                     </a>
                 </li>
             </ul>

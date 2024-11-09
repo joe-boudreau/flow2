@@ -632,23 +632,23 @@ body.hide-social .social-menu {
 
 /* Post Wrappers ----------------------------- */
 
-.posts:first-child {
+.post-list:first-child {
     margin-top: 80px;
 }
 
-.posts > ul + ul {
+.post-list > ul + ul {
     margin-top: 70px;
 }
 
-.posts .list-title {
+.post-list .list-title {
     margin-bottom: 17px;
 }
 
-.posts .list-title a {
+.post-list .list-title a {
     color: rgba( 0, 0, 4, 0.4 );
 }
 
-.posts .list-title a:hover {
+.post-list .list-title a:hover {
     color: #121212;
     text-decoration: none;
 }
@@ -1838,7 +1838,7 @@ input.search-field::-moz-placeholder { color: #121212; }
     justify-content: space-between;
     margin-top: 100px;
     max-width: 800px;
-    padding: 25px 0 80px;
+    padding: 25px 0 10px;
     text-align: center;
     color: #454545;
 }
@@ -2626,17 +2626,6 @@ input.search-field::-moz-placeholder { color: #121212; }
         margin-top: 60px;
         padding: 25px 0;
     }
-
-    .site-footer .copyright,
-    .site-footer .theme-by {
-        text-align: left;
-    }
-
-    .site-footer .theme-by {
-        margin: 9px 0 0;
-    }
-
-
 }
 
 
@@ -2751,11 +2740,11 @@ input.search-field::-moz-placeholder { color: #121212; }
         font-size: 20px;
     }
 
-    .posts:first-child {
+    .post-list:first-child {
         margin-top: 50px;
     }
 
-    .posts > ul + ul {
+    .post-list > ul + ul {
         margin-top: 50px;
     }
 

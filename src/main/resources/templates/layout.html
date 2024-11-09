@@ -106,18 +106,20 @@
 
 </div>
 
-
-<main class="site-content" id="site-content">
-    <div th:replace="${content}">
-        Page content
-    </div>
-</main>
+<div class="flex-block">
+    <main class="site-content" id="site-content">
+        <div th:replace="${content}">
+            Page content
+        </div>
+    </main>
 
     <footer class="site-footer section-inner">
         <p>Copyright © <span th:text="${#dates.year(#dates.createToday())}">1992</span> Joe Boudreau</p>
         <p>The <a href="https://github.com/joe-boudreau/flow2">source code</a> of this website is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPLv3</a></p>
         <p>The content of this website is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License.</a></p>
     </footer>
+</div>
+
 
 <script type="text/javascript" defer src="/assets/js/imagesloaded.pkgd.min.js" id="imagesloaded-js"></script>
 <script type="text/javascript" defer src="/assets/js/masonry.pkgd.min.js" id="masonry-js"></script>
