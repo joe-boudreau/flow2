@@ -2,6 +2,9 @@
 <html th:replace="~{layout :: layout(${post.title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
 <!--/*@thymesVar id="bannerFilePath" type="String"*/-->
+<!--/*@thymesVar id="previousPostUrl" type="String"*/-->
+<!--/*@thymesVar id="nextPostUrl" type="String"*/-->
+
 
 <main>
     <article class="post type-post status-publish format-standard">
@@ -34,11 +37,11 @@
 
         <div class="post-pagination section-inner">
 
-            <div class="previous-post">
-                <a href="/" rel="prev"><span>Previous Post</span></a>
+            <div th:if="${previousPostUrl != ''}" class="previous-post">
+                <a th:href="${previousPostUrl}" rel="prev"><span>Previous Post</span></a>
             </div>
-            <div class="next-post">
-                <a href="/" rel="next"><span>Next Post</span></a>
+            <div th:if="${nextPostUrl != ''}"class="next-post">
+                <a th:href="${nextPostUrl}" rel="next"><span>Next Post</span></a>
             </div>
 
         </div>

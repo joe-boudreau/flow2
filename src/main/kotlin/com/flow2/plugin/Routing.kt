@@ -105,9 +105,16 @@ fun Application.configureRouting() {
             }
 
             val bannerFilePath = mediaRepository.getPublicPostBannerResourcePath(post.id)
+
+            val (prev, next) = postService.getPreviousAndNext(post)
+            val prevUrl = prev?.let { getPostUrl(it) } ?: ""
+            val nextUrl = next?.let { getPostUrl(it) } ?: ""
+
             call.respond(ThymeleafContent("post", mapOf(
                 "post" to post,
                 "bannerFilePath" to bannerFilePath,
+                "previousPostUrl" to prevUrl,
+                "nextPostUrl" to nextUrl,
             )))
         }
 
@@ -174,7 +181,11 @@ private suspend fun ApplicationCall.respond404() {
     this.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
 }
 
-private fun PipelineContext<Unit, ApplicationCall>.getPostUrlMap(posts: List<Post>) = posts.associateBy(
+private fun PipelineContext<Unit, ApplicationCall>.getPostUrlMap(posts: List<Post>) =
+    posts.associateBy(
         { it.id },
-        { application.href<GetPostRequest>(GetPostRequest(it.slug)) }
-)
+        { getPostUrl(it) }
+    )
+
+private fun PipelineContext<Unit, ApplicationCall>.getPostUrl(post: Post) =
+    application.href<GetPostRequest>(GetPostRequest(post.slug))
