@@ -268,7 +268,7 @@ WP.ajaxSearch = {
 
 
 // ======================================================================= Function calls
-$( documentÂ ).ready( function() {
+$( document ).ready( function() {
 
     WP.mobileMenu.init();							// Mobile Menu
 

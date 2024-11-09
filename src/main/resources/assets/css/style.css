@@ -1,6 +1,79 @@
 :root {
     --background-main-color: rgb(250, 250, 250);
-    --blockquote-background-color: rgba(86, 165, 255, 0.05);
+    --blockquote-background-color: rgba(196, 202, 204, 0.33)
+}
+
+@font-face {
+    font-family: 'archivo';
+    src: url('/assets/fonts/Archivo/archivo-variablefont_wdthwght-webfont.woff2') format('woff2'),
+    url('/assets/fonts/Archivo/archivo-variablefont_wdthwght-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'archivo';
+    src: url('/assets/fonts/Archivo/archivo-italic-variablefont_wdthwght-webfont.woff2') format('woff2'),
+    url('/assets/fonts/Archivo/archivo-italic-variablefont_wdthwght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+/* ubuntu-regular - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/assets/fonts/ubuntu/ubuntu-v20-latin-regular.woff2') format('woff2')
+}
+
+/* ubuntu-italic - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Ubuntu';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/assets/fonts/ubuntu/ubuntu-v20-latin-italic.woff2') format('woff2');
+}
+
+/* ubuntu-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/assets/fonts/ubuntu/ubuntu-v20-latin-700.woff2') format('woff2');
+}
+
+/* ubuntu-700italic - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Ubuntu';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/assets/fonts/ubuntu/ubuntu-v20-latin-700italic.woff2') format('woff2');
+}
+
+
+@font-face {
+    font-family: 'jetbrains_mono';
+    src: url('/assets/fonts/JetBrains_Mono/jetbrainsmono-variablefont_wght-webfont.woff2') format('woff2'),
+    url('/assets/fonts/JetBrains_Mono/jetbrainsmono-variablefont_wght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'jetbrains_mono';
+    src: url('/assets/fonts/JetBrains_Mono/jetbrainsmono-italic-variablefont_wght-webfont.woff2') format('woff2'),
+    url('/assets/fonts/JetBrains_Mono/jetbrainsmono-italic-variablefont_wght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
 }
 
 /*---------------------------------------------------------------------------------
@@ -53,8 +126,6 @@ h1, h2, h3, h4, h5, h6, p, blockquote, address, big, cite, code, em, font, img, 
     margin:0;
     padding:0;
     border:0;
-    font-weight:normal;
-    font-style:normal;
     font-size:100%;
     line-height:1;
     text-align:left;
@@ -141,7 +212,6 @@ body {
     background: var(--background-main-color);
     border: none;
     color: #121212;
-    font-family: 'Archivo', 'Helvetica Neue', sans-serif;
     font-size: 18px;
     padding-left: 380px;
 }

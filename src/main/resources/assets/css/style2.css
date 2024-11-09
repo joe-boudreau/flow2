@@ -1,10 +1,14 @@
 body {
-    font-family: 'Nunito Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'ubuntu', 'Helvetica Neue', sans-serif;
     hyphens: auto;
 }
 
+h1, h2, h3 {
+    font-family: 'archivo', 'Helvetica Neue', sans-serif;
+}
+
 code, pre {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: 'jetbrains_mono', 'Liberation Mono', monospace;
     font-size: 12px;
 }
 
@@ -15,6 +19,10 @@ p > code {
     font-size: 16px;
     hyphens: none;
     word-wrap: break-word;
+}
+
+p > strong {
+    font-weight: 700;
 }
 
 pre > code {
