@@ -521,13 +521,13 @@ body.hide-social .social-menu {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
-    margin: -10px 0 0 -10px;
+    margin: -10px 0 0 -20px;
     padding: 0;
 }
 
 .social-menu li {
     display: block;
-    margin: 10px 0 0 10px;
+    margin: 10px 0 0 20px;
     position: relative;
 }
 
