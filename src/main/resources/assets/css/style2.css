@@ -159,13 +159,16 @@ img.circle {
     display: none;
 }
 
-.social-menu a[href*="/feed"]:after { content: '\f09e'; }
-
 .flex-block {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#logo {
+    width: 50px;
+    filter: invert(88%) sepia(62%) saturate(9%) hue-rotate(103deg) brightness(106%) contrast(86%);
 }
 
 @media (min-width: 1000px) {
@@ -185,6 +188,10 @@ img.circle {
 
     .site-title {
         display: none;
+    }
+
+    #logo {
+        width: 50%;
     }
 }
 

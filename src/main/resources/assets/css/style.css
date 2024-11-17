@@ -538,20 +538,14 @@ body.hide-social .social-menu {
 }
 
 .social-menu a {
-    background: rgba( 255, 255, 255, 0.1 );
-    border-radius: 50%;
+   border-radius: 50%;
     color: #fff;
     display: block;
-    height: 44px;
+    height: 33px;
     position: relative;
     text-decoration: none;
     transition: background-color .2s linear, color .2s linear;
-    width: 44px;
-}
-
-.dark .social-menu a {
-    background: rgba( 0, 0, 0, 0.25 );
-    color: #fff;
+    width: 33px;
 }
 
 .social-menu a:hover,
@@ -561,45 +555,17 @@ body.hide-social .social-menu {
     text-decoration: none;
 }
 
-.dark .social-menu a:hover,
-.dark .social-menu a.active {
-    background: rgba( 0, 0, 0, .9 );
-    color: #fff;
-}
-
-.social-menu a:after {
-    content: '\f0c1';
+.social-menu a:before {
     display: inline-block;
-    font-family: 'FontAwesome';
     font-size: 19px;
     position: absolute;
     left: 0;
     right: 0;
-    top: calc( 50% - 9px );
+    top: calc( 50% - 1px );
     transition: transform .3s ease-out;
     text-align: center;
     z-index: 2;
 }
-
-.social-menu a[href*="codepen.io"]:after { content: '\f1cb'; }
-.social-menu a[href*="dribbble.com"]:after { content: '\f17d'; }
-.social-menu a[href*="facebook.com"]:after { content: '\f09a'; }
-.social-menu a[href*="flickr.com"]:after { content: '\f16e'; }
-.social-menu a[href*="github.com"]:after { content: '\f09b'; }
-.social-menu a[href*="instagram.com"]:after { content: '\f16d'; }
-.social-menu a[href*="linkedin.com"]:after { content: '\f0e1'; }
-.social-menu a[href*="pinterest.com"]:after { content: '\f0d2'; }
-.social-menu a[href*="plus.google.com"]:after { content: '\f0d5'; }
-.social-menu a[href*="soundcloud.com"]:after { content: '\f1be'; }
-.social-menu a[href*="tumblr.com"]:after { content: '\f173'; }
-.social-menu a[href*="twitter.com"]:after { content: '\f099'; }
-.social-menu a[href*="vimeo.com"]:after { content: '\f194'; }
-.social-menu a[href*="wordpress.org"]:after,
-.social-menu a[href*="wordpress.com"]:after { content: '\f19a'; }
-.social-menu a[href*="youtube.com"]:after { content: '\f167'; }
-.social-menu a[href*="mailto"]:after { content: '\f0e0'; }
-
-.social-menu a[href*="?s="]:after { content: '\f002'; top: calc( 50% - 10px ); }
 
 .no-js .social-menu a[href*="#search"] { display: none; }
 
