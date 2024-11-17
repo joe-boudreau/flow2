@@ -567,7 +567,63 @@ body.hide-social .social-menu {
     z-index: 2;
 }
 
+
 .no-js .social-menu a[href*="#search"] { display: none; }
+
+
+/* About Page Social Links ----------------------------- */
+
+.about-social-menu.desktop {
+    padding: 50px 50px 50px 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.about-social-menu-inner {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: -10px 0 0 -20px;
+    padding: 0;
+}
+
+.about-social-menu li {
+    display: block;
+    margin: 10px 0 0 20px;
+    position: relative;
+}
+
+.about-social-menu a {
+    border-radius: 50%;
+    color: #000000;
+    display: block;
+    height: 33px;
+    position: relative;
+    text-decoration: none;
+    transition: background-color .2s linear, color .2s linear;
+    width: 33px;
+}
+
+.about-social-menu a:hover,
+.about-social-menu a.active {
+    background: #000000;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.about-social-menu a:before {
+    display: inline-block;
+    font-size: 19px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc( 50% - 1px );
+    transition: transform .3s ease-out;
+    text-align: center;
+    z-index: 2;
+}
 
 
 /* -------------------------------------------------------------------------------- */

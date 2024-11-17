@@ -9,6 +9,7 @@ import com.flow2.request.web.GetPostRequest
 import com.flow2.request.CreatePostRequest
 import com.flow2.request.GetPostsByCategory
 import com.flow2.request.GetPostsByTag
+import com.flow2.service.MarkdownService
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -27,11 +28,13 @@ import java.io.File
 
 const val ASSETS_RESOURCE_PATH = "/assets"
 const val MEDIA_RESOURCE_PATH = "/media"
+const val FILESYSTEM_ASSETS_DIRECTORY = "src/main/resources/assets"
 
 fun Application.configureRouting() {
 
     val postService by inject<PostService>()
     val mediaRepository by inject<MediaRepositoryInterface>()
+    val markdownService by inject<MarkdownService>()
 
     routing {
         get("/admin") {
@@ -93,6 +96,15 @@ fun Application.configureRouting() {
             call.respond(ThymeleafContent("index", mapOf(
                 "posts" to allPosts,
                 "postUrls" to getPostUrlMap(allPosts)
+            )))
+        }
+
+        get("/about") {
+            val aboutMarkdown = File("$FILESYSTEM_ASSETS_DIRECTORY/markdown/about.md").readText()
+            println(aboutMarkdown)
+            val aboutContent = markdownService.parseHtmlContent(aboutMarkdown)
+            call.respond(ThymeleafContent("about", mapOf(
+                "aboutContent" to aboutContent,
             )))
         }
 
@@ -168,7 +180,7 @@ fun Application.configureRouting() {
         }
 
         if (developmentMode) {
-            staticFiles(ASSETS_RESOURCE_PATH, File("src/main/resources/assets"))
+            staticFiles(ASSETS_RESOURCE_PATH, File(FILESYSTEM_ASSETS_DIRECTORY))
         } else {
             staticResources(ASSETS_RESOURCE_PATH, "assets")
         }

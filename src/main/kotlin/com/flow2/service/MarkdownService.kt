@@ -8,11 +8,14 @@ import com.vladsch.flexmark.formatter.internal.MergeLinkResolver
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.MutableDataSet
+import com.flow2.plugin.MEDIA_RESOURCE_PATH
+
+private const val globalMediaDir = "$MEDIA_RESOURCE_PATH/global"
 
 class MarkdownService {
 
-    fun parseHtmlContent(mdContent: String, postMediaDir: String): String {
-        val imgUrlPrefix = "$postMediaDir/"
+    fun parseHtmlContent(mdContent: String, postMediaDir: String? = null): String {
+        val imgUrlPrefix = postMediaDir?.let {"$postMediaDir/"} ?: globalMediaDir
 
         val options = MutableDataSet()
         options

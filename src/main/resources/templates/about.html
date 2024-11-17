@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(${'About'}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="aboutContent" type="String"*/-->
+
+<main class="site-content" id="site-content">
+    <div class="section-inner">
+        <div class="entry-content section-inner" th:utext="${aboutContent}">Hi my name is Jimbo and I like turtles</div>
+        <div class="section-inner">
+            <h3>Other places to find me</h3>
+            <div class="about-social-menu">
+                <ul class="about-social-menu-inner">
+                    <li id="hype-machine" class="about-social-links"><a class="fa-solid fa-music fa-xl" target="_blank" href="https://hypem.com/thejoeflow"></a></li>
+                    <li id="vsco" class="about-social-links"><a class="fa-solid fa-camera-retro fa-xl" target="_blank" href="https://vsco.co/thejoeflow/gallery"></a></li>
+                    <li id="chess" class="about-social-links"><a class="fa-solid fa-chess fa-xl" target="_blank" href="https://www.chess.com/member/joe9291872631028387717173"></a></li>
+                    <li id="pocket" class="about-social-links"><a class="fa-brands fa-get-pocket fa-xl" target="_blank" href=""></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
