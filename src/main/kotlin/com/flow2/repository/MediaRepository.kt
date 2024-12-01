@@ -1,6 +1,6 @@
 package com.flow2.repository
 
-import com.flow2.plugin.MEDIA_RESOURCE_PATH
+import com.flow2.routing.MEDIA_RESOURCE_PATH
 import java.io.File
 
 const val INTERNAL_MEDIA_DIR = "src/main/resources/media"

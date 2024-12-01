@@ -1,10 +1,11 @@
 package com.flow2
 
-import com.flow2.plugin.*
 import com.flow2.repository.MediaRepository
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.repository.MongoPostRepository
 import com.flow2.repository.PostRepositoryInterface
+import com.flow2.routing.configureAdminRoutes
+import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
 import com.flow2.service.PostService
 import com.mongodb.kotlin.client.coroutine.MongoClient
@@ -27,7 +28,8 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     install(Resources)
-    configureRouting()
+    configurePublicRoutes()
+    configureAdminRoutes()
     install(Thymeleaf) {
         setTemplateResolver(getTemplateResolver())
     }
