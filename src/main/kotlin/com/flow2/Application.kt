@@ -1,5 +1,9 @@
 package com.flow2
 
+import com.flow2.auth.AdminUser
+import com.flow2.auth.hashedUserTable
+import com.flow2.config.ADMIN_AUTH
+import com.flow2.config.ADMIN_SESSION_COOKIE
 import com.flow2.repository.MediaRepository
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.repository.MongoPostRepository
@@ -12,6 +16,11 @@ import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.basic
+import io.ktor.server.auth.form
+import io.ktor.server.auth.session
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.thymeleaf.*
 import org.koin.dsl.module
@@ -21,12 +30,34 @@ import org.thymeleaf.templateresolver.FileTemplateResolver
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import io.ktor.server.resources.Resources
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.sessions.SessionStorageMemory
+import io.ktor.server.sessions.Sessions
+import io.ktor.server.sessions.cookie
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
 }
 
 fun Application.module() {
+    install(Sessions) {
+        cookie<AdminUser>(ADMIN_SESSION_COOKIE, SessionStorageMemory()) {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 3600
+        }
+    }
+    install(Authentication) {
+        form(ADMIN_AUTH) {
+            userParamName = "username"
+            passwordParamName = "password"
+            validate { credentials -> hashedUserTable.authenticate(credentials) }
+        }
+        session<AdminUser>("admin-session") {
+            challenge { call.respondRedirect("/login") }
+            validate { session: AdminUser -> session }
+        }
+    }
+
     install(Resources)
     configurePublicRoutes()
     configureAdminRoutes()
