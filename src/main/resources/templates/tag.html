@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(${tag}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html th:replace="~{layout :: layout(title=${tag}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
 <!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
 <!--/*@thymesVar id="tag" type="String"*/-->

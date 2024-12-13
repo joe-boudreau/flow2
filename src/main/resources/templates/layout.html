@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html th:fragment="layout" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 
     <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
@@ -22,6 +22,9 @@
 
     <!-- TODO: analytics -->
 
+    <th:block th:if="${extraHead != null}">
+        <th:block th:replace="${extraHead}"></th:block>
+    </th:block>
 </head>
 
 <body class="post-template-default single single-post single-format-standard">

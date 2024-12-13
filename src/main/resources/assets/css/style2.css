@@ -7,31 +7,8 @@ h1, h2, h3 {
     font-family: 'archivo', 'Helvetica Neue', sans-serif;
 }
 
-code, pre {
-    font-family: 'jetbrains_mono', 'Liberation Mono', monospace;
-    font-size: 12px;
-}
-
-p > code {
-    border: solid 1px #e4e4e4;
-    border-radius: 3px;
-    padding: 3px 4px;
-    font-size: 16px;
-    hyphens: none;
-    word-wrap: break-word;
-}
-
 p > strong {
     font-weight: 700;
-}
-
-pre > code {
-    background: none;
-}
-
-pre {
-    border-radius: .375rem;
-    white-space: pre;
 }
 
 img.circle {
@@ -201,10 +178,6 @@ img.circle {
         margin-left: 0;
         padding-left: 0;
         max-width: 100%;
-    }
-
-    code {
-        font-size: 14px;
     }
 
     .headerbar-wrapper {

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(${post.title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html th:replace="~{layout :: layout(title=${post.title}, content=~{::main}, extraHead=~{::head})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
 <!--/*@thymesVar id="bannerFilePath" type="String"*/-->
 <!--/*@thymesVar id="previousPostUrl" type="String"*/-->
 <!--/*@thymesVar id="nextPostUrl" type="String"*/-->
-
+<head>
+    <link rel="stylesheet" href="/assets/js/highlight/styles/obsidian.min.css">
+    <script src="/assets/js/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
 
 <main>
     <article class="post type-post status-publish format-standard">
