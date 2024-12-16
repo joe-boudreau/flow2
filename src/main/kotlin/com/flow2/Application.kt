@@ -4,6 +4,8 @@ import com.flow2.auth.AdminUser
 import com.flow2.auth.hashedUserTable
 import com.flow2.config.ADMIN_AUTH
 import com.flow2.config.ADMIN_SESSION_COOKIE
+import com.flow2.config.MONGO_DB_NAME
+import com.flow2.config.MONGO_URI
 import com.flow2.repository.MediaRepository
 import com.flow2.repository.MediaRepositoryInterface
 import com.flow2.repository.MongoPostRepository
@@ -17,8 +19,6 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.UserIdPrincipal
-import io.ktor.server.auth.basic
 import io.ktor.server.auth.form
 import io.ktor.server.auth.session
 import io.ktor.server.plugins.contentnegotiation.*
@@ -71,19 +71,16 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
+    log.info("Application started and configured")
 }
 
 private val module =  module {
 
     // The MongoClient instance actually represents a pool of connections to the database;
     // you will only need one instance of class MongoClient even with multiple threads.
-    single<MongoClient> {
-        //TODO: replace with secrets
-        val uri = "mongodb://localhost:27017"
-        MongoClient.create(uri)
-    }
+    single<MongoClient> { MongoClient.create(MONGO_URI) }
+    factory<MongoDatabase> { get<MongoClient>().getDatabase(MONGO_DB_NAME) }
 
-    factory<MongoDatabase> { get<MongoClient>().getDatabase("flow2") }
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
 
     single<MediaRepositoryInterface> { MediaRepository() }
@@ -92,9 +89,8 @@ private val module =  module {
     single<PostService>{ PostService(get(), get(), get()) }
 }
 
-private fun getTemplateResolver(): AbstractConfigurableTemplateResolver {
-    // TODO: use Koin DI
-    val resolver = if (true) {
+private fun Application.getTemplateResolver(): AbstractConfigurableTemplateResolver {
+    val resolver = if (developmentMode) {
         FileTemplateResolver().apply {
             isCacheable = false
             prefix = "src/main/resources/templates/"

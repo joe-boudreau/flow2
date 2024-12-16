@@ -5,16 +5,16 @@ val koin_version: String by project
 val flexmark_version: String by project
 
 plugins {
-    kotlin("jvm") version "2.0.0"
-    id("io.ktor.plugin") version "2.3.12"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("jvm") version "2.1.0"
+    id("io.ktor.plugin") version "3.0.1"
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 group = "com"
 version = "0.0.1"
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("com.flow2.ApplicationKt")
 }
 
 repositories {
@@ -58,4 +58,10 @@ dependencies {
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation(kotlin("test"))
+}
+
+ktor {
+    docker {
+        jreVersion.set(JavaVersion.VERSION_22)
+    }
 }

@@ -1,0 +1,27 @@
+services:
+
+  flow2:
+    #build: .
+    image: flow2:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    environment:
+      - DEVELOPMENT=false
+
+  mongosrv:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - flow2-vol:/data/db
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
+volumes:
+  flow2-vol:
+    external: true
