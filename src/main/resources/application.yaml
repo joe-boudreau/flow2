@@ -4,4 +4,15 @@ ktor:
             - com.flow2.ApplicationKt.module
     deployment:
         port: 8080
-    development: "$DEVELOPMENT:false"
+
+app:
+    adminAuth:
+        sessionCookie: "$ADMIN_SESSION_COOKIE:sesh"
+        username: "$ADMIN_USERNAME:admin"
+        password: "$ADMIN_PASSWORD:password"
+        digestSalt: "$DIGEST_SALT:saltnpepper"
+    db:
+        connectionString: "$DB_CONNECTION_STRING:mongodb://localhost:27017"
+        dbName: "$DB_NAME:flow2"
+
+

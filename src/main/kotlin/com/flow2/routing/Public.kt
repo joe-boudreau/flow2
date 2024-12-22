@@ -43,7 +43,7 @@ fun Application.configurePublicRoutes() {
 
         get("/about") {
             val aboutMarkdown = File("$FILESYSTEM_ASSETS_DIRECTORY/markdown/about.md").readText()
-            println(aboutMarkdown)
+
             val aboutContent = markdownService.parseHtmlContent(aboutMarkdown)
             call.respond(ThymeleafContent("about", mapOf(
                 "aboutContent" to aboutContent,

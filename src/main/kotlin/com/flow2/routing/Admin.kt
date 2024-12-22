@@ -1,8 +1,8 @@
 package com.flow2.routing
 
+import com.flow2.auth.ADMIN_LOGIN_CONFIG
+import com.flow2.auth.ADMIN_SESSION_CONFIG
 import com.flow2.auth.AdminUser
-import com.flow2.config.ADMIN_AUTH
-import com.flow2.config.ADMIN_SESSION_COOKIE
 import com.flow2.model.Category
 import com.flow2.service.PostService
 import com.flow2.repository.MediaRepositoryInterface
@@ -21,28 +21,28 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.sessions.sessions
 import io.ktor.server.thymeleaf.*
-import io.ktor.utils.io.core.readBytes
 import io.ktor.utils.io.readRemaining
 import io.ktor.utils.io.readText
 import io.ktor.utils.io.toByteArray
 import org.koin.ktor.ext.inject
 
 fun Application.configureAdminRoutes() {
-
     val postService by inject<PostService>()
     val mediaRepository by inject<MediaRepositoryInterface>()
+
+    val adminCookieName = environment.config.property("app.adminAuth.sessionCookie").getString()
 
     routing {
         get("/login") {
             call.respond(ThymeleafContent("login", mapOf()))
         }
 
-        authenticate(ADMIN_AUTH) {
+        authenticate(ADMIN_LOGIN_CONFIG) {
             post("/login") {
                 val username = call.principal<UserIdPrincipal>()?.name
-                println("Username: $username")
+
                 if (username != null) {
-                    call.sessions.set(ADMIN_SESSION_COOKIE, AdminUser(username))
+                    call.sessions.set(adminCookieName, AdminUser(username))
                     call.respondRedirect("/admin")
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)
@@ -50,7 +50,7 @@ fun Application.configureAdminRoutes() {
             }
         }
 
-        authenticate("admin-session") {
+        authenticate(ADMIN_SESSION_CONFIG) {
             route("/admin") {
                 get {
                     val allPosts = postService.getAllPosts()
