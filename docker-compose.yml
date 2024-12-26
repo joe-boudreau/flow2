@@ -15,7 +15,7 @@ services:
       - ADMIN_USERNAME=hiimanadmin
       - ADMIN_PASSWORD=imdoesntscaredofnobody
       - DIGEST_SALT=saltnpeppawantutopushitrealgood
-      - DB_CONNECTION_STRING=mongodb://mongosrv:27017
+      - DB_CONNECTION_STRING=mongodb://mongohiimadbadmin:mongoimdoesntscaredofnobody@mongosrv:27017/flow2?authSource=admin
       - DB_NAME=flow2
 
   mongosrv:
@@ -24,8 +24,12 @@ services:
       - "27017:27017"
     volumes:
       - flow2-vol:/data/db
+      - ./db-init:/docker-entrypoint-initdb.d
     networks:
       - my-network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongohiimadbadmin
+      - MONGO_INITDB_ROOT_PASSWORD=mongoimdoesntscaredofnobody
 
 networks:
   my-network:
