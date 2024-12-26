@@ -1,4 +1,4 @@
-package com.flow2.repository
+package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.bson.conversions.Bson
+import org.bson.types.ObjectId
 
 class MongoPostRepository(
     private val db: MongoDatabase
@@ -44,25 +45,21 @@ class MongoPostRepository(
 
 
         if (!includeContent) {
-            findFlow = findFlow.projection(Projections.exclude(Post::mdContent.name, Post::htmlContent.name))
+            findFlow = findFlow.projection(Projections.exclude(Post::mdContent.name))
         }
         return findFlow.toList()
     }
 
     override suspend fun createPost(
-        id: String,
         title: String,
         mdContent: String,
-        htmlContent: String,
         tags: List<String>,
         category: Category,
     ): Post {
         val currentTime = System.currentTimeMillis()
         val post = Post(
-            id = id,
             title = title,
             mdContent = mdContent,
-            htmlContent = htmlContent,
             tags = tags,
             category = category,
             publishedAt = currentTime,

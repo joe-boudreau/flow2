@@ -8,7 +8,6 @@ data class Post(
     @BsonId val id: String = ObjectId().toString(),
     val title: String,
     val mdContent: String?,
-    var htmlContent: String?,
     val tags: List<String>,
     val category: Category,
     val publishedAt: Long,

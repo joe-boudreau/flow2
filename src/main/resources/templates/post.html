@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html th:replace="~{layout :: layout(title=${post.title}, content=~{::main}, extraHead=~{::head})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
+<!--/*@thymesVar id="postContentHtml" type="String"*/-->
 <!--/*@thymesVar id="bannerFilePath" type="String"*/-->
 <!--/*@thymesVar id="previousPostUrl" type="String"*/-->
 <!--/*@thymesVar id="nextPostUrl" type="String"*/-->
@@ -31,7 +32,7 @@
             </div>
         </header>
 
-        <div class="entry-content section-inner" th:utext="${post.htmlContent}">Post content</div>
+        <div class="entry-content section-inner" th:utext="${postContentHtml}">Post content</div>
 
 
         <div class="meta bottom section-inner">

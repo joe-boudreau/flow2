@@ -1,10 +1,12 @@
 package com.flow2
 
 import com.flow2.auth.configureAdminAuth
-import com.flow2.repository.MediaRepository
-import com.flow2.repository.MediaRepositoryInterface
-import com.flow2.repository.MongoPostRepository
-import com.flow2.repository.PostRepositoryInterface
+import com.flow2.repository.media.FSMediaRepository
+import com.flow2.repository.media.MediaRepositoryInterface
+import com.flow2.repository.posts.MongoPostRepository
+import com.flow2.repository.posts.PostRepositoryInterface
+import com.flow2.repository.assets.FSSiteAssetRepository
+import com.flow2.repository.assets.SiteAssetRepositoryInterface
 import com.flow2.routing.configureAdminRoutes
 import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
@@ -56,9 +58,10 @@ private fun Application.configureKoinModule() = module {
     factory<MongoDatabase> { get<MongoClient>().getDatabase(dbName) }
 
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
-    single<MediaRepositoryInterface> { MediaRepository() }
-    single<MarkdownService>{ MarkdownService() }
-    single<PostService>{ PostService(get(), get(), get()) }
+    single<MediaRepositoryInterface> { FSMediaRepository(get()) }
+    single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
+    single<MarkdownService>{ MarkdownService(get(), get()) }
+    single<PostService>{ PostService(get()) }
 }
 
 private fun Application.getTemplateResolver() =

@@ -1,4 +1,4 @@
-package com.flow2.repository
+package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
@@ -10,10 +10,8 @@ interface PostRepositoryInterface {
     suspend fun getAllPosts(includeContent: Boolean = false): List<Post>
 
     suspend fun createPost(
-        id: String = ObjectId().toString(),
         title: String,
         mdContent: String,
-        htmlContent: String,
         tags: List<String>,
         category: Category,
     ): Post

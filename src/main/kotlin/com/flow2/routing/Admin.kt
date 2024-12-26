@@ -5,7 +5,7 @@ import com.flow2.auth.ADMIN_SESSION_CONFIG
 import com.flow2.auth.AdminUser
 import com.flow2.model.Category
 import com.flow2.service.PostService
-import com.flow2.repository.MediaRepositoryInterface
+import com.flow2.repository.media.MediaRepositoryInterface
 import com.flow2.request.CreatePostRequest
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -23,7 +23,7 @@ import io.ktor.server.sessions.sessions
 import io.ktor.server.thymeleaf.*
 import io.ktor.utils.io.readRemaining
 import io.ktor.utils.io.readText
-import io.ktor.utils.io.toByteArray
+import kotlinx.io.readByteArray
 import org.koin.ktor.ext.inject
 
 fun Application.configureAdminRoutes() {
@@ -89,12 +89,12 @@ fun Application.configureAdminRoutes() {
 
                 post("/post/banner") {
                     var postId: String? = null
-                    var bannerContent: ByteArray? = null
+                    var bannerFile: ByteArray? = null
 
                     call.receiveMultipart().forEachPart { part ->
                         when(part) {
                             is PartData.FileItem -> {
-                                bannerContent = part.provider().toByteArray()
+                                bannerFile = part.provider().readRemaining().readByteArray()
                             }
                             is PartData.FormItem -> {
                                 postId = part.value
@@ -105,22 +105,22 @@ fun Application.configureAdminRoutes() {
                         }
                     }
 
-                    if (postId == null || bannerContent == null) {
+                    if (postId == null || bannerFile == null) {
                         call.respond(HttpStatusCode.BadRequest)
                         return@post
                     }
-                    mediaRepository.savePostMedia(postId, "banner", bannerContent)
+                    mediaRepository.savePostMedia(postId, "banner", bannerFile)
                     call.respond(HttpStatusCode.Created)
                 }
 
                 post("/post/media") {
-                    val mediaParts = mutableListOf<PartData.FileItem>()
+                    val files = mutableMapOf<String, ByteArray>()
                     var postId: String? = null
 
                     call.receiveMultipart().forEachPart { part ->
                         when(part) {
                             is PartData.FileItem -> {
-                                mediaParts.add(part)
+                                files[part.originalFileName!!] = part.provider().readRemaining().readByteArray()
                             }
                             is PartData.FormItem -> {
                                 postId = part.value
@@ -131,14 +131,13 @@ fun Application.configureAdminRoutes() {
                         }
                     }
 
-                    if (postId == null || mediaParts.isEmpty()) {
+                    if (postId == null || files.isEmpty()) {
                         call.respond(HttpStatusCode.BadRequest)
                         return@post
                     }
 
-                    mediaParts.forEach { part ->
-                        val bytes = part.provider().toByteArray()
-                        mediaRepository.savePostMedia(postId, part.originalFileName!!, bytes)
+                    files.forEach { filename, data ->
+                        mediaRepository.savePostMedia(postId, filename, data)
                     }
 
                     call.respond(HttpStatusCode.Created)
