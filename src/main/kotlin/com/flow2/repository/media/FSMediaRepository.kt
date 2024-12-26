@@ -4,21 +4,16 @@ import com.flow2.repository.assets.SiteAssetRepositoryInterface
 import io.ktor.server.application.Application
 import io.ktor.server.http.content.staticFiles
 import io.ktor.server.routing.routing
-import io.ktor.util.cio.writeChannel
 import io.ktor.util.logging.KtorSimpleLogger
-import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.copyAndClose
-import io.ktor.utils.io.readRemaining
-import kotlinx.io.readByteArray
 import java.io.File
 
 const val PUBLIC_URL_PATH_PREFIX = "/media"
-const val FILESYSTEM_DIRECTORY_PATH = "src/main/resources/media"
 
 internal val log = KtorSimpleLogger("FSMediaRepository")
 
 class FSMediaRepository(
-    private val siteAssetRepository: SiteAssetRepositoryInterface
+    private val siteAssetRepository: SiteAssetRepositoryInterface,
+    private val mediaDirectoryPath: String,
 ) : MediaRepositoryInterface {
 
     private val publicMediaDir = "$PUBLIC_URL_PATH_PREFIX/"
@@ -28,7 +23,7 @@ class FSMediaRepository(
 
     override fun configureRouting(app: Application) {
         app.routing {
-            staticFiles(PUBLIC_URL_PATH_PREFIX, File(FILESYSTEM_DIRECTORY_PATH))
+            staticFiles(PUBLIC_URL_PATH_PREFIX, File(mediaDirectoryPath))
         }
     }
 
@@ -56,7 +51,7 @@ class FSMediaRepository(
     private fun getInternalFilePathForPostMedia(postId: String, filename: String) =
         "${getInternalPostMediaDir(postId)}/$filename"
 
-    private fun getInternalPostMediaDir(postId: String) = "$FILESYSTEM_DIRECTORY_PATH/$postId"
+    private fun getInternalPostMediaDir(postId: String) = "$mediaDirectoryPath/$postId"
 
     private fun getPublicFilePathForPostMedia(postId: String, filename: String) =
         "${getPublicPostMediaUrl(postId)}/$filename"

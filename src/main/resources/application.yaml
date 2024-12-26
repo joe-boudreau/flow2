@@ -15,4 +15,7 @@ app:
         connectionString: "$DB_CONNECTION_STRING:mongodb://localhost:27017"
         dbName: "$DB_NAME:flow2"
 
+    media:
+        directoryPath: "$MEDIA_DIRECTORY_PATH:src/main/resources/media"
+
 

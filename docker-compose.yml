@@ -7,6 +7,8 @@ services:
     #image: flow2:latest
     ports:
       - "8080:8080"
+    volumes:
+      - flow2-media-vol:/data/media
     networks:
       - my-network
     environment:
@@ -17,13 +19,14 @@ services:
       - DIGEST_SALT=saltnpeppawantutopushitrealgood
       - DB_CONNECTION_STRING=mongodb://mongohiimadbadmin:mongoimdoesntscaredofnobody@mongosrv:27017/flow2?authSource=admin
       - DB_NAME=flow2
+      - MEDIA_DIRECTORY_PATH=/data/media
 
   mongosrv:
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
-      - flow2-vol:/data/db
+      - flow2-db-vol:/data/db
       - ./db-init:/docker-entrypoint-initdb.d
     networks:
       - my-network
@@ -35,5 +38,7 @@ networks:
   my-network:
 
 volumes:
-  flow2-vol:
+  flow2-db-vol:
+    external: true
+  flow2-media-vol:
     external: true

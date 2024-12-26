@@ -51,6 +51,8 @@ fun Application.module() {
 private fun Application.configureKoinModule() = module {
     val dbConnectionString = environment.config.property("app.db.connectionString").getString()
     val dbName = environment.config.property("app.db.dbName").getString()
+    val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
+
 
     // The MongoClient instance actually represents a pool of connections to the database;
     // you will only need one instance of class MongoClient even with multiple threads.
@@ -58,7 +60,7 @@ private fun Application.configureKoinModule() = module {
     factory<MongoDatabase> { get<MongoClient>().getDatabase(dbName) }
 
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
-    single<MediaRepositoryInterface> { FSMediaRepository(get()) }
+    single<MediaRepositoryInterface> { FSMediaRepository(get(), mediaDirectoryPath) }
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
     single<MarkdownService>{ MarkdownService(get(), get()) }
     single<PostService>{ PostService(get()) }
