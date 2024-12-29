@@ -24,3 +24,8 @@ EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/flow2.jar
 ENTRYPOINT ["java","-jar","/app/flow2.jar"]
+
+# Stage 4: Add AWS Certs
+FROM runtime AS aws
+COPY /aws /aws
+RUN /aws/import-aws-bundle-pem-to-jvm-truststore.sh https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem changeit

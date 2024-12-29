@@ -24,8 +24,7 @@ pemToJks()
           ALIAS="${pemCerts%.*}-$N"
           cat $pemCerts |
                 awk "n==$N { print }; /END CERTIFICATE/ { n++ }" |
-                keytool -noprompt -import -trustcacerts \
-                                -alias "$ALIAS" -keystore cacerts -storepass "$certPass"
+                keytool -noprompt -import -trustcacerts -cacerts -alias "$ALIAS" -storepass "$certPass"
         done
 }
 pemToJks "$CERT_PEM_FILE" "$CERT_PASS"
