@@ -23,4 +23,5 @@ FROM amazoncorretto:22 AS runtime
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/flow2.jar
+COPY /aws /aws
 ENTRYPOINT ["java","-jar","/app/flow2.jar"]

@@ -4,7 +4,7 @@ services:
     build:
       context: .
       target: runtime
-    #image: flow2:latest
+    image: flow2:latest
     ports:
       - "8080:8080"
     volumes:
