@@ -26,7 +26,19 @@ class PostService(
         category: Category
     ) = postRepository.createPost(title, mdContent, tags, category)
 
+    suspend fun updatePost(
+        id: String,
+        title: String,
+        mdContent: String,
+        tags: List<String>,
+        category: Category
+    ) = postRepository.updatePost(id, title, mdContent, tags, category)
+
+    suspend fun deletePost(id: String) = postRepository.deletePost(id)
+
     suspend fun getPostBySlug(slug: String) = postRepository.getPostBySlug(slug)
+
+    suspend fun getPost(id: String) = postRepository.getPost(id)
 
     suspend fun getAllPosts(includeContent: Boolean = false): List<Post> = postRepository.getAllPosts(includeContent)
 

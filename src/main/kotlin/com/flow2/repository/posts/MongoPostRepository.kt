@@ -2,34 +2,44 @@ package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
+import com.mongodb.client.model.Aggregates.set
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Filters.eq
 import com.mongodb.client.model.Projections
 import com.mongodb.client.model.Sorts
+import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import io.ktor.util.logging.KtorSimpleLogger
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.bson.conversions.Bson
 import org.bson.types.ObjectId
 
+internal val log = KtorSimpleLogger(MongoPostRepository::class.simpleName!!)
+
 class MongoPostRepository(
-    private val db: MongoDatabase
+    db: MongoDatabase
 ): PostRepositoryInterface {
 
-    override suspend fun getPostBySlug(slug: String): Post? = db
-        .getCollection<Post>("posts")
-        .find(eq("slug", slug))
+    private val postCollection = db.getCollection<Post>("posts")
+
+    override suspend fun getPostBySlug(slug: String): Post? = postCollection
+        .find(eq(Post::slug.name, slug))
         .firstOrNull()
+
+    override suspend fun getPost(id: String): Post? = postCollection
+            .find(eq(id))
+            .firstOrNull()
 
     override suspend fun getAllPosts(includeContent: Boolean) =
         findPosts(includeContent)
 
     override suspend fun getPostsByCategory(category: Category, includeContent: Boolean) =
-        findPosts(includeContent, eq("category", category))
+        findPosts(includeContent, eq(Post::category.name, category))
 
     override suspend fun getPostsByTag(tag: String, includeContent: Boolean) =
-        findPosts(includeContent, eq("tags", tag))
+        findPosts(includeContent, eq(Post::tags.name, tag))
 
     /**
      * Default sorted newest to oldest
@@ -37,12 +47,11 @@ class MongoPostRepository(
     private suspend fun findPosts(
         includeContent: Boolean,
         filter: Bson = Filters.empty(),
-        sort: Bson = Sorts.descending("publishedAt")
+        sort: Bson = Sorts.descending(Post::publishedAt.name)
     ): List<Post> {
-        var findFlow = db.getCollection<Post>("posts")
+        var findFlow = postCollection
             .find(filter)
             .sort(sort)
-
 
         if (!includeContent) {
             findFlow = findFlow.projection(Projections.exclude(Post::mdContent.name))
@@ -66,9 +75,32 @@ class MongoPostRepository(
             updatedAt = currentTime,
         )
 
-        val posts = this.db.getCollection<Post>("posts")
-        val result = posts.insertOne(post)
-        return posts.find(eq("_id", result.insertedId)).first()
+        val result = postCollection.insertOne(post)
+        return postCollection.find(eq(result.insertedId)).first()
+    }
+
+    override suspend fun updatePost(
+        id: String,
+        title: String,
+        mdContent: String,
+        tags: List<String>,
+        category: Category,
+    ): Post {
+        val currentTime = System.currentTimeMillis()
+        val updates = Updates.combine(
+            Updates.set(Post::title.name, title),
+            Updates.set(Post::mdContent.name, mdContent),
+            Updates.set(Post::tags.name, tags),
+            Updates.set(Post::category.name, category),
+            Updates.set(Post::updatedAt.name, currentTime),
+        )
+        postCollection.updateOne(eq(id), updates)
+        return postCollection.find(eq(id)).first()
+    }
+
+    override suspend fun deletePost(id: String): Boolean {
+        val result = postCollection.deleteOne(eq(id))
+        return result.deletedCount == 1L
     }
 }
 

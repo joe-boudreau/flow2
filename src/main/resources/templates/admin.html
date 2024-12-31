@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
 <!--/*@thymesVar id="categories" type="kotlin.collections.List<String>"*/-->
+<!--/*@thymesVar id="postForUpdate" type="com.flow2.model.Post"*/-->
 <head>
     <meta charset="UTF-8">
     <title>Blog Content Management</title>
@@ -43,16 +44,16 @@
     <hr/>
 
     <div id="newPostForm">
-        <h1>Upload New Post</h1>
+        <h1>Create New Post</h1>
         <form id="newPost" action="/admin/post" method="post" enctype="multipart/form-data">
             <label for="mdFile">Select markdown file:</label>
             <input type="file" id="mdFile" name="mdFile" accept="*/*">
-            <label for="title">Post title:</label>
-            <input type="text" id="title" name="title">
-            <label for="tags">Specify tags for post (comma separated):</label>
-            <input type="text" id="tags" name="tags">
-            <label for="category">Select Category:</label>
-            <select id="category" name="category">
+            <label for="newTitle">Post title:</label>
+            <input type="text" id="newTitle" name="title">
+            <label for="newTags">Specify tags for post (comma separated):</label>
+            <input type="text" id="newTags" name="tags">
+            <label for="newCategory">Select Category:</label>
+            <select id="newCategory" name="category">
                 <option  th:each="category: ${categories}"
                          th:value="${category}"
                          th:text="${category}">
@@ -64,30 +65,77 @@
         </form>
         <p class="resultMsg"></p>
     </div>
+
+    <hr/>
+
+    <div id="updatePostForm">
+        <h1>Update Post</h1>
+        <label for="postSelect">Select Post:</label>
+        <select id="postSelectForUpdate" name="postId" onblur="getPostForUpdate()">
+            <option  th:each="post: ${posts}"
+                     th:attr="selected=${postStat.first}"
+                     th:value="${post.id}"
+                     th:text="${post.title}">
+                Post title
+            </option>
+        </select>
+
+        <form th:if="${postForUpdate != null}" id="updatePost" th:action="@{'~/admin/post/'+${postForUpdate.id}}">
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" id="updateId" name="id">
+            <label for="updateTitle">Title:</label>
+            <input type="text" id="updateTitle" name="title" th:value="${postForUpdate.title}">
+            <label for="updateTags">Specify tags for post (comma separated):</label>
+            <input type="text" id="updateTags" name="tags" th:value="${#strings.listJoin(postForUpdate.tags, ',')}">
+            <label for="updateCategory">Category:</label>
+            <select type="drop" id="updateCategory" name="category">
+                <option  th:each="category: ${categories}"
+                         th:value="${category}"
+                         th:text="${category}"
+                         th:attr="selected=${postForUpdate.category}">
+                    Category
+                </option>
+            </select>
+            <label for="mdContent">Markdown content:</label>
+            <textarea id="mdContent" name="mdContent" rows="50" cols="100" th:text="${postForUpdate.mdContent}"></textarea>
+            <button type="submit">Update Post</button>
+        </form>
+        <p class="resultMsg"></p>
+
+    </div>
 </body>
+
+
 <script>
+
     function updatePostId() {
         const postId = document.getElementById("postSelect").value;
         document.getElementById("postIdBanner").value = postId;
         document.getElementById("postIdMedia").value = postId;
     }
-
     updatePostId();
+
+    function getPostForUpdate() {
+        const postId = document.getElementById("postSelectForUpdate").value;
+        window.location.replace(`/admin?postForUpdate=${postId}`)
+    }
 
     document.getElementById('newPost').addEventListener('submit', submitForm);
     document.getElementById('uploadMedia').addEventListener('submit', submitForm);
     document.getElementById('uploadBanner').addEventListener('submit', submitForm);
+    document.getElementById('updatePost').addEventListener('submit', submitForm);
 
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission
 
         const form = event.target;
         const formData = new FormData(form);
+        const method = formData.get("_method") || form.method;
 
         let resultElem = form.parentElement.querySelector('.resultMsg');
 
         fetch(form.action, {
-            method: form.method,
+            method: method,
             body: formData
         })
             .then(response => {

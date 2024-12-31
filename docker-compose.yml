@@ -6,7 +6,7 @@ services:
       target: runtime
     image: flow2:latest
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
       - flow2-media-vol:/data/media
     networks:

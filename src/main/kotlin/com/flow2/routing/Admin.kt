@@ -18,6 +18,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.sessions.sessions
 import io.ktor.server.thymeleaf.*
@@ -54,10 +55,18 @@ fun Application.configureAdminRoutes() {
             route("/admin") {
                 get {
                     val allPosts = postService.getAllPosts()
-                    call.respond(ThymeleafContent("admin", mapOf(
+                    val model: MutableMap<String, Any> = mutableMapOf(
                         "posts" to allPosts,
-                        "categories" to Category.entries
-                    )))
+                        "categories" to Category.entries,
+                    )
+
+                    call.request.queryParameters["postForUpdate"]?.let { postId ->
+                        postService.getPost(postId)?.let { post ->
+                            model["postForUpdate"] = post
+                        }
+                    }
+
+                    call.respond(ThymeleafContent("admin", model))
                 }
 
                 post("/post") {
@@ -85,6 +94,28 @@ fun Application.configureAdminRoutes() {
 
                     postService.createPost(title, mdFile.toString(), tagsList, category)
                     call.respond(HttpStatusCode.Created)
+                }
+
+                put("/post/{id}") {
+                    log.info("Updating post")
+                    val parameters = call.receiveParameters()
+                    log.info("Parameters: $parameters")
+                    val id = call.pathParameters["id"]
+                    val title = parameters["title"]
+                    val categoryStr = parameters["category"]
+                    val tags = parameters["tags"]
+                    val mdContent = parameters["mdContent"]
+
+                    if (id == null || title == null || categoryStr == null || tags == null || mdContent == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@put
+                    }
+
+                    val tagsList = tags.split(",")
+                    val category = Category.valueOf(categoryStr)
+
+                    postService.updatePost(id, title, mdContent, tagsList, category)
+                    call.respond(HttpStatusCode.OK)
                 }
 
                 post("/post/banner") {

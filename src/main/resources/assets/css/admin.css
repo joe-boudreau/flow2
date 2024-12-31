@@ -6,3 +6,20 @@
     margin-top: 20px;
 }
 
+input, select, textarea {
+    display: block;
+    padding: 5px;
+}
+
+form {
+    padding: 10px;
+}
+
+button {
+    display: block;
+    padding: 5px;
+    margin-top: 10px;
+    background: antiquewhite;
+    font-weight: bold;
+}
+

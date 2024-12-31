@@ -1,9 +1,10 @@
 ktor:
+    development: "$DEVELOPMENT_MODE:false"
     application:
         modules:
             - com.flow2.ApplicationKt.module
     deployment:
-        port: 80
+        port: "$HTTP_PORT:80"
 
 app:
     adminAuth:
