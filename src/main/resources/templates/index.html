@@ -2,7 +2,7 @@
 
 <html th:replace="~{layout :: layout(title=${'Home'}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="postsWithCategory" type="kotlin.collections.List<Pair<com.flow2.model.Category, kotlin.collections.List<com.flow2.model.Post>>>"*/-->
-<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+<!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
 
 <main class="site-content" id="site-content">
 
@@ -16,12 +16,12 @@
             <ul>
                 <li><h2 class="page-subtitle" th:text="'Recent Posts in ' + ${category.displayName}"></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
-                    <a th:href="${postUrls[post.id]}">
+                    <a th:href="${#urls.getPostUrl(post)}">
                         <h4 class="title" th:text="${post.title}"></h4>
                     </a>
                 </li>
             </ul>
-            <a th:href="@{'~/category/'+${category.urlName}}"><h3>...</h3></a>
+            <a th:href="${#urls.getCategoryUrl(category)}"><h3>...</h3></a>
         </div>
     </div>
 </main>

@@ -1,19 +1,17 @@
 package com.flow2.routing
 
 import com.flow2.model.Category
-import com.flow2.model.Post
 import com.flow2.service.PostService
 import com.flow2.repository.media.MediaRepositoryInterface
 import com.flow2.repository.assets.SiteAssetRepositoryInterface
 import com.flow2.request.web.GetPostRequest
-import com.flow2.request.GetPostsByCategory
-import com.flow2.request.GetPostsByTag
+import com.flow2.request.web.GetPostsByCategory
+import com.flow2.request.web.GetPostsByTag
 import com.flow2.service.MarkdownService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
 import io.ktor.server.thymeleaf.*
@@ -44,7 +42,6 @@ fun Application.configurePublicRoutes() {
 
             call.respond(ThymeleafContent("index", mapOf(
                 "postsWithCategory" to postsWithCategory,
-                "postUrls" to getPostUrlMap(allPosts)
             )))
         }
 
@@ -58,7 +55,6 @@ fun Application.configurePublicRoutes() {
 
             call.respond(ThymeleafContent("archive", mapOf(
                 "postsWithYear" to postsWithYear,
-                "postUrls" to getPostUrlMap(allPosts)
             )))
         }
 
@@ -81,17 +77,22 @@ fun Application.configurePublicRoutes() {
 
             val postContentHtml = markdownService.parseHtmlContent(post.mdContent, post.id)
             val bannerFilePath = mediaRepository.getPublicPostBannerUrl(post.id)
-            val (prev, next) = postService.getPreviousAndNext(post)
-            val prevUrl = prev?.let { getPostUrl(it) } ?: ""
-            val nextUrl = next?.let { getPostUrl(it) } ?: ""
 
-            call.respond(ThymeleafContent("post", mapOf(
+            val model = mutableMapOf(
                 "post" to post,
                 "postContentHtml" to postContentHtml,
                 "bannerFilePath" to bannerFilePath,
-                "previousPostUrl" to prevUrl,
-                "nextPostUrl" to nextUrl,
-            )))
+            )
+
+            val (prev, next) = postService.getPreviousAndNext(post)
+            if (prev != null) {
+                model["previousPost"] = prev
+            }
+            if (next != null) {
+                model["nextPost"] = next
+            }
+
+            call.respond(ThymeleafContent("post", model))
         }
 
         get<GetPostsByCategory> { req ->
@@ -111,7 +112,6 @@ fun Application.configurePublicRoutes() {
 
             call.respond(ThymeleafContent("category", mapOf(
                 "posts" to posts,
-                "postUrls" to getPostUrlMap(posts),
                 "category" to category,
             )))
         }
@@ -126,7 +126,6 @@ fun Application.configurePublicRoutes() {
 
             call.respond(ThymeleafContent("tag", mapOf(
                 "posts" to posts,
-                "postUrls" to getPostUrlMap(posts),
                 "tag" to req.tag,
             )))
         }
@@ -136,12 +135,3 @@ fun Application.configurePublicRoutes() {
 private suspend fun ApplicationCall.respond404() {
     this.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
 }
-
-private fun RoutingContext.getPostUrlMap(posts: List<Post>) =
-    posts.associateBy(
-        { it.id },
-        { getPostUrl(it) }
-    )
-
-private fun RoutingContext.getPostUrl(post: Post) =
-    call.application.href<GetPostRequest>(GetPostRequest(post.slug))

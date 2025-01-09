@@ -2,7 +2,7 @@
 
 <html th:replace="~{layout :: layout(title=${'Archive'}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="postsWithYear" type="kotlin.collections.List<Pair<String, kotlin.collections.List<com.flow2.model.Post>>>"*/-->
-<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+<!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
 
 <main class="site-content" id="site-content">
 
@@ -16,7 +16,7 @@
             <ul>
                 <li><h2 class="page-subtitle" th:text="${year}"></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
-                    <a th:href="${postUrls[post.id]}">
+                    <a th:href="${#urls.getPostUrl(post)}">
                         <h4 class="title" th:text="${post.title}"></h4>
                     </a>
                 </li>

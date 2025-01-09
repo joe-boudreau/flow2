@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html th:replace="~{layout :: layout(title=${category.displayName}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
-<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+<!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
 <!--/*@thymesVar id="category" type="com.flow2.model.Category"*/-->
 
 <main class="site-content" id="site-content">
@@ -11,7 +11,7 @@
             <ul>
                 <li><h2 class="page-subtitle">In <span th:text="${category.displayName}">Category</span></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
-                    <a th:href="${postUrls[post.id]}">
+                    <a th:href="${#urls.getPostUrl(post)}">
                         <h4 class="title" th:text="${post.title}"></h4>
                     </a>
                 </li>

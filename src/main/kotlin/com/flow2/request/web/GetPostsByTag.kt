@@ -1,4 +1,4 @@
-package com.flow2.request
+package com.flow2.request.web
 
 import io.ktor.resources.*
 

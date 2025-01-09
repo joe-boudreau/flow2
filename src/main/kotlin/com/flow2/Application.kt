@@ -7,12 +7,14 @@ import com.flow2.repository.posts.MongoPostRepository
 import com.flow2.repository.posts.PostRepositoryInterface
 import com.flow2.repository.assets.FSSiteAssetRepository
 import com.flow2.repository.assets.SiteAssetRepositoryInterface
+import com.flow2.request.web.RequestUrlBuilderDialect
 import com.flow2.routing.configureAdminRoutes
 import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
 import com.flow2.service.PostService
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import io.ktor.http.URLBuilder
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -40,6 +42,7 @@ fun Application.module() {
     configureAdminRoutes()
     install(Thymeleaf) {
         setTemplateResolver(getTemplateResolver())
+        addDialect(RequestUrlBuilderDialect(this@module))
     }
     install(ContentNegotiation) {
         json()

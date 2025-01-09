@@ -3,8 +3,10 @@
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
 <!--/*@thymesVar id="postContentHtml" type="String"*/-->
 <!--/*@thymesVar id="bannerFilePath" type="String"*/-->
-<!--/*@thymesVar id="previousPostUrl" type="String"*/-->
-<!--/*@thymesVar id="nextPostUrl" type="String"*/-->
+<!--/*@thymesVar id="previousPost" type="String?"*/-->
+<!--/*@thymesVar id="nextPost" type="String?"*/-->
+<!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
+
 <head>
     <link rel="stylesheet" href="/assets/js/highlight/styles/obsidian.min.css">
     <script src="/assets/js/highlight/highlight.min.js"></script>
@@ -22,7 +24,7 @@
 
 
             <div class="meta">
-                <p>In <span><a th:href="@{'~/category/'+${post.category.urlName}}" th:text="${post.category.displayName}">Category</a></span></p>
+                <p>In <span><a th:href="${#urls.getCategoryUrl(post.category)}" th:text="${post.category.displayName}">Category</a></span></p>
             </div>
 
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
@@ -36,17 +38,17 @@
 
 
         <div class="meta bottom section-inner">
-            <span th:each="tag: ${post.tags}" class="tags"><a th:href="@{'~/tag/'+${tag}}" th:text="'#' + ${tag}" rel="tag">Tag name</a> </span>
+            <span th:each="tag: ${post.tags}" class="tags"><a th:href="${#urls.getTagUrl(tag)}" th:text="'#' + ${tag}" rel="tag">Tag name</a> </span>
         </div>
 
 
         <div class="post-pagination section-inner">
 
-            <div th:if="${previousPostUrl != ''}" class="previous-post">
-                <a th:href="${previousPostUrl}" rel="prev"><span>Previous Post</span></a>
+            <div th:if="${previousPost != null}" class="previous-post">
+                <a th:href="${#urls.getPostUrl(previousPost)}" rel="prev"><span>Previous Post</span></a>
             </div>
-            <div th:if="${nextPostUrl != ''}"class="next-post">
-                <a th:href="${nextPostUrl}" rel="next"><span>Next Post</span></a>
+            <div th:if="${nextPost != null}"class="next-post">
+                <a th:href="${#urls.getPostUrl(nextPost)}" rel="next"><span>Next Post</span></a>
             </div>
 
         </div>
