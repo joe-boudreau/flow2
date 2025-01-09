@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html th:replace="~{layout :: layout(title=${'Archive'}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="postsWithYear" type="kotlin.collections.List<Pair<String, kotlin.collections.List<com.flow2.model.Post>>>"*/-->
+<!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
+
+<main class="site-content" id="site-content">
+
+    <div class="section-inner">
+        <div
+                class="post-list posts-by-year"
+                th:each="postYearPair: ${postsWithYear}"
+                th:with="year=${postYearPair.first}, posts=${postYearPair.second}"
+                th:id="${year} + '-posts'"
+        >
+            <ul>
+                <li><h2 class="page-subtitle" th:text="${year}"></h2></li>
+                <li th:each="post: ${posts}" class="post-preview post type-post">
+                    <a th:href="${postUrls[post.id]}">
+                        <h4 class="title" th:text="${post.title}"></h4>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>

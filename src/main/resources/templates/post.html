@@ -28,7 +28,7 @@
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
 
             <div class="meta">
-                <p><span th:text="${#dates.format(post.getPublishDate(), 'MMMM d, yyyy')}">April 20, 2024</span></p>
+                <p><span th:text="${#temporals.format(post.getPublishDate(), 'MMMM d, yyyy')}">April 20, 2024</span></p>
             </div>
         </header>
 

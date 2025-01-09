@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 
 <html th:replace="~{layout :: layout(title=${'Home'}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
+<!--/*@thymesVar id="postsWithCategory" type="kotlin.collections.List<Pair<com.flow2.model.Category, kotlin.collections.List<com.flow2.model.Post>>>"*/-->
 <!--/*@thymesVar id="postUrls" type="kotlin.collections.Map<String, String>"*/-->
 
 <main class="site-content" id="site-content">
 
     <div class="section-inner">
-        <div class="post-list" id="posts">
+        <div
+                class="post-list posts-by-category"
+                th:each="postCategoryPair: ${postsWithCategory}"
+                th:with="category=${postCategoryPair.first}, posts=${postCategoryPair.second}"
+                th:id="${category} + '-posts'"
+        >
             <ul>
-                <li><h2 class="page-subtitle">Recent Posts</h2></li>
+                <li><h2 class="page-subtitle" th:text="'Recent Posts in ' + ${category.displayName}"></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
                     <a th:href="${postUrls[post.id]}">
                         <h4 class="title" th:text="${post.title}"></h4>
                     </a>
                 </li>
             </ul>
+            <a th:href="@{'~/category/'+${category.urlName}}"><h3>...</h3></a>
         </div>
     </div>
 </main>

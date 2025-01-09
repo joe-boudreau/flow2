@@ -2,7 +2,9 @@ package com.flow2.model
 
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
-import java.util.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 data class Post(
     @BsonId val id: String = ObjectId().toString(),
@@ -14,8 +16,8 @@ data class Post(
     val updatedAt: Long,
     val slug: String = slugify(title)
 ) {
-    fun getPublishDate() = Date(publishedAt)
-    fun getUpdateDate() = Date(updatedAt)
+    fun getPublishDate() = LocalDateTime.ofInstant(Instant.ofEpochMilli(publishedAt), ZoneId.systemDefault());
+    fun getUpdateDate() = LocalDateTime.ofInstant(Instant.ofEpochMilli(updatedAt), ZoneId.systemDefault());
 }
 
 private fun slugify(title: String) = title

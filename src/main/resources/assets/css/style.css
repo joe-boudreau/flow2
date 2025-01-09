@@ -654,6 +654,9 @@ body.hide-social .social-menu {
 
 /* Post Wrappers ----------------------------- */
 
+.posts-by-category {
+    margin-bottom: 100px;
+}
 .post-list:first-child {
     margin-top: 80px;
 }

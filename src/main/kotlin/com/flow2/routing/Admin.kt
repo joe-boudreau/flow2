@@ -15,6 +15,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -116,6 +117,17 @@ fun Application.configureAdminRoutes() {
 
                     postService.updatePost(id, title, mdContent, tagsList, category)
                     call.respond(HttpStatusCode.OK)
+                }
+
+                delete("/post/{id}") {
+                    val id = call.pathParameters["id"]
+                    if (id == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@delete
+                    }
+
+                    val success = postService.deletePost(id)
+                    call.respond(if (success) HttpStatusCode.OK else HttpStatusCode.NotFound)
                 }
 
                 post("/post/banner") {

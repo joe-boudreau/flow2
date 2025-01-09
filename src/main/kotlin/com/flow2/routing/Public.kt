@@ -32,9 +32,32 @@ fun Application.configurePublicRoutes() {
     routing {
         get("/") {
             val allPosts = postService.getAllPosts()
+            val postsByCategory = allPosts.groupBy { it.category }
+            val displayCategoryOrder = listOf(
+                Category.TECH,
+                Category.BOOK_REVIEW,
+                Category.PERSONAL,
+            )
+            val postsWithCategory = displayCategoryOrder.map { category ->
+                category to (postsByCategory[category] ?: emptyList()).take(3)
+            }
 
             call.respond(ThymeleafContent("index", mapOf(
-                "posts" to allPosts,
+                "postsWithCategory" to postsWithCategory,
+                "postUrls" to getPostUrlMap(allPosts)
+            )))
+        }
+
+        get("/archive") {
+            val allPosts = postService.getAllPosts()
+            val postsByYear = allPosts.groupBy { it.getPublishDate().year }
+            val years = postsByYear.keys.sortedDescending()
+            val postsWithYear = years.map { year ->
+                year to postsByYear[year]!!
+            }
+
+            call.respond(ThymeleafContent("archive", mapOf(
+                "postsWithYear" to postsWithYear,
                 "postUrls" to getPostUrlMap(allPosts)
             )))
         }
