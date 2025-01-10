@@ -16,6 +16,7 @@ interface PostRepositoryInterface {
         mdContent: String,
         tags: List<String>,
         category: Category,
+        publishedAt: Long? = null,
     ): Post
 
     suspend fun updatePost(

@@ -23,8 +23,9 @@ class PostService(
         title: String,
         mdContent: String,
         tags: List<String>,
-        category: Category
-    ) = postRepository.createPost(title, mdContent, tags, category)
+        category: Category,
+        publishedAt: Long? = null,
+    ) = postRepository.createPost(title, mdContent, tags, category, publishedAt)
 
     suspend fun updatePost(
         id: String,

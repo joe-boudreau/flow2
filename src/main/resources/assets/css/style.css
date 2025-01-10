@@ -642,6 +642,7 @@ body.hide-social .social-menu {
 
 .page-title {
     font-size: 24px;
+    margin-bottom: 24px;
     hanging-punctuation: first;
     line-height: 1.45;
 }
@@ -678,6 +679,11 @@ body.hide-social .social-menu {
     text-decoration: none;
 }
 
+/* Archive ----------------------------------- */
+
+.posts-by-year {
+    margin-bottom: 50px;
+}
 
 /* Post Previews ----------------------------- */
 
@@ -857,13 +863,11 @@ body.hide-social .social-menu {
     width: 15px;
 }
 
-.post-pagination .previous-post a { padding-left: 25px; }
 .post-pagination .previous-post a:before {
     background-image: url( ./assets/images/arrow-black-left.svg );
     left: 0;
 }
 
-.post-pagination .next-post a { padding-right: 25px; }
 .post-pagination .next-post a:before {
     background-image: url( ./assets/images/arrow-black-right.svg );
     right: 0;
@@ -2764,6 +2768,7 @@ input.search-field::-moz-placeholder { color: #121212; }
 
     .page-title {
         font-size: 20px;
+        margin-bottom: 20px;
     }
 
     .post-list:first-child {

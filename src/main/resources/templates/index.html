@@ -7,6 +7,7 @@
 <main class="site-content" id="site-content">
 
     <div class="section-inner">
+        <h1 class="page-title">Recent Posts</h1>
         <div
                 class="post-list posts-by-category"
                 th:each="postCategoryPair: ${postsWithCategory}"
@@ -14,7 +15,7 @@
                 th:id="${category} + '-posts'"
         >
             <ul>
-                <li><h2 class="page-subtitle" th:text="'Recent Posts in ' + ${category.displayName}"></h2></li>
+                <li><h2 class="page-subtitle" th:text="${category.displayName}"></h2></li>
                 <li th:each="post: ${posts}" class="post-preview post type-post">
                     <a th:href="${#urls.getPostUrl(post)}">
                         <h4 class="title" th:text="${post.title}"></h4>

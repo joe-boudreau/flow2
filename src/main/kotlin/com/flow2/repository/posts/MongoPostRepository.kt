@@ -64,15 +64,16 @@ class MongoPostRepository(
         mdContent: String,
         tags: List<String>,
         category: Category,
+        publishedAt: Long?,
     ): Post {
-        val currentTime = System.currentTimeMillis()
+        val publishedTimestamp = publishedAt ?: System.currentTimeMillis()
         val post = Post(
             title = title,
             mdContent = mdContent,
             tags = tags,
             category = category,
-            publishedAt = currentTime,
-            updatedAt = currentTime,
+            publishedAt = publishedTimestamp,
+            updatedAt = publishedTimestamp,
         )
 
         val result = postCollection.insertOne(post)

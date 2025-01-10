@@ -27,6 +27,9 @@ import io.ktor.utils.io.readRemaining
 import io.ktor.utils.io.readText
 import kotlinx.io.readByteArray
 import org.koin.ktor.ext.inject
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 fun Application.configureAdminRoutes() {
     val postService by inject<PostService>()
@@ -75,12 +78,14 @@ fun Application.configureAdminRoutes() {
                     var categoryStr: String? = null
                     var tags: String?= null
                     var mdFile: String? = null
+                    var publishedAt: String? = null
 
                     call.receiveMultipart().forEachPart { part ->
                         when(part.name) {
                             "title" -> title = (part as PartData.FormItem).value
                             "category" -> categoryStr = (part as PartData.FormItem).value
                             "tags" -> tags = (part as PartData.FormItem).value
+                            "publishedAt" -> publishedAt = (part as PartData.FormItem).value
                             "mdFile" -> mdFile = (part as PartData.FileItem).provider().readRemaining().readText()
                         }
                     }
@@ -92,15 +97,19 @@ fun Application.configureAdminRoutes() {
 
                     val tagsList = tags.split(",")
                     val category = Category.valueOf(categoryStr)
+                    var publishedAtTimestamp = publishedAt?.let {
+                        LocalDateTime
+                            .parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME)
+                            .toInstant(ZoneOffset.UTC)
+                            .toEpochMilli()
+                    }
 
-                    postService.createPost(title, mdFile.toString(), tagsList, category)
+                    postService.createPost(title, mdFile.toString(), tagsList, category, publishedAtTimestamp)
                     call.respond(HttpStatusCode.Created)
                 }
 
                 put("/post/{id}") {
-                    log.info("Updating post")
                     val parameters = call.receiveParameters()
-                    log.info("Parameters: $parameters")
                     val id = call.pathParameters["id"]
                     val title = parameters["title"]
                     val categoryStr = parameters["category"]
