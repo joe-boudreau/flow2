@@ -212,7 +212,7 @@ body {
     background: var(--background-main-color);
     border: none;
     color: #121212;
-    font-size: 16px;
+    font-size: 18px;
     padding-left: 380px;
 }
 
@@ -1600,7 +1600,7 @@ tbody > tr:nth-child(odd) {
 
 blockquote {
     font-family: 'Arial', sans-serif;
-    margin: 30px;
+    margin: 30px 5%;
 }
 
 .entry-content blockquote p:last-child {
@@ -2667,7 +2667,11 @@ input.search-field::-moz-placeholder { color: #121212; }
     /* Structure ----------------------------- */
 
     body {
-        font-size: 16px;
+        font-size: 18px;
+    }
+
+    .section-inner {
+        width: 90%;
     }
 
 
