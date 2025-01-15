@@ -16,16 +16,26 @@ class PostService(
 
     init {
         runBlocking() {
-            allPosts.addAll(getAllPosts())
+            initPostCache()
         }
     }
+
+    private suspend fun initPostCache() {
+        allPosts.clear()
+        allPosts.addAll(getAllPosts())
+    }
+
     suspend fun createPost(
         title: String,
         mdContent: String,
         tags: List<String>,
         category: Category,
         publishedAt: Long? = null,
-    ) = postRepository.createPost(title, mdContent, tags, category, publishedAt)
+    ): Post {
+        val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
+        initPostCache()
+        return post
+    }
 
     suspend fun updatePost(
         id: String,
@@ -35,7 +45,10 @@ class PostService(
         category: Category
     ) = postRepository.updatePost(id, title, mdContent, tags, category)
 
-    suspend fun deletePost(id: String) = postRepository.deletePost(id)
+    suspend fun deletePost(id: String) {
+        postRepository.deletePost(id)
+        initPostCache()
+    }
 
     suspend fun getPostBySlug(slug: String) = postRepository.getPostBySlug(slug)
 
