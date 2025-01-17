@@ -7,14 +7,15 @@ import com.flow2.repository.posts.MongoPostRepository
 import com.flow2.repository.posts.PostRepositoryInterface
 import com.flow2.repository.assets.FSSiteAssetRepository
 import com.flow2.repository.assets.SiteAssetRepositoryInterface
+import com.flow2.request.web.RequestUrlBuilder
 import com.flow2.request.web.RequestUrlBuilderDialect
 import com.flow2.routing.configureAdminRoutes
 import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
 import com.flow2.service.PostService
+import com.flow2.service.RssService
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
-import io.ktor.http.URLBuilder
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -55,6 +56,7 @@ private fun Application.configureKoinModule() = module {
     val dbConnectionString = environment.config.property("app.db.connectionString").getString()
     val dbName = environment.config.property("app.db.dbName").getString()
     val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
+    val schemeDomainPort = environment.config.property("app.schemeDomainPort").getString()
 
 
     // The MongoClient instance actually represents a pool of connections to the database;
@@ -66,7 +68,9 @@ private fun Application.configureKoinModule() = module {
     single<MediaRepositoryInterface> { FSMediaRepository(get(), mediaDirectoryPath) }
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
     single<MarkdownService>{ MarkdownService(get(), get()) }
-    single<PostService>{ PostService(get()) }
+    single<PostService>{ PostService(get(), get()) }
+    single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule) }
+    single<RssService>{ RssService(get(), get(), schemeDomainPort) }
 }
 
 private fun Application.getTemplateResolver() =

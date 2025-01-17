@@ -55,6 +55,9 @@ dependencies {
     implementation("com.vladsch.flexmark:flexmark-ext-attributes:$flexmark_version")
     testImplementation("com.vladsch.flexmark:flexmark-html2md-converter:$flexmark_version")
 
+    //RSS
+    implementation("com.rometools:rome:2.1.0")
+
     // TEST STUFF
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation(kotlin("test"))

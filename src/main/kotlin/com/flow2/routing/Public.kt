@@ -8,6 +8,7 @@ import com.flow2.request.web.GetPostRequest
 import com.flow2.request.web.GetPostsByCategory
 import com.flow2.request.web.GetPostsByTag
 import com.flow2.service.MarkdownService
+import com.flow2.service.RssService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
@@ -23,6 +24,7 @@ fun Application.configurePublicRoutes() {
     val mediaRepository by inject<MediaRepositoryInterface>()
     val siteAssetRepository by inject<SiteAssetRepositoryInterface>()
     val markdownService by inject<MarkdownService>()
+    val rssService by inject<RssService>()
 
     mediaRepository.configureRouting(this)
     siteAssetRepository.configureRouting(this)
@@ -128,6 +130,10 @@ fun Application.configurePublicRoutes() {
                 "posts" to posts,
                 "tag" to req.tag,
             )))
+        }
+
+        get("/synd/rss") {
+            call.respondText(postService.getRssFeed(), ContentType.Application.Rss)
         }
     }
 }

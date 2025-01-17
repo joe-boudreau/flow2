@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html th:fragment="layout" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 
@@ -41,16 +42,15 @@
             <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
             <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archive">Archive</a></li>
             <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
-            <li><a href="/search?q=">Search</a></li>
         </ul>
     </div>
 
     <div class="social-menu desktop">
         <ul class="social-menu-inner">
-            <li id="search" class="social-links"><a class="fa-solid fa-magnifying-glass fa-lg" href=""></a></li>
-            <li id="email" class="social-links"><a class="fa-solid fa-envelope fa-lg" href="mailto:joe@thejoeflow.com"></a></li>
-            <li id="github" class="social-links"><a class="fa-brands fa-github fa-lg" href="https://github.com/joe-boudreau"></a></li>
-            <li id="rss" class="social-links"><a class="fa-solid fa-rss fa-lg" href=""></a></li>
+            <li id="search-desktop" class="social-links"><a class="fa-solid fa-magnifying-glass fa-lg" href="?s="></a></li>
+            <li id="email-desktop" class="social-links"><a class="fa-solid fa-envelope fa-lg" href="mailto:j@flowtwo.io"></a></li>
+            <li id="github-desktop" class="social-links"><a class="fa-brands fa-github fa-lg" href="https://github.com/joe-boudreau"></a></li>
+            <li id="rss-desktop" class="social-links"><a class="fa-solid fa-rss fa-lg" href="/synd/rss"></a></li>
         </ul>
     </div>
 
@@ -61,19 +61,17 @@
 
     <ul class="main-menu mobile">
         <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
-        <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/bookshelf">Bookshelf</a></li>
         <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archive">Archive</a></li>
         <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
-        <li class="toggle-mobile-search-wrapper"><a href="#" class="toggle-mobile-search">Search</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page toggle-mobile-search-wrapper"><a href="#" class="toggle-mobile-search">Search</a></li>
     </ul>
 
 
-    <!-- TODO: Social links -->
     <div class="social-menu mobile">
         <ul class="social-menu-inner">
-            <li id="s1" class="social-links"><a href=""></a></li>
-            <li id="s2" class="social-links"><a href=""></a></li>
-            <li id="s3" class="social-links"><a href=""></a></li>
+            <li id="email-mobile" class="social-links"><a class="fa-solid fa-envelope fa-lg" href="mailto:j@flowtwo.io"></a></li>
+            <li id="github-mobile" class="social-links"><a class="fa-brands fa-github fa-lg" href="https://github.com/joe-boudreau"></a></li>
+            <li id="rss-mobile" class="social-links"><a class="fa-solid fa-rss fa-lg" href="/synd/rss"></a></li>
         </ul>
     </div>
 

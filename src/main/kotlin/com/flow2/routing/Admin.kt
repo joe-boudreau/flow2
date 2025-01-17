@@ -7,6 +7,7 @@ import com.flow2.model.Category
 import com.flow2.service.PostService
 import com.flow2.repository.media.MediaRepositoryInterface
 import com.flow2.request.CreatePostRequest
+import com.flow2.service.RssService
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -34,6 +35,7 @@ import java.time.format.DateTimeFormatter
 fun Application.configureAdminRoutes() {
     val postService by inject<PostService>()
     val mediaRepository by inject<MediaRepositoryInterface>()
+    val rssService by inject<RssService>()
 
     val adminCookieName = environment.config.property("app.adminAuth.sessionCookie").getString()
 

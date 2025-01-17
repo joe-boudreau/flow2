@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 
 class PostService(
     private val postRepository: PostRepositoryInterface,
+    private val rssService: RssService,
 ) {
 
     /**
@@ -14,16 +15,21 @@ class PostService(
      */
     private val allPosts = mutableListOf<Post>()
 
+    private lateinit var rssFeed: String
+
     init {
-        runBlocking() {
-            initPostCache()
+        runBlocking {
+            reloadPostCacheAndRss()
         }
     }
 
-    private suspend fun initPostCache() {
+    private suspend fun reloadPostCacheAndRss() {
         allPosts.clear()
         allPosts.addAll(getAllPosts())
+        rssFeed = rssService.createRSSFeed(getAllPosts(includeContent = true))
     }
+
+    fun getRssFeed() = rssFeed
 
     suspend fun createPost(
         title: String,
@@ -33,7 +39,7 @@ class PostService(
         publishedAt: Long? = null,
     ): Post {
         val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
-        initPostCache()
+        reloadPostCacheAndRss()
         return post
     }
 
@@ -43,11 +49,18 @@ class PostService(
         mdContent: String,
         tags: List<String>,
         category: Category
-    ) = postRepository.updatePost(id, title, mdContent, tags, category)
+    ): Post {
+        val post = postRepository.updatePost(id, title, mdContent, tags, category)
+        reloadPostCacheAndRss()
+        return post
+    }
 
-    suspend fun deletePost(id: String) {
-        postRepository.deletePost(id)
-        initPostCache()
+    suspend fun deletePost(id: String): Boolean {
+        val success = postRepository.deletePost(id)
+        if (success) {
+            reloadPostCacheAndRss()
+        }
+        return success
     }
 
     suspend fun getPostBySlug(slug: String) = postRepository.getPostBySlug(slug)

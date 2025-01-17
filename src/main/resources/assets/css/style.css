@@ -2061,7 +2061,6 @@ input.search-field::-moz-placeholder { color: #121212; }
     }
 
     .main-menu .toggle-mobile-search-wrapper {
-        padding-left: 33px;
         position: relative;
     }
 
