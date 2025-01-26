@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/js/highlight/styles/obsidian.min.css">
     <script src="/assets/js/highlight/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <script defer src="https://chirpy.dev/bootstrapper.js" data-chirpy-domain="flowtwo.io"></script>
 </head>
 
 <main>
@@ -51,6 +52,14 @@
                 <a th:href="${#urls.getPostUrl(nextPost)}" rel="next"><span>Next Post</span></a>
             </div>
 
+        </div>
+
+        <div class="section-inner">
+            <div
+                data-chirpy-theme="light"
+                data-chirpy-comment="true"
+                id="chirpy-comment"
+            ></div>
         </div>
 
     </article>

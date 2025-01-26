@@ -2710,17 +2710,8 @@ input.search-field::-moz-placeholder { color: #121212; }
         margin-top: 25px;
     }
 
-    .post-pagination {
-        display: block;
-    }
-
     .post-pagination div {
         width: 100%;
-    }
-
-    .post-pagination .next-post {
-        margin: 12px 0 0 0;
-        text-align: right;
     }
 
     .comments,
