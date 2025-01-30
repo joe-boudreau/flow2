@@ -212,17 +212,14 @@ WP.ajaxSearch = {
 
     loadPosts: function(){
 
-        var $container = $( '.mobile-results .results-wrapper' ),
-            data = $( '.mobile-search .search-field' ).val();
+        const $container = $('.mobile-results .results-wrapper');
 
-        search_string = JSON.stringify( data );
+        let search_string = $('.mobile-search .search-field').val();
 
-        $.ajax({
-            url: mcluhan_ajaxpagination.ajaxurl,
-            type: 'post',
+        $.get({
+            url: '/search',
             data: {
-                action: 'ajax_pagination',
-                query_data: search_string
+                q: search_string
             },
 
             beforeSend: function() {

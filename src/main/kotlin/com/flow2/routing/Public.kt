@@ -8,7 +8,6 @@ import com.flow2.request.web.GetPostRequest
 import com.flow2.request.web.GetPostsByCategory
 import com.flow2.request.web.GetPostsByTag
 import com.flow2.service.MarkdownService
-import com.flow2.service.RssService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
@@ -24,7 +23,6 @@ fun Application.configurePublicRoutes() {
     val mediaRepository by inject<MediaRepositoryInterface>()
     val siteAssetRepository by inject<SiteAssetRepositoryInterface>()
     val markdownService by inject<MarkdownService>()
-    val rssService by inject<RssService>()
 
     mediaRepository.configureRouting(this)
     siteAssetRepository.configureRouting(this)
@@ -49,6 +47,7 @@ fun Application.configurePublicRoutes() {
 
         get("/archive") {
             val allPosts = postService.getAllPosts()
+
             val postsByYear = allPosts.groupBy { it.getPublishDate().year }
             val years = postsByYear.keys.sortedDescending()
             val postsWithYear = years.map { year ->
@@ -134,6 +133,20 @@ fun Application.configurePublicRoutes() {
 
         get("/synd/rss") {
             call.respondText(postService.getRssFeed(), ContentType.Application.Rss)
+        }
+
+        get("/search") {
+            val searchQuery = call.request.queryParameters["q"]
+            if (searchQuery == null) {
+                call.respond404()
+                return@get
+            }
+
+            val posts = postService.searchPosts(searchQuery)
+            call.respond(ThymeleafContent("search-result", mapOf(
+                "posts" to posts,
+                "searchQuery" to searchQuery,
+            )))
         }
     }
 }

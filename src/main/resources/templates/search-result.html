@@ -1,0 +1,14 @@
+<!--/*@thymesVar id="posts" type="kotlin.collections.List<com.flow2.model.Post>"*/-->
+<!--/*@thymesVar id="searchQuery" type="String"*/-->
+<!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
+<p class="results-title">Search Results</p>
+<div class="post-list" id="posts">
+    <ul>
+        <li th:each="post: ${posts}" class="post-preview post type-post">
+            <a th:href="${#urls.getPostUrl(post)}">
+                <h4 class="title" th:text="${post.title}"></h4>
+            </a>
+        </li>
+    </ul>
+</div>
+<a class="show-all" th:href="${'/search?q=' + searchQuery}">Show all</a>

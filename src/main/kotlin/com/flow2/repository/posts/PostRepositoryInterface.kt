@@ -2,7 +2,6 @@ package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
-import org.bson.types.ObjectId
 
 interface PostRepositoryInterface {
     suspend fun getPostBySlug(slug: String): Post?
@@ -32,4 +31,6 @@ interface PostRepositoryInterface {
     suspend fun getPostsByCategory(category: Category, includeContent: Boolean = false): List<Post>
 
     suspend fun getPostsByTag(tag: String, includeContent: Boolean = false): List<Post>
+
+    suspend fun searchPosts(query: String): List<Post>
 }

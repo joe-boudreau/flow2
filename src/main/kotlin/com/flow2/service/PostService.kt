@@ -73,6 +73,8 @@ class PostService(
 
     suspend fun getPostsByTag(tag: String) = postRepository.getPostsByTag(tag)
 
+    suspend fun searchPosts(query: String) = postRepository.searchPosts(query)
+
     fun getPreviousAndNext(post: Post): Pair<Post?, Post?> {
         val postIndex = allPosts.indexOfFirst { it.id == post.id }
         if (postIndex == -1) return null to null

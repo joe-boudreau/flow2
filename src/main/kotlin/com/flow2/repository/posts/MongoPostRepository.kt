@@ -2,9 +2,10 @@ package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
-import com.mongodb.client.model.Aggregates.set
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Filters.eq
+import com.mongodb.client.model.IndexOptions
+import com.mongodb.client.model.Indexes
 import com.mongodb.client.model.Projections
 import com.mongodb.client.model.Sorts
 import com.mongodb.client.model.Updates
@@ -13,8 +14,9 @@ import io.ktor.util.logging.KtorSimpleLogger
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.bson.Document
 import org.bson.conversions.Bson
-import org.bson.types.ObjectId
 
 internal val log = KtorSimpleLogger(MongoPostRepository::class.simpleName!!)
 
@@ -23,6 +25,29 @@ class MongoPostRepository(
 ): PostRepositoryInterface {
 
     private val postCollection = db.getCollection<Post>("posts")
+
+    init {
+        runBlocking {
+            postCollection.createIndex(
+                Indexes.descending(Post::slug.name), IndexOptions().unique(true)
+            )
+            postCollection.createIndex(
+                Indexes.compoundIndex(
+                    Indexes.text(Post::title.name),
+                    Indexes.text(Post::mdContent.name),
+                    Indexes.text(Post::tags.name),
+                    Indexes.text(Post::category.name)
+                ),
+                IndexOptions().name("textSearchIndex").weights(Document()
+                    .append(Post::title.name, 10)
+                    .append(Post::category.name, 5)
+                    .append(Post::tags.name, 3)
+                    .append(Post::mdContent.name, 1)
+                )
+            )
+            log.info("Post Collection initialized with indexes")
+        }
+    }
 
     override suspend fun getPostBySlug(slug: String): Post? = postCollection
         .find(eq(Post::slug.name, slug))
@@ -102,6 +127,10 @@ class MongoPostRepository(
     override suspend fun deletePost(id: String): Boolean {
         val result = postCollection.deleteOne(eq(id))
         return result.deletedCount == 1L
+    }
+
+    override suspend fun searchPosts(query: String): List<Post> {
+        return postCollection.find(Filters.text(query)).sort(Sorts.metaTextScore("score")).toList()
     }
 }
 
