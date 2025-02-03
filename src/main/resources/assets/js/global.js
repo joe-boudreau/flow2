@@ -53,7 +53,7 @@ WP.searchToggle = {
     init: function(){
 
         // Toggle desktop search
-        $( 'a[href$="?s="]' ).on( 'click', function(){
+        $( 'a[href$="?q="]' ).on( 'click', function(){
             $( this ).toggleClass( 'active' );
             $( '.search-overlay' ).toggleClass( 'active' );
             if ( $( this ).hasClass( 'active' ) ) {
@@ -70,7 +70,7 @@ WP.searchToggle = {
             if ( e.target != this ) return; // only continue if the target itself has been clicked
             $( '.search-overlay .search-field' ).blur();
             $( '.search-overlay' ).removeClass( 'active' );
-            $( '.social-menu.desktop a[href$="?s="]' ).removeClass( 'active' );
+            $( '.social-menu.desktop a[href$="?q="]' ).removeClass( 'active' );
         } );
 
         // Toggle mobile search
@@ -219,7 +219,8 @@ WP.ajaxSearch = {
         $.get({
             url: '/search',
             data: {
-                q: search_string
+                q: search_string,
+                ajax: true,
             },
 
             beforeSend: function() {

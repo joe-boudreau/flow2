@@ -137,13 +137,15 @@ fun Application.configurePublicRoutes() {
 
         get("/search") {
             val searchQuery = call.request.queryParameters["q"]
+            val isAjax = call.request.queryParameters["ajax"] == "true"
             if (searchQuery == null) {
                 call.respond404()
                 return@get
             }
 
             val posts = postService.searchPosts(searchQuery)
-            call.respond(ThymeleafContent("search-result", mapOf(
+            val template = if (isAjax) "search-result-ajax" else "search-result"
+            call.respond(ThymeleafContent(template, mapOf(
                 "posts" to posts,
                 "searchQuery" to searchQuery,
             )))
