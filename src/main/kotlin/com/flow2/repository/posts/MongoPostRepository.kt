@@ -35,11 +35,9 @@ class MongoPostRepository(
                 Indexes.compoundIndex(
                     Indexes.text(Post::title.name),
                     Indexes.text(Post::mdContent.name),
-                    Indexes.text(Post::tags.name),
                 ),
                 IndexOptions().name("textSearchIndex").weights(Document()
-                    .append(Post::title.name, 10)
-                    .append(Post::tags.name, 3)
+                    .append(Post::title.name, 5)
                     .append(Post::mdContent.name, 1)
                 )
             )
