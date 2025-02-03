@@ -150,6 +150,10 @@ fun Application.configurePublicRoutes() {
                 "searchQuery" to searchQuery,
             )))
         }
+
+        get("/ruok") {
+            call.respond(HttpStatusCode.OK);
+        }
     }
 }
 
