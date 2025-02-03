@@ -36,11 +36,9 @@ class MongoPostRepository(
                     Indexes.text(Post::title.name),
                     Indexes.text(Post::mdContent.name),
                     Indexes.text(Post::tags.name),
-                    Indexes.text(Post::category.name)
                 ),
                 IndexOptions().name("textSearchIndex").weights(Document()
                     .append(Post::title.name, 10)
-                    .append(Post::category.name, 5)
                     .append(Post::tags.name, 3)
                     .append(Post::mdContent.name, 1)
                 )
