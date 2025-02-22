@@ -100,6 +100,9 @@ fun Application.configureAdminRoutes() {
                     val tagsList = tags.split(",")
                     val category = Category.valueOf(categoryStr)
                     var publishedAtTimestamp = publishedAt?.let {
+                        if (publishedAt.isEmpty()) {
+                            null
+                        } else
                         LocalDateTime
                             .parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME)
                             .toInstant(ZoneOffset.UTC)

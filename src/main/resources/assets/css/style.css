@@ -294,7 +294,6 @@ a {
 
 
 /* Base Typography ----------------------------- */
-
 .entry-title {
     font-size: 42px;
     font-weight: 600;
@@ -302,7 +301,13 @@ a {
     line-height: 1.25;
     -ms-word-break: break-word;
     word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: none;
+    white-space: normal;
+
 }
+
 
 .excerpt {
     font-size: 24px;

@@ -94,7 +94,8 @@
                 <option  th:each="category: ${categories}"
                          th:value="${category}"
                          th:text="${category}"
-                         th:attr="selected=${postForUpdate.category}">
+                         th:selected="${category == postForUpdate.category}"
+                >
                     Category
                 </option>
             </select>
@@ -161,8 +162,13 @@
             body: formData
         })
             .then(response => {
-                console.log('Success:', response);
-                resultElem.textContent = 'Success!';
+                if (!response.ok) {
+                    console.error('Error:', error);
+                    resultElem.textContent = 'Error!';
+                } else {
+                    console.log('Success:', response);
+                    resultElem.textContent = 'Success!';
+                }
                 setTimeout(() => resultElem.textContent = '', 5000);
             })
             .catch(error => {
