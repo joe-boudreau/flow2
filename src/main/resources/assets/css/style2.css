@@ -46,6 +46,37 @@ img.circle {
     height:22px;
 }
 
+img + em, .img-mosaic-caption {
+    display: block;
+    text-align: center;
+    font-size: 75%;
+    margin-top: 5px;
+}
+
+.img-mosaic-half {
+    max-width: 49%; /* 1% less than 50% to prevent wrapping */
+    height: auto;
+    display: inline-block;
+    margin-bottom: 1px !important;
+    border-image-width: 1px;
+}
+
+.img-mosaic-third {
+    max-width: 32%; /* 1% less than 33% to prevent wrapping */
+    height: auto;
+    display: inline-block;
+    margin-bottom: 1px !important;
+    border-image-width: 1px;
+}
+
+.img-mosaic-quarter {
+    max-width: 24%; /* 1% less than 25% to prevent wrapping */
+    height: auto;
+    display: inline-block;
+    margin-bottom: 1px !important;
+    border-image-width: 1px;
+}
+
 .featured-image {
     max-height: 600px;
     overflow: hidden;
