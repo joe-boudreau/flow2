@@ -68,6 +68,11 @@ fun Application.configurePublicRoutes() {
             )))
         }
 
+        get("/blog/{rest...}") {
+            val restOfPath = call.parameters.getAll("rest") ?: emptyList()
+            call.respondRedirect("/${restOfPath.joinToString("/")}", permanent = true)
+        }
+
         get<GetPostRequest> { req ->
             val post = postService.getPostBySlug(req.slug)
 
