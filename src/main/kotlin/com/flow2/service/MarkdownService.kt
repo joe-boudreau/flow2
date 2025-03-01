@@ -5,6 +5,8 @@ import com.flow2.repository.media.MediaRepositoryInterface
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
 import com.vladsch.flexmark.ext.attributes.AttributesExtension
 import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension
+import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension
 import com.vladsch.flexmark.formatter.Formatter
 import com.vladsch.flexmark.formatter.internal.MergeLinkResolver
 import com.vladsch.flexmark.html.HtmlRenderer
@@ -39,11 +41,14 @@ class MarkdownService(
             .set(WikiLinkExtension.IMAGE_PREFIX_ABSOLUTE, imgUrlPrefix)
 
         options
-            .set(Parser.EXTENSIONS, listOf(
-                WikiLinkExtension.create(),
-                StrikethroughExtension.create(),
-                AttributesExtension.create(),
-            ));
+            .set(
+                Parser.EXTENSIONS, listOf(
+                    WikiLinkExtension.create(),
+                    StrikethroughExtension.create(),
+                    AttributesExtension.create(),
+                    YamlFrontMatterExtension.create()
+                )
+            );
 
         val parser = Parser
             .builder(options)
@@ -57,5 +62,15 @@ class MarkdownService(
 
         val document = parser.parse(mdContent)
         return renderer.render(document)
+    }
+
+    fun parseFrontMatter(mdContent: String): Map<String, List<String>> {
+        val options = MutableDataSet()
+        options.set(Parser.EXTENSIONS, listOf(YamlFrontMatterExtension.create()))
+        val parser = Parser.builder(options).build()
+        val document = parser.parse(mdContent)
+        val visitor = AbstractYamlFrontMatterVisitor()
+        visitor.visit(document);
+        return visitor.data
     }
 }

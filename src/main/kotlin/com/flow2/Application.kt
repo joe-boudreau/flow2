@@ -26,6 +26,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import io.ktor.server.resources.Resources
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -46,7 +47,11 @@ fun Application.module() {
         addDialect(RequestUrlBuilderDialect(this@module))
     }
     install(ContentNegotiation) {
-        json()
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+        })
+
     }
 
     log.info("Application started and configured")
@@ -68,7 +73,7 @@ private fun Application.configureKoinModule() = module {
     single<MediaRepositoryInterface> { FSMediaRepository(get(), mediaDirectoryPath) }
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
     single<MarkdownService>{ MarkdownService(get(), get()) }
-    single<PostService>{ PostService(get(), get()) }
+    single<PostService>{ PostService(get(), get(), get()) }
     single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule) }
     single<RssService>{ RssService(get(), get(), schemeDomainPort) }
 }

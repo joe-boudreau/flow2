@@ -6,8 +6,6 @@ import com.flow2.auth.AdminUser
 import com.flow2.model.Category
 import com.flow2.service.PostService
 import com.flow2.repository.media.MediaRepositoryInterface
-import com.flow2.request.CreatePostRequest
-import com.flow2.service.RssService
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -35,7 +33,6 @@ import java.time.format.DateTimeFormatter
 fun Application.configureAdminRoutes() {
     val postService by inject<PostService>()
     val mediaRepository by inject<MediaRepositoryInterface>()
-    val rssService by inject<RssService>()
 
     val adminCookieName = environment.config.property("app.adminAuth.sessionCookie").getString()
 
@@ -102,11 +99,12 @@ fun Application.configureAdminRoutes() {
                     var publishedAtTimestamp = publishedAt?.let {
                         if (publishedAt.isEmpty()) {
                             null
-                        } else
-                        LocalDateTime
-                            .parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME)
-                            .toInstant(ZoneOffset.UTC)
-                            .toEpochMilli()
+                        } else {
+                            LocalDateTime
+                                .parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME)
+                                .toInstant(ZoneOffset.UTC)
+                                .toEpochMilli()
+                        }
                     }
 
                     postService.createPost(title, mdFile.toString(), tagsList, category, publishedAtTimestamp)
@@ -144,17 +142,17 @@ fun Application.configureAdminRoutes() {
                     call.respond(if (success) HttpStatusCode.OK else HttpStatusCode.NotFound)
                 }
 
-                post("/post/banner") {
-                    var postId: String? = null
-                    var bannerFile: ByteArray? = null
-
+                post("/post/{id}/banner") {
+                    val id = call.pathParameters["id"]
+                    if (id == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@post
+                    }
                     call.receiveMultipart().forEachPart { part ->
                         when(part) {
                             is PartData.FileItem -> {
-                                bannerFile = part.provider().readRemaining().readByteArray()
-                            }
-                            is PartData.FormItem -> {
-                                postId = part.value
+                                val fileBytes = part.provider().readRemaining().readByteArray()
+                                mediaRepository.savePostBanner(id, fileBytes)
                             }
                             else -> {
                                 //noop
@@ -162,54 +160,42 @@ fun Application.configureAdminRoutes() {
                         }
                     }
 
-                    if (postId == null || bannerFile == null) {
-                        call.respond(HttpStatusCode.BadRequest)
-                        return@post
-                    }
-                    mediaRepository.savePostMedia(postId, "banner", bannerFile)
                     call.respond(HttpStatusCode.Created)
                 }
 
-                post("/post/media") {
-                    val files = mutableMapOf<String, ByteArray>()
-                    var postId: String? = null
+                post("/post/{id}/media") {
+                    val id = call.pathParameters["id"]
+                    if (id == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@post
+                    }
+
+                    val includesBanner = call.request.queryParameters["includesBanner"] != null
 
                     call.receiveMultipart().forEachPart { part ->
                         when(part) {
                             is PartData.FileItem -> {
-                                files[part.originalFileName!!] = part.provider().readRemaining().readByteArray()
-                            }
-                            is PartData.FormItem -> {
-                                postId = part.value
+                                val fileName = part.originalFileName as String
+                                val fileBytes = part.provider().readRemaining().readByteArray()
+                                if (includesBanner && fileName.startsWith("banner")) {
+                                    mediaRepository.savePostBanner(id, fileBytes)
+                                } else {
+                                    mediaRepository.savePostMedia(id, fileName, fileBytes)
+                                }
                             }
                             else -> {
                                 //noop
                             }
                         }
-                    }
-
-                    if (postId == null || files.isEmpty()) {
-                        call.respond(HttpStatusCode.BadRequest)
-                        return@post
-                    }
-
-                    files.forEach { filename, data ->
-                        mediaRepository.savePostMedia(postId, filename, data)
                     }
 
                     call.respond(HttpStatusCode.Created)
                 }
 
                 post("/api/post") {
-                    val request = call.receive<CreatePostRequest>()
-
-                    val post = postService.createPost(
-                        request.title,
-                        request.mdContent,
-                        request.tags,
-                        request.category
-                    )
-                    call.respond(HttpStatusCode.Created, "Post created with id: ${post.id}")
+                    val body = call.receiveText()
+                    val post = postService.createPost(body)
+                    call.respond(HttpStatusCode.Created, mapOf("id" to post.id))
                 }
             }
         }

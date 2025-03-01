@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 class PostService(
     private val postRepository: PostRepositoryInterface,
     private val rssService: RssService,
+    private val markdownService: MarkdownService,
 ) {
 
     /**
@@ -39,6 +40,20 @@ class PostService(
         publishedAt: Long? = null,
     ): Post {
         val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
+        reloadPostCacheAndRss()
+        return post
+    }
+
+    suspend fun createPost(
+        mdContentWithFrontMatter: String,
+    ): Post {
+        val frontMatter = markdownService.parseFrontMatter(mdContentWithFrontMatter)
+        val title = frontMatter["title"]?.firstOrNull() ?: "unknown-title-${System.currentTimeMillis()}"
+        val publishedAt = frontMatter["publishedAt"]?.firstOrNull()?.toLongOrNull()
+        val tags = frontMatter["tags"] ?: emptyList()
+        val category = Category.valueOf(frontMatter["category"]?.firstOrNull() ?: "PERSONAL")
+
+        val post = postRepository.createPost(title, mdContentWithFrontMatter, tags, category, publishedAt)
         reloadPostCacheAndRss()
         return post
     }

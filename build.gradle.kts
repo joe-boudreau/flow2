@@ -37,6 +37,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-resources:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 
     // MONGODB
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
@@ -53,14 +55,11 @@ dependencies {
     implementation("com.vladsch.flexmark:flexmark-ext-wikilink:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:$flexmark_version")
     implementation("com.vladsch.flexmark:flexmark-ext-attributes:$flexmark_version")
+    implementation("com.vladsch.flexmark:flexmark-ext-yaml-front-matter:$flexmark_version")
     testImplementation("com.vladsch.flexmark:flexmark-html2md-converter:$flexmark_version")
 
     //RSS
     implementation("com.rometools:rome:2.1.0")
-
-    // TEST STUFF
-    testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation(kotlin("test"))
 }
 
 ktor {

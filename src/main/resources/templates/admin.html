@@ -22,7 +22,7 @@
         </select>
 
         <div id="uploadBannerForm">
-            <form id="uploadBanner" action="/admin/post/banner" method="post" enctype="multipart/form-data">
+            <form id="uploadBanner" action="/admin/post/[id]/banner" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdBanner" name="postId">
                 <label for="bannerImage">Upload Main Banner Image:</label>
                 <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
@@ -31,7 +31,7 @@
             <p class="resultMsg"></p>
         </div>
         <div id="uploadMediaForm">
-            <form id="uploadMedia" action="/admin/post/media" method="post" enctype="multipart/form-data">
+            <form id="uploadMedia" action="/admin/post/[id]/media?includesBanner=true" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="postIdMedia" name="postId">
                 <label for="mediaImages">Upload Media Images:</label>
                 <input type="file" id="mediaImages" name="mediaImages" accept="image/*" multiple>
@@ -157,7 +157,17 @@
 
         let resultElem = form.parentElement.querySelector('.resultMsg');
 
-        fetch(form.action, {
+        let action = form.action;
+
+        const postId = formData.get("postId");
+        console.log("postId", postId);
+        const hasIdToSubstitute = postId && action.includes("[id]");
+        console.log("hasIdToSubstitute", hasIdToSubstitute);
+        if (hasIdToSubstitute && postId) {
+            action = action.replace("[id]", postId);
+        }
+        console.log("action", action);
+        fetch(action, {
             method: method,
             body: formData
         })
