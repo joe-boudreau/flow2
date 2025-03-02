@@ -1,5 +1,6 @@
 package com.flow2.routing
 
+import com.flow2.auth.ADMIN_API_CONFIG
 import com.flow2.auth.ADMIN_LOGIN_CONFIG
 import com.flow2.auth.ADMIN_SESSION_CONFIG
 import com.flow2.auth.AdminUser
@@ -54,7 +55,7 @@ fun Application.configureAdminRoutes() {
             }
         }
 
-        authenticate(ADMIN_SESSION_CONFIG) {
+        authenticate(ADMIN_SESSION_CONFIG, ADMIN_API_CONFIG) {
             route("/admin") {
                 get {
                     val allPosts = postService.getAllPosts()

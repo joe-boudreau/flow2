@@ -4,6 +4,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.UserHashedTableAuth
+import io.ktor.server.auth.basic
 import io.ktor.server.auth.form
 import io.ktor.server.auth.session
 import io.ktor.server.response.respondRedirect
@@ -14,6 +15,7 @@ import io.ktor.util.getDigestFunction
 
 const val ADMIN_LOGIN_CONFIG = "admin-login"
 const val ADMIN_SESSION_CONFIG = "admin-session"
+const val ADMIN_API_CONFIG = "admin-api"
 
 fun Application.configureAdminAuth() {
     val adminCookieName = environment.config.property("app.adminAuth.sessionCookie").getString()
@@ -37,6 +39,10 @@ fun Application.configureAdminAuth() {
         session<AdminUser>(ADMIN_SESSION_CONFIG) {
             challenge { call.respondRedirect("/login") }
             validate { session: AdminUser -> session }
+        }
+        basic(ADMIN_API_CONFIG) {
+            realm = "Access to the admin API"
+            validate { credentials -> adminUserAuthenticator.authenticate(credentials) }
         }
     }
 }

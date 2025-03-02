@@ -3,7 +3,10 @@ package com.flow2.service
 import com.flow2.model.Category
 import com.flow2.model.Post
 import com.flow2.repository.posts.PostRepositoryInterface
+import io.ktor.util.logging.KtorSimpleLogger
 import kotlinx.coroutines.runBlocking
+
+internal val log = KtorSimpleLogger(PostService::class.simpleName!!)
 
 class PostService(
     private val postRepository: PostRepositoryInterface,
