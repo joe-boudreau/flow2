@@ -9,20 +9,20 @@
     <title th:text="${title} + ' | flow2'">Page Title</title>
 
     <!-- TODO: SEO Opengraph tags-->
+
     <link rel='stylesheet' href='/assets/css/style.css' type='text/css' media='all' />
     <link rel='stylesheet' href='/assets/css/style2.css' type='text/css' media='all' />
     <script type="text/javascript" defer src="/assets/js/jquery-3.7.1.min.js" id="jquery-core-js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <!-- TODO: icons -->
-    <!--    <link rel="icon" href="" sizes="32x32" />-->
-    <!--    <link rel="icon" href="" sizes="192x192" />-->
-    <!--    <link rel="apple-touch-icon" href="" />-->
 
-    <!-- TODO: fonts -->
-    <!--    <link rel="preload" as="font" type="font/woff2" href="" crossorigin>-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/icons/site.webmanifest">
 
     <!-- TODO: analytics -->
 
+    <!--/*@thymesVar id="extraHead" type="String"*/-->
     <th:block th:if="${extraHead != null}">
         <th:block th:replace="${extraHead}"></th:block>
     </th:block>
