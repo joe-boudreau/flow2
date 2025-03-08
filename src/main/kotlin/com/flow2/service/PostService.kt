@@ -47,18 +47,46 @@ class PostService(
         return post
     }
 
-    suspend fun createPost(
+    suspend fun upsertPost(
         mdContentWithFrontMatter: String,
     ): Post {
         val frontMatter = markdownService.parseFrontMatter(mdContentWithFrontMatter)
+        val id = frontMatter["id"]?.firstOrNull()
         val title = frontMatter["title"]?.firstOrNull() ?: "unknown-title-${System.currentTimeMillis()}"
         val publishedAt = frontMatter["publishedAt"]?.firstOrNull()?.toLongOrNull()
         val tags = frontMatter["tags"] ?: emptyList()
         val category = Category.valueOf(frontMatter["category"]?.firstOrNull() ?: "PERSONAL")
 
-        val post = postRepository.createPost(title, mdContentWithFrontMatter, tags, category, publishedAt)
+        val post = if (id == null) {
+            val newPost = postRepository.createPost(title, mdContentWithFrontMatter, tags, category, publishedAt)
+            val updatedContent = markdownService.addFrontMatter(newPost.mdContent?: "", mapOf(
+                "id" to listOf(newPost.id),
+                "publishedAt" to listOf(newPost.publishedAt.toString()),
+            ))
+            postRepository.updatePost(newPost.id, newPost.title, updatedContent, newPost.tags, newPost.category)
+        } else {
+            postRepository.updatePost(id, title, mdContentWithFrontMatter, tags, category)
+        }
         reloadPostCacheAndRss()
         return post
+    }
+
+    fun generatePostContentWithFrontMatter(post: Post): String {
+        val mdContent = post.mdContent ?: ""
+        val existingFrontMatter = markdownService.parseFrontMatter(mdContent)
+
+        return if (existingFrontMatter.isNotEmpty()) {
+            mdContent
+        } else {
+            markdownService.addFrontMatter(
+                mdContent, mapOf(
+                "id" to listOf(post.id),
+                "title" to listOf(post.title),
+                "publishedAt" to listOf(post.publishedAt.toString()),
+                "tags" to post.tags,
+                "category" to listOf(post.category.name),
+            ))
+        }
     }
 
     suspend fun updatePost(

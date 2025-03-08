@@ -20,7 +20,7 @@ data class Post(
     fun getUpdateDate() = LocalDateTime.ofInstant(Instant.ofEpochMilli(updatedAt), ZoneId.systemDefault());
 }
 
-private fun slugify(title: String) = title
+fun slugify(title: String) = title
     .replace(Regex("[^\\x00-\\x7F]"), "")
     .replace(" ", "-")
     .lowercase()

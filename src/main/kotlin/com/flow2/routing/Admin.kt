@@ -5,6 +5,7 @@ import com.flow2.auth.ADMIN_LOGIN_CONFIG
 import com.flow2.auth.ADMIN_SESSION_CONFIG
 import com.flow2.auth.AdminUser
 import com.flow2.model.Category
+import com.flow2.model.slugify
 import com.flow2.service.PostService
 import com.flow2.repository.media.MediaRepositoryInterface
 import io.ktor.http.*
@@ -195,8 +196,27 @@ fun Application.configureAdminRoutes() {
 
                 post("/api/post") {
                     val body = call.receiveText()
-                    val post = postService.createPost(body)
+                    val post = postService.upsertPost(body)
                     call.respond(HttpStatusCode.Created, mapOf("id" to post.id))
+                }
+
+                get("/api/post/search") {
+                    val title = call.request.queryParameters["title"]
+
+                    if (title == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@get
+                    }
+                    val slug = slugify(title)
+                    val post = postService.getPostBySlug(slug)
+
+                    if (post == null) {
+                        call.respond(HttpStatusCode.NotFound)
+                        return@get
+                    }
+
+                    val postWithFrontMatter =  postService.generatePostContentWithFrontMatter(post)
+                    call.respondText(postWithFrontMatter)
                 }
             }
         }

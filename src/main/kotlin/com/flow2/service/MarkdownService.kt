@@ -73,4 +73,31 @@ class MarkdownService(
         visitor.visit(document);
         return visitor.data
     }
+
+    fun addFrontMatter(mdContent: String, newFrontMatter: Map<String, List<String>>): String {
+        val existingFrontMatter = parseFrontMatter(mdContent).toMutableMap()
+        val noExistingFrontMatter = existingFrontMatter.isEmpty()
+        for ((key, value) in newFrontMatter) {
+            existingFrontMatter[key] = value
+        }
+
+        val frontMatterEntries = existingFrontMatter
+            .map { (key, value) ->
+                if (value.size == 1) {
+                    "$key: ${value.first()}"
+                } else {
+                    "$key:\n${value.joinToString("\n") { "    - $it" }}"
+                }
+            }
+            .joinToString("\n")
+
+        val frontMatterString = "--\n$frontMatterEntries\n---"
+
+        return if (noExistingFrontMatter) {
+            "-$frontMatterString\n$mdContent"
+        } else {
+            // use regex to find existing front matter and replace it
+            mdContent.replace(Regex("""^---\n.*\n---""", RegexOption.DOT_MATCHES_ALL), "-$frontMatterString")
+        }
+    }
 }
