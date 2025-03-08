@@ -16,9 +16,11 @@ import com.flow2.service.PostService
 import com.flow2.service.RssService
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.thymeleaf.*
 import org.koin.dsl.module
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
@@ -51,7 +53,12 @@ fun Application.module() {
             prettyPrint = true
             isLenient = true
         })
-
+    }
+    install(CORS) {
+        anyHost()
+        anyMethod()
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
     }
 
     log.info("Application started and configured")
