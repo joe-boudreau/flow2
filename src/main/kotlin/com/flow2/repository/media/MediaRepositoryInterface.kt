@@ -7,7 +7,7 @@ interface MediaRepositoryInterface {
 
     fun savePostBanner(postId: String, fileContent: ByteArray)
 
-    fun getPublicPostBannerUrl(postId: String): String
+    fun getPublicPostBannerUrl(postId: String): String?
 
     fun getPublicPostMediaUrl(postId: String): String
 

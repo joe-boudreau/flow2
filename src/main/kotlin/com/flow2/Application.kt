@@ -77,7 +77,7 @@ private fun Application.configureKoinModule() = module {
     factory<MongoDatabase> { get<MongoClient>().getDatabase(dbName) }
 
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
-    single<MediaRepositoryInterface> { FSMediaRepository(get(), mediaDirectoryPath) }
+    single<MediaRepositoryInterface> { FSMediaRepository(mediaDirectoryPath) }
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
     single<MarkdownService>{ MarkdownService(get(), get()) }
     single<PostService>{ PostService(get(), get(), get()) }

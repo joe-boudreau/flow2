@@ -2,7 +2,7 @@
 <html th:replace="~{layout :: layout(title=${post.title}, content=~{::main}, extraHead=~{::head})}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="post" type="com.flow2.model.Post"*/-->
 <!--/*@thymesVar id="postContentHtml" type="String"*/-->
-<!--/*@thymesVar id="bannerFilePath" type="String"*/-->
+<!--/*@thymesVar id="bannerFilePath" type="String?"*/-->
 <!--/*@thymesVar id="previousPost" type="String?"*/-->
 <!--/*@thymesVar id="nextPost" type="String?"*/-->
 <!--/*@thymesVar id="#urls" type="com.flow2.request.web.RequestUrlBuilder"*/-->
@@ -19,7 +19,7 @@
 <main>
     <article class="post type-post status-publish format-standard">
 
-        <div class="featured-image">
+        <div th:if="${bannerFilePath != null}" class="featured-image">
             <img width="5472" height="3648" th:src="${bannerFilePath}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
         </div>
 

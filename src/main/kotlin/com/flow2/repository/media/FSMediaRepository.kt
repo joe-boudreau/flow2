@@ -1,6 +1,5 @@
 package com.flow2.repository.media
 
-import com.flow2.repository.assets.SiteAssetRepositoryInterface
 import io.ktor.server.application.Application
 import io.ktor.server.http.content.staticFiles
 import io.ktor.server.routing.routing
@@ -12,14 +11,12 @@ const val PUBLIC_URL_PATH_PREFIX = "/media"
 internal val log = KtorSimpleLogger("FSMediaRepository")
 
 class FSMediaRepository(
-    private val siteAssetRepository: SiteAssetRepositoryInterface,
     private val mediaDirectoryPath: String,
 ) : MediaRepositoryInterface {
 
     private val publicMediaDir = "$PUBLIC_URL_PATH_PREFIX/"
 
     private val bannerFileName = "banner"
-    private val defaultBannerAsset = "images/default_banner.jpg"
 
     override fun configureRouting(app: Application) {
         app.routing {
@@ -36,12 +33,12 @@ class FSMediaRepository(
         savePostMedia(postId, bannerFileName, fileContent)
     }
 
-    override fun getPublicPostBannerUrl(postId: String): String {
+    override fun getPublicPostBannerUrl(postId: String): String? {
         File(getInternalFilePathForPostMedia(postId, bannerFileName)).let {
             return if (it.exists()) {
                 getPublicFilePathForPostMedia(postId, bannerFileName)
             } else {
-                siteAssetRepository.getPublicSiteAssetUrl(defaultBannerAsset)
+                null
             }
         }
     }

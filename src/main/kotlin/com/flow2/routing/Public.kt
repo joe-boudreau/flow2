@@ -82,13 +82,15 @@ fun Application.configurePublicRoutes() {
             }
 
             val postContentHtml = markdownService.parseHtmlContent(post.mdContent, post.id)
-            val bannerFilePath = mediaRepository.getPublicPostBannerUrl(post.id)
-
             val model = mutableMapOf(
                 "post" to post,
                 "postContentHtml" to postContentHtml,
-                "bannerFilePath" to bannerFilePath,
             )
+
+            val bannerFilePath = mediaRepository.getPublicPostBannerUrl(post.id)
+            if (bannerFilePath != null) {
+                model["bannerFilePath"] = bannerFilePath
+            }
 
             val (prev, next) = postService.getPreviousAndNext(post)
             if (prev != null) {
