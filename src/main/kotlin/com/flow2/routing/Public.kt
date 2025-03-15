@@ -165,5 +165,5 @@ fun Application.configurePublicRoutes() {
 }
 
 private suspend fun ApplicationCall.respond404() {
-    this.respond(HttpStatusCode.NotFound, ThymeleafContent("404", emptyMap()))
+    this.respond(HttpStatusCode.OK, ThymeleafContent("404", emptyMap()))
 }
