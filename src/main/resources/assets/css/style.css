@@ -515,7 +515,7 @@ body.hide-social .social-menu {
 
 .social-menu.desktop {
     background: #121212;
-    padding: 50px 50px 50px 50px;
+    padding: 30px;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -535,6 +535,15 @@ body.hide-social .social-menu {
     margin: 10px 0 0 20px;
     position: relative;
 }
+
+.bmac-img {
+    content: url('/assets/icons/bmc-logo-white.png');
+}
+
+.bmac-img:hover {
+    content: url('/assets/icons/bmc-logo-black.png');
+}
+
 
 .screen-reader-text {
     position: absolute;
@@ -718,7 +727,6 @@ body.hide-social .social-menu {
 }
 
 .sticky .sticky-arrow {
-    background:  url( ./assets/images/arrow-black-right.svg ) no-repeat center;
     background-size: auto 12px;
     border-radius: 50%;
     display: inline;
@@ -877,12 +885,10 @@ body.hide-social .social-menu {
 }
 
 .post-pagination .previous-post a:before {
-    background-image: url( ./assets/images/arrow-black-left.svg );
     left: 0;
 }
 
 .post-pagination .next-post a:before {
-    background-image: url( ./assets/images/arrow-black-right.svg );
     right: 0;
 }
 
@@ -1806,7 +1812,6 @@ blockquote {
 }
 
 .search-field {
-    background: url( ./assets/images/spyglass-black.svg ) no-repeat left center;
     background-size: 26px auto;
     border: none;
     border-bottom: 1px solid #121212;
@@ -2078,7 +2083,6 @@ input.search-field::-moz-placeholder { color: #121212; }
     }
 
     .main-menu .toggle-mobile-search:before {
-        background: url( ./assets/images/spyglass-white.svg ) no-repeat center left;
         background-size: 22px auto;
         content: "";
         display: block;
@@ -2087,10 +2091,6 @@ input.search-field::-moz-placeholder { color: #121212; }
         left: 0;
         top: calc( 50% - 11px );
         width: 33px;
-    }
-
-    .dark .main-menu .toggle-mobile-search:before {
-        background-image: url( ./assets/images/spyglass-semiopaque.svg );
     }
 
     .mobile-menu-wrapper.visible .main-menu {
@@ -2302,7 +2302,6 @@ input.search-field::-moz-placeholder { color: #121212; }
     }
 
     .mobile-search .search-field {
-        background-image: url( ./assets/images/spyglass-white.svg );
         background-size: 22px auto;
         border-bottom-color: #fff;
         color: #fff;
@@ -2311,7 +2310,6 @@ input.search-field::-moz-placeholder { color: #121212; }
     }
 
     .dark .mobile-search .search-field {
-        background-image: url( ./assets/images/spyglass-semiopaque.svg );
         border-bottom-color: rgba( 0, 0, 0, 0.9 );
         color: rgba( 0, 0, 0, 0.9 );
     }
