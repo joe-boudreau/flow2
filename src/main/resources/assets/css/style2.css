@@ -77,11 +77,6 @@ img + em, .img-mosaic-caption {
     border-image-width: 1px;
 }
 
-.featured-image {
-    max-height: 600px;
-    overflow: hidden;
-}
-
 .medium-zoom-overlay,
 .medium-zoom-image--opened {
     z-index: 5000;

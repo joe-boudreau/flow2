@@ -796,8 +796,16 @@ body.hide-social .social-menu {
 
 /* Page Image ----------------------------- */
 
+.featured-image {
+    max-height: 600px;
+    overflow: hidden;
+}
+
 .featured-image img {
     width: 100%;
+    object-fit: cover;
+    object-position: center;
+    max-height: 600px;
 }
 
 

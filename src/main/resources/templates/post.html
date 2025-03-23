@@ -20,11 +20,10 @@
     <article class="post type-post status-publish format-standard">
 
         <div th:if="${bannerFilePath != null}" class="featured-image">
-            <img width="5472" height="3648" th:src="${bannerFilePath}" class="attachment-mcluhan_fullscreen-image size-mcluhan_fullscreen-image wp-post-image" alt="" decoding="async" fetchpriority="high"/>
+            <img th:src="${bannerFilePath}" decoding="async" fetchpriority="high"/>
         </div>
 
         <header class="entry-header section-inner">
-
 
             <div class="meta">
                 <p>In <span><a th:href="${#urls.getCategoryUrl(post.category)}" th:text="${post.category.displayName}">Category</a></span></p>
