@@ -20,4 +20,7 @@ app:
     media:
         directoryPath: "$MEDIA_DIRECTORY_PATH:src/main/resources/media"
 
+    assets:
+        directoryPath: "$ASSETS_DIRECTORY_PATH:src/main/resources/assets"
+
 

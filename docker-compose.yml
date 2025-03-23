@@ -20,6 +20,7 @@ services:
       - DB_CONNECTION_STRING=mongodb://mongohiimadbadmin:mongoimdoesntscaredofnobody@mongosrv:27017/flow2?authSource=admin
       - DB_NAME=flow2
       - MEDIA_DIRECTORY_PATH=/data/media
+      - ASSETS_DIRECTORY_PATH=/assets
 
   mongosrv:
     image: mongo:latest

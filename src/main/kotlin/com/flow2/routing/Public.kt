@@ -60,7 +60,11 @@ fun Application.configurePublicRoutes() {
         }
 
         get("/about") {
-            val aboutMarkdown = siteAssetRepository.getAsset("/markdown/about.md").toString(Charsets.UTF_8)
+            val aboutMarkdown = siteAssetRepository.getAsset("markdown/about.md")?.toString(Charsets.UTF_8)
+            if (aboutMarkdown == null) {
+                call.respond404()
+                return@get
+            }
             val aboutContentHtml = markdownService.parseHtmlContent(aboutMarkdown)
 
             call.respond(ThymeleafContent("about", mapOf(

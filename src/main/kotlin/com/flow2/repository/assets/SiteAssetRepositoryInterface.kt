@@ -4,7 +4,7 @@ import io.ktor.server.application.Application
 
 interface SiteAssetRepositoryInterface {
 
-    fun getAsset(assetPath: String): ByteArray
+    fun getAsset(assetPath: String): ByteArray?
 
     fun getPublicSiteAssetUrl(assetPath: String): String
 

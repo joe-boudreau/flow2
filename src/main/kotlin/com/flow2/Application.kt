@@ -68,6 +68,7 @@ private fun Application.configureKoinModule() = module {
     val dbConnectionString = environment.config.property("app.db.connectionString").getString()
     val dbName = environment.config.property("app.db.dbName").getString()
     val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
+    val assetDirectoryPath = environment.config.property("app.assets.directoryPath").getString()
     val schemeDomainPort = environment.config.property("app.schemeDomainPort").getString()
 
 
@@ -78,7 +79,7 @@ private fun Application.configureKoinModule() = module {
 
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
     single<MediaRepositoryInterface> { FSMediaRepository(mediaDirectoryPath) }
-    single<SiteAssetRepositoryInterface> { FSSiteAssetRepository() }
+    single<SiteAssetRepositoryInterface> { FSSiteAssetRepository(assetDirectoryPath) }
     single<MarkdownService>{ MarkdownService(get(), get()) }
     single<PostService>{ PostService(get(), get(), get()) }
     single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule) }
