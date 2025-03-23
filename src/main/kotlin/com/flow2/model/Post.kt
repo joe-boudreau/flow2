@@ -18,6 +18,7 @@ data class Post(
 ) {
     fun getPublishDate() = LocalDateTime.ofInstant(Instant.ofEpochMilli(publishedAt), ZoneId.systemDefault());
     fun getUpdateDate() = LocalDateTime.ofInstant(Instant.ofEpochMilli(updatedAt), ZoneId.systemDefault());
+    fun getFormattedTags() = tags.map { it.trim() }.filter { it.isNotEmpty() }
 }
 
 fun slugify(title: String) = title

@@ -40,7 +40,7 @@
 
 
         <div class="meta bottom section-inner">
-            <span th:each="tag: ${post.tags}" class="tags"><a th:href="${#urls.getTagUrl(tag)}" th:text="'#' + ${tag}" rel="tag">Tag name</a> </span>
+            <span th:each="tag: ${post.getFormattedTags()}" class="tags"><a th:href="${#urls.getTagUrl(tag)}" th:text="'#' + ${tag}" rel="tag">Tag name</a> </span>
         </div>
 
 

@@ -125,8 +125,8 @@ class PostService(
         val postIndex = allPosts.indexOfFirst { it.id == post.id }
         if (postIndex == -1) return null to null
 
-        val previousPost = if (postIndex > 0) allPosts[postIndex - 1] else null
-        val nextPost = if (postIndex < allPosts.lastIndex) allPosts[postIndex + 1] else null
+        val previousPost = if (postIndex < allPosts.lastIndex) allPosts[postIndex + 1] else null
+        val nextPost = if (postIndex > 0) allPosts[postIndex - 1] else null
         return previousPost to nextPost
     }
 }
