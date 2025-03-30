@@ -17,7 +17,8 @@
 
     <meta property="og:title" th:content="${post.title}" />
     <meta property="og:description" th:content="${'flow2 | Blog post: \'' + post.title + '\' in ' + post.category.getDisplayName()}" />
-    <meta property="og:image" th:content="${#urls.getAbsoluteUrl(bannerFilePath)}" />
+    <meta th:if="${bannerFilePath != null}" property="og:image" th:content="${#urls.getAbsoluteUrl(bannerFilePath)}" />
+    <meta th:unless="${bannerFilePath != null}" property="og:image" th:content="${#urls.getAbsoluteUrl('/assets/icons/apple-touch-icon.png')}" />
     <meta property="og:url" th:content="${#urls.getPostAbsoluteUrl(post)}" />
     <meta property="og:type" content="article" />
 

@@ -2,6 +2,7 @@ package com.flow2.repository.posts
 
 import com.flow2.model.Category
 import com.flow2.model.Post
+import com.flow2.model.slugify
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Filters.eq
 import com.mongodb.client.model.IndexOptions
@@ -111,6 +112,7 @@ class MongoPostRepository(
         val currentTime = System.currentTimeMillis()
         val updates = Updates.combine(
             Updates.set(Post::title.name, title),
+            Updates.set(Post::slug.name, slugify(title)),
             Updates.set(Post::mdContent.name, mdContent),
             Updates.set(Post::tags.name, tags),
             Updates.set(Post::category.name, category),
