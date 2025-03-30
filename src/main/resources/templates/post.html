@@ -14,6 +14,13 @@
     <script defer src="https://chirpy.dev/bootstrapper.js" data-chirpy-domain="flowtwo.io"></script>
     <script src=" https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js "></script>
     <link href=" https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css " rel="stylesheet">
+
+    <meta property="og:title" th:content="${post.title}" />
+    <meta property="og:description" th:content="${'flow2 | Blog post: \'' + post.title + '\' in ' + post.category.getDisplayName()}" />
+    <meta property="og:image" th:content="${#urls.getAbsoluteUrl(bannerFilePath)}" />
+    <meta property="og:url" th:content="${#urls.getPostAbsoluteUrl(post)}" />
+    <meta property="og:type" content="article" />
+
 </head>
 
 <main>

@@ -29,6 +29,7 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import io.ktor.server.resources.Resources
 import kotlinx.serialization.json.Json
+import org.koin.ktor.ext.get
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -46,7 +47,7 @@ fun Application.module() {
     configureAdminRoutes()
     install(Thymeleaf) {
         setTemplateResolver(getTemplateResolver())
-        addDialect(RequestUrlBuilderDialect(this@module))
+        addDialect(RequestUrlBuilderDialect(get<RequestUrlBuilder>()))
     }
     install(ContentNegotiation) {
         json(Json {
@@ -69,8 +70,9 @@ private fun Application.configureKoinModule() = module {
     val dbName = environment.config.property("app.db.dbName").getString()
     val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
     val assetDirectoryPath = environment.config.property("app.assets.directoryPath").getString()
-    val schemeDomainPort = environment.config.property("app.schemeDomainPort").getString()
+    val schemeDomainPortConfig = environment.config.property("app.schemeDomainPort").getString()
 
+    val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
 
     // The MongoClient instance actually represents a pool of connections to the database;
     // you will only need one instance of class MongoClient even with multiple threads.
@@ -82,8 +84,8 @@ private fun Application.configureKoinModule() = module {
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository(assetDirectoryPath) }
     single<MarkdownService>{ MarkdownService(get(), get()) }
     single<PostService>{ PostService(get(), get(), get()) }
-    single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule) }
-    single<RssService>{ RssService(get(), get(), schemeDomainPort) }
+    single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule, schemeDomainPort) }
+    single<RssService>{ RssService(get(), get()) }
 }
 
 private fun Application.getTemplateResolver() =

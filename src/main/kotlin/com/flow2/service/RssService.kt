@@ -11,15 +11,13 @@ import java.util.Date
 class RssService(
     private val requestUrlBuilder: RequestUrlBuilder,
     private val markdownService: MarkdownService,
-    schemeDomainPortConfig: String,
 ) {
-    private val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
 
     fun createRSSFeed(posts: List<Post>): String {
         val feed = SyndFeedImpl()
         feed.feedType = "rss_2.0"
         feed.title = "flow2"
-        feed.link = schemeDomainPort
+        feed.link = requestUrlBuilder.getRootUrl()
         feed.description = "A blog about software engineering, books, and other things"
         feed.language = "en"
         feed.publishedDate = Date()
@@ -28,7 +26,7 @@ class RssService(
             SyndEntryImpl().apply {
                 title = post.title
                 author = "Joe Boudreau"
-                link = "${schemeDomainPort}${requestUrlBuilder.getPostUrl(post)}"
+                link = requestUrlBuilder.getPostAbsoluteUrl(post)
                 description = SyndContentImpl().apply {
                     type = "text/plain"
                     value = htmlContent.take(200)

@@ -14,8 +14,6 @@ class FSMediaRepository(
     private val mediaDirectoryPath: String,
 ) : MediaRepositoryInterface {
 
-    private val publicMediaDir = "$PUBLIC_URL_PATH_PREFIX/"
-
     private val bannerFileName = "banner"
 
     override fun configureRouting(app: Application) {
@@ -43,7 +41,7 @@ class FSMediaRepository(
         }
     }
 
-    override fun getPublicPostMediaUrl(postId: String) = "$publicMediaDir/$postId"
+    override fun getPublicPostMediaUrl(postId: String) = "$PUBLIC_URL_PATH_PREFIX/$postId"
 
     private fun getInternalFilePathForPostMedia(postId: String, filename: String) =
         "${getInternalPostMediaDir(postId)}/$filename"

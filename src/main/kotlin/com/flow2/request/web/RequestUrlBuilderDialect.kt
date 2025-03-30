@@ -1,12 +1,11 @@
 package com.flow2.request.web
 
-import io.ktor.server.application.Application
 import org.thymeleaf.context.IExpressionContext
 import org.thymeleaf.dialect.AbstractDialect
 import org.thymeleaf.dialect.IExpressionObjectDialect
 import org.thymeleaf.expression.IExpressionObjectFactory
 
-class RequestUrlBuilderDialect(private val app: Application) : AbstractDialect("urlBuilderDialect"), IExpressionObjectDialect {
+class RequestUrlBuilderDialect(private val builder: RequestUrlBuilder) : AbstractDialect("urlBuilderDialect"), IExpressionObjectDialect {
 
     override fun getExpressionObjectFactory(): IExpressionObjectFactory {
         return object : IExpressionObjectFactory {
@@ -19,7 +18,7 @@ class RequestUrlBuilderDialect(private val app: Application) : AbstractDialect("
                 context: IExpressionContext?,
                 expressionObjectName: String?
             ): Any? {
-                return RequestUrlBuilder(app)
+                return builder
             }
 
             override fun isCacheable(expressionObjectName: String): Boolean {
