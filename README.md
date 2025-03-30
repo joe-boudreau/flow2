@@ -4,4 +4,4 @@ Personal blog site.
 
 ![Writing Flow](.github/newwritingflow.png)
 
-Read about the process of building here:
+Read about it more here: https://flowtwo.io/tag/flow2
