@@ -1,6 +1,4 @@
-# flow2
-
-Personal blog site. 
+Personal blogging service
 
 ![Writing Flow](.github/newwritingflow.png)
 
