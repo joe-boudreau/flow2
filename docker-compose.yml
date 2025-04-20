@@ -6,7 +6,7 @@ services:
       target: runtime
     image: flow2:latest
     ports:
-      - "80:80"
+      - "80" # nginx will proxy requests, no need to expose to host
     volumes:
       - flow2-media-vol:/data/media
     networks:
@@ -21,6 +21,22 @@ services:
       - DB_NAME=flow2
       - MEDIA_DIRECTORY_PATH=/data/media
       - ASSETS_DIRECTORY_PATH=/assets
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/ssl:/etc/nginx/ssl
+      - flow2-media-vol:/usr/share/nginx/media
+    environment:
+      - SERVER_NAME=mycustomdomain.com
+    depends_on:
+      - flow2
+    networks:
+      - my-network
 
   mongosrv:
     image: mongo:latest
