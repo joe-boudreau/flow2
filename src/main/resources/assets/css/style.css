@@ -240,6 +240,20 @@ a {
     transition: all .15s linear;
 }
 
+.entry-title {
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: -.45px;
+    line-height: 1.25;
+    -ms-word-break: break-word;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: none;
+    white-space: normal;
+
+}
+
 /* -------------------------------------------------------------------------------- */
 /*	3.	Header
 /* -------------------------------------------------------------------------------- */
