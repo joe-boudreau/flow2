@@ -11,16 +11,8 @@ services:
       - flow2-media-vol:/data/media
     networks:
       - my-network
-    environment:
-      - DEVELOPMENT=false
-      - ADMIN_SESSION_COOKIE=sesh
-      - ADMIN_USERNAME=hiimanadmin
-      - ADMIN_PASSWORD=imdoesntscaredofnobody
-      - DIGEST_SALT=saltnpeppawantutopushitrealgood
-      - DB_CONNECTION_STRING=mongodb://mongohiimadbadmin:mongoimdoesntscaredofnobody@mongosrv:27017/flow2?authSource=admin
-      - DB_NAME=flow2
-      - MEDIA_DIRECTORY_PATH=/data/media
-      - ASSETS_DIRECTORY_PATH=/assets
+    env_file:
+      - ./env/flow2/.env-local
 
   nginx:
     image: nginx:latest
@@ -30,9 +22,10 @@ services:
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - flow2-media-vol:/usr/share/nginx/media
-    environment:
-      - SERVER_NAME=mycustomdomain.com
+    env_file:
+      - ./env/nginx/.env-local
     depends_on:
       - flow2
     networks:

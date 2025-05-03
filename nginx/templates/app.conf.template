@@ -4,20 +4,42 @@ server {
 
     # Redirect HTTP to HTTPS
     return 301 https://$host$request_uri;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        try_files $uri =404;
+    }
 }
 
 server {
     listen 443 ssl;
     server_name ${SERVER_NAME};
 
-    ssl_certificate /etc/nginx/ssl/${SERVER_NAME}.crt;
-    ssl_certificate_key /etc/nginx/ssl/${SERVER_NAME}.key;
+    ssl_certificate ${SSL_CERT_PATH};
+    ssl_certificate_key ${SSL_CERT_KEY_PATH};
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
+    client_max_body_size 100M;
+
+    location /media/ {
+        alias /usr/share/nginx/media/;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        add_header Im-a-nginx "true";
+    }
+
     location / {
         proxy_pass http://flow2:80;
+
+        # Enable caching
+        proxy_cache nginx_cache;
+        proxy_cache_valid 200 302 7d;  # Cache 200 and 302 responses for 10 minutes
+        proxy_cache_valid 404 7d;      # Cache 404 responses for 1 minute
+        proxy_cache_bypass $http_cache_control;  # Bypass cache if Cache-Control header is set
+        add_header X-Cache-Status $upstream_cache_status;  # Add cache status header for debugging
+
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

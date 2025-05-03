@@ -19,8 +19,13 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.cachingheaders.CachingHeaders
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
+import io.ktor.server.request.path
 import io.ktor.server.thymeleaf.*
 import org.koin.dsl.module
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
@@ -61,6 +66,22 @@ fun Application.module() {
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Authorization)
     }
+    install(DefaultHeaders) {
+        header(HttpHeaders.Server, "flow2")
+        header("thats-a", "spicy meat-a-ball")
+    }
+    install(CachingHeaders) {
+        // TODO
+//        options { call, content ->
+//            when (content.contentType?.withoutParameters()) {
+//                ContentType.Text.Plain -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3600))
+//                ContentType.Text.Html -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 60))
+//                else -> null
+//            }
+//        }
+    }
+    install(ForwardedHeaders)
+    install(CallLogging)
 
     log.info("Application started and configured")
 }
