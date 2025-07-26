@@ -36,6 +36,11 @@ server {
     }
 
     location / {
+        root /usr/share/nginx/html;
+        try_files $uri @proxy;
+    }
+
+    location @proxy {
         proxy_pass http://flow2:80;
 
         # Enable caching
