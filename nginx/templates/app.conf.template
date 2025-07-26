@@ -2,18 +2,23 @@ server {
     listen 80;
     server_name ${SERVER_NAME};
 
-    # Redirect HTTP to HTTPS
-    return 301 https://$host$request_uri;
-
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
         try_files $uri =404;
     }
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl;
     server_name ${SERVER_NAME};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        try_files $uri =404;
+    }
 
     ssl_certificate ${SSL_CERT_PATH};
     ssl_certificate_key ${SSL_CERT_KEY_PATH};
