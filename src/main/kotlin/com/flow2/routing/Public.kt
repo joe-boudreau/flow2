@@ -165,6 +165,16 @@ fun Application.configurePublicRoutes() {
         get("/ruok") {
             call.respond(HttpStatusCode.OK);
         }
+
+        get("/projects") {
+            val projects = listOf(
+                mapOf("title" to "Daily Quordle Solver", "link" to "/daily-quordle-solver.html", "description" to "Instructs an LLM to solve the Quordle every day and then generates some art if it does. It wins most of the time."),
+            )
+
+            call.respond(ThymeleafContent("projects", mapOf(
+                "projects" to projects
+            )))
+        }
     }
 }
 

@@ -159,6 +159,14 @@ img + em, .img-mosaic-caption {
     font-weight: lighter;
 }
 
+.project-desc {
+    font-weight: lighter;
+    line-height: 1.25;
+    -ms-word-break: break-word;
+    word-break: break-word;
+}
+
+
 .section-inner {
     max-width: 600px;
     margin-top: 20px;

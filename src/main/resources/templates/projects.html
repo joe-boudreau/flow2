@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(title=${'Projects'}, content=~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<main class="site-content" id="site-content">
+    <div class="section-inner">
+        <h1 class="page-title">Projects</h1>
+        <ul class="project-list">
+            <li th:each="project : ${projects}">
+                <h1 class="project-title"><a th:href="${project.link}" th:text="${project.title}"></a></h1>
+                <p class="project-desc" th:text="${project.description}"></p>
+            </li>
+        </ul>
+    </div>
+</main>
+
+</html>
