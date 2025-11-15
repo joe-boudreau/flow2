@@ -4,13 +4,15 @@
 <main class="site-content" id="site-content">
     <div class="section-inner">
         <h1 class="page-title">Projects</h1>
-        <ul class="project-list">
-            <li th:each="project : ${projects}">
-                <h1 class="project-title"><a th:href="${project.link}" th:text="${project.title}" target="_blank"></a>
-                </h1>
-                <p class="project-desc" th:text="${project.description}"></p>
-            </li>
-        </ul>
+        <div class="project-item" th:each="project : ${projects}">
+            <h1 class="project-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <a th:href="${project.link}" th:text="${project.title}" target="_blank"></a>
+                <span class="project-year" th:text="${project.year}"></span>
+            </h1>
+            </h1>
+            <p class="project-desc" th:utext="${project.description}"></p>
+            <hr/>
+        </div>
     </div>
 </main>
 

@@ -162,10 +162,20 @@ img + em, .img-mosaic-caption {
 .project-desc {
     font-weight: lighter;
     line-height: 1.25;
-    -ms-word-break: break-word;
-    word-break: break-word;
+    -ms-word-break: keep-all;
+    word-break: keep-all;
+    hyphens: none;
 }
 
+.project-item {
+    margin-top: 20px;
+}
+
+.project-year {
+    font-size: 0.9em;
+    color: #888;
+    margin-left: 1em;
+}
 
 .section-inner {
     max-width: 600px;
