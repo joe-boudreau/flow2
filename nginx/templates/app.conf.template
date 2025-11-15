@@ -1,3 +1,26 @@
+# Redirect thejoeflow.com HTTP to new domain
+server {
+    listen 80;
+    server_name thejoeflow.com www.thejoeflow.com;
+
+    return 301 https://${SERVER_NAME}$request_uri;
+}
+
+# Redirect thejoeflow.com HTTPS to new domain
+server {
+    listen 443 ssl;
+    server_name thejoeflow.com www.thejoeflow.com;
+
+    ssl_certificate ${SSL_CERT_PATH};
+    ssl_certificate_key ${SSL_CERT_KEY_PATH};
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    return 301 https://${SERVER_NAME}$request_uri;
+}
+
+# Main server - Redirect HTTP to HTTPS
 server {
     listen 80;
     server_name ${SERVER_NAME};
@@ -7,10 +30,10 @@ server {
         try_files $uri =404;
     }
 
-    # Redirect HTTP to HTTPS
     return 301 https://$host$request_uri;
 }
 
+# Main server - HTTPS
 server {
     listen 443 ssl;
     server_name ${SERVER_NAME};
