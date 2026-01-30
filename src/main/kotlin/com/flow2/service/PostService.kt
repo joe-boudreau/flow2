@@ -12,6 +12,7 @@ class PostService(
     private val postRepository: PostRepositoryInterface,
     private val rssService: RssService,
     private val markdownService: MarkdownService,
+    private val cloudFrontService: CloudFrontService,
 ) {
 
     /**
@@ -44,6 +45,7 @@ class PostService(
     ): Post {
         val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
         reloadPostCacheAndRss()
+        cloudFrontService.invalidateForPostChange(post)
         return post
     }
 
@@ -68,6 +70,7 @@ class PostService(
             postRepository.updatePost(id, title, mdContentWithFrontMatter, tags, category)
         }
         reloadPostCacheAndRss()
+        cloudFrontService.invalidateForPostChange(post)
         return post
     }
 
@@ -98,13 +101,18 @@ class PostService(
     ): Post {
         val post = postRepository.updatePost(id, title, mdContent, tags, category)
         reloadPostCacheAndRss()
+        cloudFrontService.invalidateForPostChange(post)
         return post
     }
 
     suspend fun deletePost(id: String): Boolean {
+        val post = postRepository.getPost(id)
         val success = postRepository.deletePost(id)
         if (success) {
             reloadPostCacheAndRss()
+            if (post != null) {
+                cloudFrontService.invalidateForPostChange(post)
+            }
         }
         return success
     }

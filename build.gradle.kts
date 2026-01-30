@@ -65,6 +65,9 @@ dependencies {
 
     //RSS
     implementation("com.rometools:rome:2.1.0")
+
+    //AWS
+    implementation("aws.sdk.kotlin:cloudfront-jvm:1.6.6")
 }
 
 ktor {

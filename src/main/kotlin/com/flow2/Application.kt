@@ -14,9 +14,12 @@ import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
 import com.flow2.service.PostService
 import com.flow2.service.RssService
+import com.flow2.service.CloudFrontService
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import io.ktor.http.CacheControl
 import io.ktor.http.HttpHeaders
+import io.ktor.http.content.CachingOptions
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cachingheaders.CachingHeaders
@@ -25,7 +28,6 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
-import io.ktor.server.request.path
 import io.ktor.server.thymeleaf.*
 import org.koin.dsl.module
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
@@ -71,15 +73,9 @@ fun Application.module() {
         header("thats-a", "spicy meat-a-ball")
     }
     install(CachingHeaders) {
-        // TODO
-//        options { call, content ->
-//            when (content.contentType?.withoutParameters()) {
-//                ContentType.Text.Plain -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3600))
-//                ContentType.Text.Html -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 60))
-//                else -> null
-//            }
-//        }
+        options{_,_ -> CachingOptions(CacheControl.MaxAge(60 * 60 * 24 * 7))}
     }
+
     install(ForwardedHeaders)
     install(CallLogging)
 
@@ -92,6 +88,8 @@ private fun Application.configureKoinModule() = module {
     val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
     val assetDirectoryPath = environment.config.property("app.assets.directoryPath").getString()
     val schemeDomainPortConfig = environment.config.property("app.schemeDomainPort").getString()
+    val cloudfrontEnabled = environment.config.property("app.cloudfront.enabled").getString().toBoolean()
+    val cloudfrontDistributionId = environment.config.property("app.cloudfront.distributionId").getString()
 
     val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
 
@@ -103,8 +101,9 @@ private fun Application.configureKoinModule() = module {
     factory<PostRepositoryInterface> { MongoPostRepository(get()) }
     single<MediaRepositoryInterface> { FSMediaRepository(mediaDirectoryPath) }
     single<SiteAssetRepositoryInterface> { FSSiteAssetRepository(assetDirectoryPath) }
+    single<CloudFrontService> { CloudFrontService(cloudfrontDistributionId, cloudfrontEnabled) }
     single<MarkdownService>{ MarkdownService(get(), get()) }
-    single<PostService>{ PostService(get(), get(), get()) }
+    single<PostService>{ PostService(get(), get(), get(), get()) }
     single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule, schemeDomainPort) }
     single<RssService>{ RssService(get(), get()) }
 }

@@ -23,4 +23,8 @@ app:
     assets:
         directoryPath: "$ASSETS_DIRECTORY_PATH:src/main/resources/assets"
 
+    cloudfront:
+        enabled: "$CLOUDFRONT_ENABLED:false"
+        distributionId: "$CLOUDFRONT_DISTRIBUTION_ID:"
+
 
