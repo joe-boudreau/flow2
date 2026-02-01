@@ -5,9 +5,9 @@ val koin_version: String by project
 val flexmark_version: String by project
 
 plugins {
-    kotlin("jvm") version "2.1.0"
-    id("io.ktor.plugin") version "3.0.1"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("jvm") version "2.3.0"
+    id("io.ktor.plugin") version "3.1.0"
+    kotlin("plugin.serialization") version "2.3.0"
 }
 
 group = "com"
@@ -67,7 +67,7 @@ dependencies {
     implementation("com.rometools:rome:2.1.0")
 
     //AWS
-    implementation("aws.sdk.kotlin:cloudfront-jvm:1.6.6")
+    implementation("aws.sdk.kotlin:cloudfront-jvm:1.5.85")
 }
 
 ktor {

@@ -45,7 +45,7 @@ class PostService(
     ): Post {
         val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
         reloadPostCacheAndRss()
-        cloudFrontService.invalidateForPostChange(post)
+        cloudFrontService.invalidateAll()
         return post
     }
 
@@ -70,7 +70,7 @@ class PostService(
             postRepository.updatePost(id, title, mdContentWithFrontMatter, tags, category)
         }
         reloadPostCacheAndRss()
-        cloudFrontService.invalidateForPostChange(post)
+        cloudFrontService.invalidateAll()
         return post
     }
 
@@ -101,7 +101,7 @@ class PostService(
     ): Post {
         val post = postRepository.updatePost(id, title, mdContent, tags, category)
         reloadPostCacheAndRss()
-        cloudFrontService.invalidateForPostChange(post)
+        cloudFrontService.invalidateAll()
         return post
     }
 
@@ -111,7 +111,7 @@ class PostService(
         if (success) {
             reloadPostCacheAndRss()
             if (post != null) {
-                cloudFrontService.invalidateForPostChange(post)
+                cloudFrontService.invalidateAll()
             }
         }
         return success
