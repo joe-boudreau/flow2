@@ -67,13 +67,6 @@ server {
     location @proxy {
         proxy_pass http://flow2:80;
 
-        # Enable caching
-        proxy_cache nginx_cache;
-        proxy_cache_valid 200 302 7d;  # Cache 200 and 302 responses for 10 minutes
-        proxy_cache_valid 404 7d;      # Cache 404 responses for 1 minute
-        proxy_cache_bypass $http_cache_control;  # Bypass cache if Cache-Control header is set
-        add_header X-Cache-Status $upstream_cache_status;  # Add cache status header for debugging
-
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
