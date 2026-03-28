@@ -18,10 +18,8 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/templates:/etc/nginx/templates
-      - ./nginx/ssl:/etc/nginx/ssl
       - ./nginx/conf.d:/etc/nginx/conf.d
       - flow2-media-vol:/usr/share/nginx/media
     env_file:
