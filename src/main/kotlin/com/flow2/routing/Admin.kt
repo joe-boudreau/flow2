@@ -153,8 +153,9 @@ fun Application.configureAdminRoutes() {
                     call.receiveMultipart().forEachPart { part ->
                         when(part) {
                             is PartData.FileItem -> {
+                                val fileName = part.originalFileName as String
                                 val fileBytes = part.provider().readRemaining().readByteArray()
-                                mediaRepository.savePostBanner(id, fileBytes)
+                                mediaRepository.savePostBanner(id, fileName,fileBytes)
                             }
                             else -> {
                                 //noop
@@ -180,7 +181,7 @@ fun Application.configureAdminRoutes() {
                                 val fileName = part.originalFileName as String
                                 val fileBytes = part.provider().readRemaining().readByteArray()
                                 if (includesBanner && fileName.startsWith("banner")) {
-                                    mediaRepository.savePostBanner(id, fileBytes)
+                                    mediaRepository.savePostBanner(id,  fileName,fileBytes)
                                 } else {
                                     mediaRepository.savePostMedia(id, fileName, fileBytes)
                                 }

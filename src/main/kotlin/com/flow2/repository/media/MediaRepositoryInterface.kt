@@ -5,7 +5,7 @@ import io.ktor.server.application.Application
 interface MediaRepositoryInterface {
     fun savePostMedia(postId: String, filename: String, fileContent: ByteArray)
 
-    fun savePostBanner(postId: String, fileContent: ByteArray)
+    fun savePostBanner(postId: String, fileName: String, fileContent: ByteArray)
 
     fun getPublicPostBannerUrl(postId: String): String?
 

@@ -14,7 +14,7 @@ class FSMediaRepository(
     private val mediaDirectoryPath: String,
 ) : MediaRepositoryInterface {
 
-    private val bannerFileName = "banner"
+    private val bannerFileNamePrefix = "banner"
 
     override fun configureRouting(app: Application) {
         app.routing {
@@ -27,17 +27,21 @@ class FSMediaRepository(
         File(getInternalFilePathForPostMedia(postId, filename)).writeBytes(fileContent)
     }
 
-    override fun savePostBanner(postId: String, fileContent: ByteArray) {
+    override fun savePostBanner(postId: String, fileName: String, fileContent: ByteArray) {
+        // rename it to banner. whatever the file extension is
+        val bannerFileName = "$bannerFileNamePrefix.${fileName.split('.').last()}"
         savePostMedia(postId, bannerFileName, fileContent)
     }
 
     override fun getPublicPostBannerUrl(postId: String): String? {
-        File(getInternalFilePathForPostMedia(postId, bannerFileName)).let {
-            return if (it.exists()) {
-                getPublicFilePathForPostMedia(postId, bannerFileName)
-            } else {
-                null
-            }
+        val postMediaDir = File(getInternalPostMediaDir(postId))
+        val bannerFullFileName = postMediaDir.listFiles()
+            ?.firstOrNull { it.name.startsWith(bannerFileNamePrefix) }
+            ?.name
+        return if (bannerFullFileName != null) {
+            getPublicFilePathForPostMedia(postId, bannerFullFileName)
+        } else {
+            null
         }
     }
 
