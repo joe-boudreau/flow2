@@ -20,6 +20,11 @@ server {
         add_header Im-a-nginx "true";
     }
 
+    location /othelloworld/ {
+        proxy_pass http://othello-world:8080/;
+        proxy_set_header X-Forwarded-Prefix /othelloworld;
+    }
+
     location / {
         root /usr/share/nginx/html;
         try_files $uri @proxy;
