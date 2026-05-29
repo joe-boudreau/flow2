@@ -169,6 +169,12 @@ fun Application.configurePublicRoutes() {
         get("/projects") {
             val projects = listOf(
                 mapOf(
+                    "title" to "kotlin-api.com",
+                    "year" to "2026",
+                    "link" to "https://kotlin-api.com",
+                    "description" to "A better search UX for Kotlin's standard library API docs. Like IDE autocomplete but in your browser."
+                ),
+                mapOf(
                     "title" to "sentinel.sale",
                     "year" to "2026",
                     "link" to "https://sentinel.sale",
