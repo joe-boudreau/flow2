@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 val kotlin_version: String by project
 val logback_version: String by project
 val ktor_version: String by project
@@ -78,4 +80,12 @@ ktor {
     docker {
         jreVersion.set(JavaVersion.VERSION_22)
     }
+}
+
+// Concatenate META-INF/services files when building the fat JAR instead of letting
+// one dependency overwrite another. Scrimage discovers its image readers via a
+// ServiceLoader file that both scrimage-core (JPEG/PNG) and scrimage-webp register;
+// without merging, only one survives and decoding the other formats fails at runtime.
+tasks.withType<ShadowJar> {
+    mergeServiceFiles()
 }

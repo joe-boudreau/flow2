@@ -14,6 +14,15 @@ services:
     env_file:
       - ./env/flow2/.env-local
 
+  othello-world:
+    image: thejoeflow/othelloworld:latest
+    expose:
+      - "8080" # nginx will proxy requests, no need to expose to host
+    networks:
+      - my-network
+    environment:
+      - BASE_SEARCH_DEPTH=5
+
   nginx:
     image: nginx:latest
     ports:

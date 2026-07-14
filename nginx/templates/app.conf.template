@@ -1,11 +1,3 @@
-# Redirect old domain to new domain
-server {
-    listen 80;
-    server_name thejoeflow.com www.thejoeflow.com;
-
-    return 301 https://${SERVER_NAME}$request_uri;
-}
-
 # Main server
 server {
     listen 80;
