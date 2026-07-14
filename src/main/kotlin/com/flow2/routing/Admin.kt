@@ -98,7 +98,7 @@ fun Application.configureAdminRoutes() {
 
                     val tagsList = tags.split(",")
                     val category = Category.valueOf(categoryStr)
-                    var publishedAtTimestamp = publishedAt?.let {
+                    val publishedAtTimestamp = publishedAt?.let {
                         if (publishedAt.isEmpty()) {
                             null
                         } else {
@@ -109,7 +109,7 @@ fun Application.configureAdminRoutes() {
                         }
                     }
 
-                    postService.createPost(title, mdFile.toString(), tagsList, category, publishedAtTimestamp)
+                    postService.createPost(title, mdFile, tagsList, category, publishedAtTimestamp)
                     call.respond(HttpStatusCode.Created)
                 }
 
