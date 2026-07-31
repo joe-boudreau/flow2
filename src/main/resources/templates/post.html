@@ -39,6 +39,8 @@
 
             <h1 class="entry-title" th:text="${post.title}">Post title</h1>
 
+            <p class="entry-subtitle" th:if="${post.subtitle != null and !#strings.isEmpty(post.subtitle)}" th:text="${post.subtitle}">Post subtitle</p>
+
             <div class="meta">
                 <p><span th:text="${#temporals.format(post.getPublishDate(), 'MMMM d, yyyy')}">April 20, 2024</span></p>
             </div>

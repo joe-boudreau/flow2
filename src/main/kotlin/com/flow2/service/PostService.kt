@@ -38,12 +38,13 @@ class PostService(
 
     suspend fun createPost(
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category,
         publishedAt: Long? = null,
     ): Post {
-        val post = postRepository.createPost(title, mdContent, tags, category, publishedAt)
+        val post = postRepository.createPost(title, subtitle, mdContent, tags, category, publishedAt)
         reloadPostCacheAndRss()
         cloudFrontService.invalidateAll()
         return post
@@ -55,19 +56,20 @@ class PostService(
         val frontMatter = markdownService.parseFrontMatter(mdContentWithFrontMatter)
         val id = frontMatter["id"]?.firstOrNull()
         val title = frontMatter["title"]?.firstOrNull() ?: "unknown-title-${System.currentTimeMillis()}"
+        val subtitle = frontMatter["subtitle"]?.firstOrNull()
         val publishedAt = frontMatter["publishedAt"]?.firstOrNull()?.toLongOrNull()
         val tags = frontMatter["tags"] ?: emptyList()
         val category = Category.valueOf(frontMatter["category"]?.firstOrNull() ?: "PERSONAL")
 
         val post = if (id == null) {
-            val newPost = postRepository.createPost(title, mdContentWithFrontMatter, tags, category, publishedAt)
+            val newPost = postRepository.createPost(title, subtitle, mdContentWithFrontMatter, tags, category, publishedAt)
             val updatedContent = markdownService.addFrontMatter(newPost.mdContent?: "", mapOf(
                 "id" to listOf(newPost.id),
                 "publishedAt" to listOf(newPost.publishedAt.toString()),
             ))
-            postRepository.updatePost(newPost.id, newPost.title, updatedContent, newPost.tags, newPost.category)
+            postRepository.updatePost(newPost.id, newPost.title, newPost.subtitle, updatedContent, newPost.tags, newPost.category)
         } else {
-            postRepository.updatePost(id, title, mdContentWithFrontMatter, tags, category)
+            postRepository.updatePost(id, title, subtitle, mdContentWithFrontMatter, tags, category)
         }
         reloadPostCacheAndRss()
         cloudFrontService.invalidateAll()
@@ -81,25 +83,27 @@ class PostService(
         return if (existingFrontMatter.isNotEmpty()) {
             mdContent
         } else {
-            markdownService.addFrontMatter(
-                mdContent, mapOf(
+            val frontMatter = mutableMapOf(
                 "id" to listOf(post.id),
                 "title" to listOf(post.title),
                 "publishedAt" to listOf(post.publishedAt.toString()),
                 "tags" to post.tags,
                 "category" to listOf(post.category.name),
-            ))
+            )
+            post.subtitle?.let { frontMatter["subtitle"] = listOf(it) }
+            markdownService.addFrontMatter(mdContent, frontMatter)
         }
     }
 
     suspend fun updatePost(
         id: String,
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category
     ): Post {
-        val post = postRepository.updatePost(id, title, mdContent, tags, category)
+        val post = postRepository.updatePost(id, title, subtitle, mdContent, tags, category)
         reloadPostCacheAndRss()
         cloudFrontService.invalidateAll()
         return post

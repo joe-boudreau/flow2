@@ -29,7 +29,11 @@ class RssService(
                 link = requestUrlBuilder.getPostAbsoluteUrl(post)
                 description = SyndContentImpl().apply {
                     type = "text/plain"
-                    value = htmlContent.take(200)
+                    value = if (post.subtitle != null) {
+                        "${post.subtitle}\n\n${htmlContent.take(200)}"
+                    } else {
+                        htmlContent.take(200)
+                    }
                 }
                 publishedDate = Date(post.publishedAt)
                 updatedDate = Date(post.updatedAt)

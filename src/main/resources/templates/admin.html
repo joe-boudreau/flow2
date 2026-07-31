@@ -50,6 +50,8 @@
             <input type="file" id="mdFile" name="mdFile" accept="*/*">
             <label for="newTitle">Post title:</label>
             <input type="text" id="newTitle" name="title">
+            <label for="newSubtitle">Post subtitle (optional):</label>
+            <input type="text" id="newSubtitle" name="subtitle">
             <label for="newTags">Specify tags for post (comma separated):</label>
             <input type="text" id="newTags" name="tags">
             <label for="newCategory">Select Category:</label>
@@ -87,6 +89,8 @@
             <input type="hidden" id="updateId" name="id">
             <label for="updateTitle">Title:</label>
             <input type="text" id="updateTitle" name="title" th:value="${postForUpdate.title}">
+            <label for="updateSubtitle">Subtitle (optional):</label>
+            <input type="text" id="updateSubtitle" name="subtitle" th:value="${postForUpdate.subtitle}">
             <label for="updateTags">Specify tags for post (comma separated):</label>
             <input type="text" id="updateTags" name="tags" th:value="${#strings.listJoin(postForUpdate.tags, ',')}">
             <label for="updateCategory">Category:</label>

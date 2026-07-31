@@ -9,6 +9,7 @@ import java.time.ZoneId
 data class Post(
     @BsonId val id: String = ObjectId().toString(),
     val title: String,
+    val subtitle: String? = null,
     val mdContent: String?,
     val tags: List<String>,
     val category: Category,

@@ -12,6 +12,7 @@ interface PostRepositoryInterface {
 
     suspend fun createPost(
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category,
@@ -21,6 +22,7 @@ interface PostRepositoryInterface {
     suspend fun updatePost(
         id: String,
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category,

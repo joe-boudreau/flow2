@@ -76,6 +76,7 @@ fun Application.configureAdminRoutes() {
 
                 post("/post") {
                     var title: String? = null
+                    var subtitle: String? = null
                     var categoryStr: String? = null
                     var tags: String?= null
                     var mdFile: String? = null
@@ -84,6 +85,7 @@ fun Application.configureAdminRoutes() {
                     call.receiveMultipart().forEachPart { part ->
                         when(part.name) {
                             "title" -> title = (part as PartData.FormItem).value
+                            "subtitle" -> subtitle = (part as PartData.FormItem).value
                             "category" -> categoryStr = (part as PartData.FormItem).value
                             "tags" -> tags = (part as PartData.FormItem).value
                             "publishedAt" -> publishedAt = (part as PartData.FormItem).value
@@ -109,7 +111,7 @@ fun Application.configureAdminRoutes() {
                         }
                     }
 
-                    postService.createPost(title, mdFile, tagsList, category, publishedAtTimestamp)
+                    postService.createPost(title, subtitle?.ifBlank { null }, mdFile, tagsList, category, publishedAtTimestamp)
                     call.respond(HttpStatusCode.Created)
                 }
 
@@ -117,6 +119,7 @@ fun Application.configureAdminRoutes() {
                     val parameters = call.receiveParameters()
                     val id = call.pathParameters["id"]
                     val title = parameters["title"]
+                    val subtitle = parameters["subtitle"]
                     val categoryStr = parameters["category"]
                     val tags = parameters["tags"]
                     val mdContent = parameters["mdContent"]
@@ -129,7 +132,7 @@ fun Application.configureAdminRoutes() {
                     val tagsList = tags.split(",")
                     val category = Category.valueOf(categoryStr)
 
-                    postService.updatePost(id, title, mdContent, tagsList, category)
+                    postService.updatePost(id, title, subtitle?.ifBlank { null }, mdContent, tagsList, category)
                     call.respond(HttpStatusCode.OK)
                 }
 

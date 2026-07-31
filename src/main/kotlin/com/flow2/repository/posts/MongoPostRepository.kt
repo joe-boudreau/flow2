@@ -83,6 +83,7 @@ class MongoPostRepository(
 
     override suspend fun createPost(
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category,
@@ -91,6 +92,7 @@ class MongoPostRepository(
         val publishedTimestamp = publishedAt ?: System.currentTimeMillis()
         val post = Post(
             title = title,
+            subtitle = subtitle,
             mdContent = mdContent,
             tags = tags,
             category = category,
@@ -105,6 +107,7 @@ class MongoPostRepository(
     override suspend fun updatePost(
         id: String,
         title: String,
+        subtitle: String?,
         mdContent: String,
         tags: List<String>,
         category: Category,
@@ -112,6 +115,7 @@ class MongoPostRepository(
         val currentTime = System.currentTimeMillis()
         val updates = Updates.combine(
             Updates.set(Post::title.name, title),
+            Updates.set(Post::subtitle.name, subtitle),
             Updates.set(Post::slug.name, slugify(title)),
             Updates.set(Post::mdContent.name, mdContent),
             Updates.set(Post::tags.name, tags),
