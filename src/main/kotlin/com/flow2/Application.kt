@@ -37,6 +37,7 @@ import org.koin.logger.slf4jLogger
 import io.ktor.server.resources.Resources
 import kotlinx.serialization.json.Json
 import org.koin.ktor.ext.get
+import java.net.URI
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -73,7 +74,8 @@ fun Application.module() {
         header("thats-a", "spicy meat-a-ball")
     }
     install(CachingHeaders) {
-        options{_,_ -> CachingOptions(CacheControl.MaxAge(60 * 60 * 24 * 7))}
+        val SEVEN_DAYS = 60 * 60 * 24 * 7
+        options{ _, _ -> CachingOptions(CacheControl.MaxAge(SEVEN_DAYS))}
     }
 
     install(ForwardedHeaders)

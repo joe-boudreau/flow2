@@ -57,6 +57,7 @@ class MarkdownService(
         val renderer = HtmlRenderer
             .builder(options)
             .linkResolverFactory(MergeLinkResolver.Factory())
+            .attributeProviderFactory(ExternalLinkAttributeProvider.Factory())
             .build()
 
 

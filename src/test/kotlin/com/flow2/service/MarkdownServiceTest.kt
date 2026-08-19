@@ -3,6 +3,8 @@ package com.flow2.service
 import com.flow2.repository.assets.FSSiteAssetRepository
 import com.flow2.repository.media.FSMediaRepository
 import kotlin.test.Test
+import kotlin.test.assertContains
+import kotlin.test.assertFalse
 
 class MarkdownServiceTest {
 
@@ -101,6 +103,50 @@ calculateEV();
 
 One thing I need to start doing before reading a foreign language novel is decide what translation to read. If it's been translated more than once, there will certainly be differences in the versions—in prose, grammar, and closeness to the original text. 
     """.trimIndent()
+
+    private val linkMarkdown = """
+[ext](https://other.com/x)
+
+<https://other.com/x>
+
+[rel](/post/1)
+
+[anchor](#section)
+
+[mail](mailto:me@example.com)
+
+![img](pic.png)
+    """.trimIndent()
+
+    @Test
+    fun externalLinksOpenInNewTab() {
+        val service = MarkdownService(
+            siteAssetRepository = FSSiteAssetRepository("src/main/resources/assets"),
+            mediaRepository = FSMediaRepository("src/main/resources/media"),
+        )
+
+        val html = service.parseHtmlContent(linkMarkdown, mediaDir)
+        println(html)
+
+        // note: relative hrefs are rewritten by the pre-existing MergeLinkResolver/DOC_RELATIVE_URL
+        // config, so assert on the link text and the target attribute rather than on exact hrefs
+        val anchorsByText = Regex("""<a ([^>]*)>([^<]*)</a>""")
+            .findAll(html)
+            .associate { it.groupValues[2] to it.groupValues[1] }
+
+        val newTabLinks = listOf("ext", "https://other.com/x")
+        newTabLinks.forEach {
+            assertContains(anchorsByText.getValue(it), """target="_blank"""", message = "link '$it'")
+        }
+
+        val inTabLinks = listOf("rel", "anchor", "mail")
+        inTabLinks.forEach {
+            assertFalse(anchorsByText.getValue(it).contains("target"), "link '$it' should stay in tab")
+        }
+
+        // images must not be touched
+        assertFalse(Regex("""<img[^>]*target""").containsMatchIn(html))
+    }
 
     @Test
     fun parseHtmlContent() {
