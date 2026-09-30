@@ -22,5 +22,5 @@ RUN gradle buildFatJar --no-daemon
 FROM amazoncorretto:22 AS runtime
 EXPOSE 8080
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/flow2.jar
+COPY --from=build /home/gradle/src/build/libs/*-all.jar /app/flow2.jar
 ENTRYPOINT ["java","-jar","/app/flow2.jar"]
