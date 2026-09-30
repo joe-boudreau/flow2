@@ -36,3 +36,19 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/media/
+
+# Sanitized comment migration snapshots and local test credentials
+/comment-migration/
+/.venv-comments/
+**/__pycache__/
+
+.kotlin/
+logs/
+
+nginx/ssl/
+nginx/conf.d/
+
+scripts/backup-proton.sh
+build-push-redeploy.sh
+docker-compose-prod.yml
+dev-stuff.md
