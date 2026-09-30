@@ -73,20 +73,26 @@
             <form id="comment-form" hidden>
                 <h3 id="comment-form-title">Leave a comment</h3>
                 <button id="comment-cancel-reply" type="button" hidden>Cancel reply</button>
-                <label for="comment-name">Name</label>
-                <input type="text" id="comment-name" name="name" maxlength="80" autocomplete="name" required>
-                <label for="comment-email">Email (optional)</label>
-                <input id="comment-email" name="email" type="email" maxlength="254" autocomplete="email" aria-describedby="comment-email-help">
-                <small id="comment-email-help">Email me when someone replies. Never shown publicly.</small>
+                <div class="comment-identity">
+                    <div class="comment-field">
+                        <label for="comment-name">Name</label>
+                        <input type="text" id="comment-name" name="name" maxlength="80" autocomplete="name" required>
+                    </div>
+                    <div class="comment-field">
+                        <label for="comment-email">Email <span class="comment-optional">(optional)</span></label>
+                        <input id="comment-email" name="email" type="email" maxlength="254" autocomplete="email" aria-describedby="comment-email-help">
+                    </div>
+                </div>
+                <small id="comment-email-help">Only for reply notifications. Never shown publicly.</small>
                 <label for="comment-body">Comment</label>
-                <textarea id="comment-body" name="body" maxlength="5000" rows="5" required></textarea>
+                <textarea id="comment-body" name="body" maxlength="5000" rows="4" style="resize: none" required></textarea>
                 <button type="submit">Post comment</button>
                 <p id="comment-form-status" role="status" aria-live="polite"></p>
             </form>
             <noscript>Enable JavaScript to read and post comments.</noscript>
         </section>
         <script src="/assets/js/comment-api.js?v=1" defer></script>
-        <script src="/assets/js/comments.js?v=2" defer></script>
+        <script src="/assets/js/comments.js?v=4" defer></script>
 
     </article>
     <script>

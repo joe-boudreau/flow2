@@ -134,6 +134,7 @@ class CommentService(
             try {
                 deliver(job)
                 repository.markEmailSent(job.id, clock.instant())
+                log.info("Comment email delivered for job {}", job.id)
             }
             catch (e: CancellationException) {
                 throw e
@@ -159,7 +160,7 @@ class CommentService(
                 Manage comments: $baseUrl/admin#comments-admin
             """.trimIndent()
 
-            mailer.send(config.alertTo, "Blog daily comment limit reached", message)
+            mailer.send(config.alertTo, "Blog daily comment limit reached", CommentEmail(message))
             return
         }
 
@@ -173,11 +174,15 @@ class CommentService(
         val slug = URLEncoder.encode(post.slug, Charsets.UTF_8).replace("+", "%20")
         val replyUrl = "$baseUrl/post/$slug#comment-${comment.id}"
         val unsubscribeUrl = "$baseUrl/comments/unsubscribe/${subscription.unsubscribeToken}"
-        val message = "${comment.name} replied to your comment on ${post.title}:\n\n" +
-            "${comment.body.take(500)}\n\n" +
-            "Read and reply: $replyUrl\n\n" +
-            "Stop notifications for your comment: $unsubscribeUrl"
+        val message = CommentEmails.reply(
+            name = comment.name,
+            postTitle = post.title,
+            body = comment.body,
+            replyUrl = replyUrl,
+            unsubscribeUrl = unsubscribeUrl,
+        )
 
         mailer.send(subscription.email, "New reply on flow2", message)
+        log.info("Comment email delivered for email {}", subscription.email)
     }
 }

@@ -23,7 +23,7 @@
     async function status() {
         const data = await request('/status');
         toggle.checked = data.enabled; toggle.disabled = false;
-        $('comments-admin-status').textContent = `${data.used} / ${data.limit} today. Resets ${new Date(data.resetAt).toUTCString()}. ${data.mailConfigured ? 'Email configured.' : 'Email not configured; notifications are pending.'} ${data.failedEmails} failed email jobs.`;
+        $('comments-admin-status').textContent = `${data.used} / ${data.limit} today. Resets ${new Date(data.resetAt).toUTCString()}. ${data.failedEmails} failed email jobs.`;
     }
     function elem(tag, text) { const el = document.createElement(tag); el.textContent = text; return el; }
     async function list(reset = false) {

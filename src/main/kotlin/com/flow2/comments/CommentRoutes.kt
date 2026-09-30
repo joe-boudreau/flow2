@@ -141,32 +141,6 @@ internal fun requireCommentHeader(call: ApplicationCall) {
     }
 }
 
-private fun visitorIp(call: ApplicationCall): String {
-    // Nginx overwrites this header from its trusted real-IP result. The app port
-    // must remain private to Nginx; do not trust arbitrary forwarded header chains.
-    val value = call.request.header("X-Real-IP") ?: call.request.local.remoteHost
-    return normalizeVisitorIp(value)
-}
-
-internal fun normalizeVisitorIp(value: String): String {
-    if (':' in value && value.matches(Regex("[0-9a-fA-F:.]+"))) {
-        return try {
-            java.net.InetAddress.getByName(value).hostAddress
-        }
-        catch (_: Exception) {
-            "unknown"
-        }
-    }
-
-    val octets = value.split('.')
-    val invalidOctet = octets.any { part ->
-        part.isEmpty() || part.any { it !in '0'..'9' } || part.toIntOrNull() !in 0..255
-    }
-    if (octets.size != 4 || invalidOctet) return "unknown"
-
-    return octets.joinToString(".") { it.toInt().toString() }
-}
-
 internal suspend fun commentResponse(call: ApplicationCall, action: suspend () -> Unit) {
     call.response.header(HttpHeaders.CacheControl, "no-store")
 

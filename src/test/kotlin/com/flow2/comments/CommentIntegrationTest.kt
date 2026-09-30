@@ -81,7 +81,7 @@ class CommentIntegrationTest {
     @Test fun `notifications target direct parent respect unsubscribe and retry independently of posting`() = databaseTest { repo, posts, clock, config, db ->
         val sent = mutableListOf<Pair<String, String>>()
         var failing = false
-        val mail = CommentMailer { to, _, body -> if (failing) error("SMTP unavailable") else sent.add(to to body) }
+        val mail = CommentMailer { to, _, body -> if (failing) error("SMTP unavailable") else sent.add(to to body.text) }
         val service = CommentService(repo, posts, mail, config, "https://flowtwo.io", clock)
         val post = posts.createPost("Post", null, "", emptyList(), Category.PERSONAL, null)
         repo.setCommentingEnabled(true)
@@ -108,7 +108,7 @@ class CommentIntegrationTest {
     }
     @Test fun `global alert is queued once and recovers after restart`() = databaseTest { repo, posts, clock, config, db ->
         val sent = mutableListOf<String>()
-        val mail = CommentMailer { _, _, text -> sent.add(text) }
+        val mail = CommentMailer { _, _, text -> sent.add(text.text) }
         repeat(100) { repo.incrementCommentLimit("2001:db8::${it.toString(16)}", clock.instant()) }
         CommentService(repo, posts, mail, config, "https://flowtwo.io", clock).runMailCycle()
         CommentService(repo, posts, mail, config, "https://flowtwo.io", clock).runMailCycle()

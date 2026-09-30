@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New reply on flow2</title>
+</head>
+<body style="margin:0; padding:24px 16px; background:#fafafa; color:#121212; font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" style="width:100%; max-width:520px; margin:0 auto; border-collapse:collapse;">
+        <tr>
+            <td style="padding:0 0 20px; border-bottom:1px solid #d8d8d8; font-size:20px; font-weight:bold;">flow2</td>
+        </tr>
+        <tr>
+            <td style="padding:24px 0 16px; font-size:16px; line-height:1.6;">
+                <strong th:text="${name}">Reader</strong> replied to your comment on<br>
+                <a th:href="${replyUrl}" th:text="${postTitle}" style="color:#121212; font-weight:bold; text-decoration:underline;">Post title</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:0 0 24px;">
+                <div style="border-left:2px solid #aaa; padding:4px 0 4px 16px; font-size:16px; line-height:1.6; overflow-wrap:anywhere;">
+                    <th:block th:each="line, state : ${replyLines}"><span th:text="${line}">Reply text</span><br th:unless="${state.last}"></th:block>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:0 0 28px;">
+                <a th:href="${replyUrl}" style="display:inline-block; background:#121212; color:#fff; border:10px solid #121212; font-size:14px; font-weight:bold; text-decoration:none;">Read and reply</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-top:1px solid #d8d8d8; padding:16px 0 0; color:#666; font-size:12px; line-height:1.6;">
+                You asked to be notified of replies to this comment.<br>
+                <a th:href="${unsubscribeUrl}" style="color:#666; text-decoration:underline;">Stop reply notifications</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

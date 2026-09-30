@@ -23,10 +23,17 @@
             entry.id = `comment-${comment.id}`;
             const meta = element('p', null, 'comment-meta');
             meta.append(element('strong', comment.deleted ? 'Comment deleted' : comment.name));
-            if (comment.owner && !comment.deleted) meta.append(element('span', ' · Blog owner'));
-            const link = element('a', new Date(comment.createdAt).toLocaleString());
+            if (comment.owner && !comment.deleted) {
+                const badge = element('span', 'OP', 'comment-owner-badge');
+                badge.title = 'Blog owner';
+                badge.setAttribute('aria-label', 'Blog owner');
+                meta.append(badge);
+            }
+            const date = new Date(comment.createdAt);
+            const link = element('a', date.toLocaleDateString(undefined, {year: 'numeric', month: 'short', day: 'numeric'}));
+            link.title = date.toLocaleString();
             link.href = `#${entry.id}`;
-            meta.append(document.createTextNode(' · '), link);
+            meta.append(link);
             entry.append(meta);
             if (comment.replyingTo) entry.append(element('small', `Replying to ${comment.replyingTo}`));
             entry.append(element('p', comment.deleted ? 'This comment has been deleted.' : comment.body, 'comment-body'));

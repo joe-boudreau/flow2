@@ -12,11 +12,11 @@ import kotlinx.coroutines.withContext
 import java.util.Properties
 
 fun interface CommentMailer {
-    suspend fun send(to: String, subject: String, body: String)
+    suspend fun send(to: String, subject: String, body: CommentEmail)
 }
 
 class SmtpCommentMailer(private val config: CommentConfig) : CommentMailer {
-    override suspend fun send(to: String, subject: String, body: String) = withContext(Dispatchers.IO) {
+    override suspend fun send(to: String, subject: String, body: CommentEmail) = withContext(Dispatchers.IO) {
         val properties = Properties().apply {
             setProperty("mail.smtp.host", config.smtpHost)
             setProperty("mail.smtp.port", config.smtpPort.toString())
@@ -35,7 +35,7 @@ class SmtpCommentMailer(private val config: CommentConfig) : CommentMailer {
             setFrom(InternetAddress(config.sender, true))
             setRecipient(Message.RecipientType.TO, InternetAddress(to, true))
             setSubject(subject, "UTF-8")
-            setText(body, "UTF-8")
+            setContent(body.toMultipart())
         }
         Transport.send(message)
     }
