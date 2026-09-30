@@ -4,6 +4,7 @@ import com.flow2.auth.ADMIN_API_CONFIG
 import com.flow2.auth.ADMIN_LOGIN_CONFIG
 import com.flow2.auth.ADMIN_SESSION_CONFIG
 import com.flow2.auth.AdminUser
+import com.flow2.comments.CommentService
 import com.flow2.model.Category
 import com.flow2.model.slugify
 import com.flow2.service.PostService
@@ -34,6 +35,7 @@ import java.time.format.DateTimeFormatter
 
 fun Application.configureAdminRoutes() {
     val postService by inject<PostService>()
+    val commentService by inject<CommentService>()
     val mediaRepository by inject<MediaRepositoryInterface>()
 
     val adminCookieName = environment.config.property("app.adminAuth.sessionCookie").getString()
@@ -144,6 +146,7 @@ fun Application.configureAdminRoutes() {
                     }
 
                     val success = postService.deletePost(id)
+                    if (success) commentService.deletePost(id)
                     call.respond(if (success) HttpStatusCode.OK else HttpStatusCode.NotFound)
                 }
 

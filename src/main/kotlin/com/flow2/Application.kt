@@ -1,5 +1,6 @@
 package com.flow2
 
+import com.flow2.comments.*
 import com.flow2.auth.configureAdminAuth
 import com.flow2.repository.media.FSMediaRepository
 import com.flow2.repository.media.MediaRepositoryInterface
@@ -9,6 +10,7 @@ import com.flow2.repository.assets.FSSiteAssetRepository
 import com.flow2.repository.assets.SiteAssetRepositoryInterface
 import com.flow2.request.web.RequestUrlBuilder
 import com.flow2.request.web.RequestUrlBuilderDialect
+import com.flow2.routing.configureCors
 import com.flow2.routing.configureAdminRoutes
 import com.flow2.routing.configurePublicRoutes
 import com.flow2.service.MarkdownService
@@ -20,12 +22,12 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import io.ktor.http.CacheControl
 import io.ktor.http.HttpHeaders
 import io.ktor.http.content.CachingOptions
+import io.ktor.http.content.OutgoingContent
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cachingheaders.CachingHeaders
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
 import io.ktor.server.thymeleaf.*
@@ -37,7 +39,6 @@ import org.koin.logger.slf4jLogger
 import io.ktor.server.resources.Resources
 import kotlinx.serialization.json.Json
 import org.koin.ktor.ext.get
-import java.net.URI
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -53,6 +54,9 @@ fun Application.module() {
     configureAdminAuth()
     configurePublicRoutes()
     configureAdminRoutes()
+    configureCommentRoutes()
+    configureCors()
+
     install(Thymeleaf) {
         setTemplateResolver(getTemplateResolver())
         addDialect(RequestUrlBuilderDialect(get<RequestUrlBuilder>()))
@@ -63,19 +67,13 @@ fun Application.module() {
             isLenient = true
         })
     }
-    install(CORS) {
-        anyHost()
-        anyMethod()
-        allowHeader(HttpHeaders.ContentType)
-        allowHeader(HttpHeaders.Authorization)
-    }
+
     install(DefaultHeaders) {
         header(HttpHeaders.Server, "flow2")
         header("thats-a", "spicy meat-a-ball")
     }
     install(CachingHeaders) {
-        val SEVEN_DAYS = 60 * 60 * 24 * 7
-        options{ _, _ -> CachingOptions(CacheControl.MaxAge(SEVEN_DAYS))}
+        options(::cacheConfigByRequest)
     }
 
     install(ForwardedHeaders)
@@ -93,6 +91,7 @@ private fun Application.configureKoinModule() = module {
     val cloudfrontEnabled = environment.config.property("app.cloudfront.enabled").getString().toBoolean()
     val cloudfrontDistributionId = environment.config.property("app.cloudfront.distributionId").getString()
 
+    val commentConfig = CommentConfig.fromApplicationConfig(environment.config)
     val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
 
     // The MongoClient instance actually represents a pool of connections to the database;
@@ -108,6 +107,10 @@ private fun Application.configureKoinModule() = module {
     single<PostService>{ PostService(get(), get(), get(), get()) }
     single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule, schemeDomainPort) }
     single<RssService>{ RssService(get(), get()) }
+
+    single<CommentRepository> { CommentRepository(get()) }
+    single<CommentMailer> { SmtpCommentMailer(commentConfig) }
+    single<CommentService> { CommentService(get(), get(), get(), commentConfig, schemeDomainPort, appEventsMonitor = monitor) }
 }
 
 private fun Application.getTemplateResolver() =
@@ -125,3 +128,18 @@ private fun Application.getTemplateResolver() =
             characterEncoding = "utf-8"
         }
     }
+
+private val nonCacheablePathPrefixes = listOf("/admin", "/comments", "/api", "/login")
+private fun cacheConfigByRequest(call: ApplicationCall, content: OutgoingContent): CachingOptions? {
+    // already set upstream
+    if (call.response.headers[HttpHeaders.CacheControl] != null) return null
+
+    val path = call.request.local.uri.substringBefore('?')
+    return if (nonCacheablePathPrefixes.any { path.startsWith(it) }) {
+        CachingOptions(CacheControl.NoStore(null))
+    }
+    else {
+        val sevenDays = 60 * 60 * 24 * 7
+        CachingOptions(CacheControl.MaxAge(sevenDays))
+    }
+}

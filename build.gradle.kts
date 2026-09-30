@@ -25,6 +25,7 @@ repositories {
 
 tasks.test {
     useJUnitPlatform()
+    inputs.property("commentTestMongoUri", providers.environmentVariable("COMMENT_TEST_MONGO_URI").orElse(""))
 }
 
 dependencies {
@@ -74,6 +75,9 @@ dependencies {
     // IMAGE PROCESSING
     implementation("com.sksamuel.scrimage:scrimage-core:4.3.2")
     implementation("com.sksamuel.scrimage:scrimage-webp:4.3.2")
+
+    // EMAIL
+    implementation("org.eclipse.angus:jakarta.mail:2.0.4")
 }
 
 ktor {

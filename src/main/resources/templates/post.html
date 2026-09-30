@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/assets/js/highlight/styles/obsidian.min.css">
     <script src="/assets/js/highlight/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
-    <script defer src="https://chirpy.dev/bootstrapper.js" data-chirpy-domain="flowtwo.io"></script>
     <script src=" https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js "></script>
     <link href=" https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css " rel="stylesheet">
 
@@ -65,13 +64,29 @@
 
         </div>
 
-        <div class="section-inner">
-            <div
-                data-chirpy-theme="light"
-                data-chirpy-comment="true"
-                id="chirpy-comment"
-            ></div>
-        </div>
+        <section class="section-inner comments" id="comments" th:attr="data-post-id=${post.id}" aria-labelledby="comments-title">
+            <h2 id="comments-title">Comments <span id="comment-count"></span></h2>
+            <p id="comment-load-status" role="status">Loading comments…</p>
+            <div id="comment-list"></div>
+            <button id="comment-more" type="button" hidden>Load more</button>
+            <p id="comments-closed" hidden>Comments are currently closed.</p>
+            <form id="comment-form" hidden>
+                <h3 id="comment-form-title">Leave a comment</h3>
+                <button id="comment-cancel-reply" type="button" hidden>Cancel reply</button>
+                <label for="comment-name">Name</label>
+                <input type="text" id="comment-name" name="name" maxlength="80" autocomplete="name" required>
+                <label for="comment-email">Email (optional)</label>
+                <input id="comment-email" name="email" type="email" maxlength="254" autocomplete="email" aria-describedby="comment-email-help">
+                <small id="comment-email-help">Email me when someone replies. Never shown publicly.</small>
+                <label for="comment-body">Comment</label>
+                <textarea id="comment-body" name="body" maxlength="5000" rows="5" required></textarea>
+                <button type="submit">Post comment</button>
+                <p id="comment-form-status" role="status" aria-live="polite"></p>
+            </form>
+            <noscript>Enable JavaScript to read and post comments.</noscript>
+        </section>
+        <script src="/assets/js/comment-api.js?v=1" defer></script>
+        <script src="/assets/js/comments.js?v=2" defer></script>
 
     </article>
     <script>

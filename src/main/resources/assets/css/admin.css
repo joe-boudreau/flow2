@@ -23,3 +23,11 @@ button {
     font-weight: bold;
 }
 
+
+#comments-admin [hidden] { display: none !important; }
+#comments-enabled { width: auto; }
+.admin-comment { border-top: 1px solid #ccc; padding: 1rem 0; overflow-wrap: anywhere; }
+.admin-comment button { margin-right: .5rem; }
+#admin-comment-body { display: block; width: 100%; box-sizing: border-box; }
+#comments-admin summary { cursor: pointer; margin: 1rem 0; }
+#comments-post-filter { max-width: 100%; }

@@ -7,7 +7,7 @@ ktor:
         port: "$HTTP_PORT:80"
 
 app:
-    schemeDomainPort: "$SCHEME_DOMAIN_PORT:http://localhost:8080"
+    schemeDomainPort: "$SCHEME_DOMAIN_PORT:http://localhost"
     adminAuth:
         sessionCookie: "$ADMIN_SESSION_COOKIE:sesh"
         username: "$ADMIN_USERNAME:admin"
@@ -28,3 +28,11 @@ app:
         distributionId: "$CLOUDFRONT_DISTRIBUTION_ID:"
 
 
+    comments:
+        ownerName: "$COMMENT_OWNER_NAME:flow2"
+        smtpHost: "$COMMENT_SMTP_HOST:smtp.protonmail.ch"
+        smtpPort: "$COMMENT_SMTP_PORT:587"
+        smtpUser: "$COMMENT_SMTP_USER:"
+        smtpToken: "$COMMENT_SMTP_TOKEN:"
+        sender: "$COMMENT_EMAIL_FROM:notifications@flowtwo.io"
+        alertTo: "$COMMENT_ALERT_TO:admin@flowtwo.io"

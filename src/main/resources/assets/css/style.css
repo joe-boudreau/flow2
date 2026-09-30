@@ -2023,3 +2023,17 @@ input.search-field::-moz-placeholder { color: #121212; }
         padding: 40px 7.5% 40px 0;
     }
 }
+/* Native comments */
+#comments.comments { margin: 3rem auto; }
+.comments [hidden] { display: none !important; }
+.comment-thread { border-top: 1px solid #ddd; padding: 1rem 0; }
+.comment { padding: .5rem 0; overflow-wrap: anywhere; }
+.comment-reply { margin-left: 1.25rem; padding-left: 1rem; border-left: 2px solid #ddd; }
+.comment-meta { font-size: .85em; margin-bottom: .5rem; }
+.comment-body { white-space: pre-wrap; line-height: 1.5; hyphens: none; }
+.comment:target { background: #fff8dc; }
+#comment-form { margin-top: 2rem; }
+#comment-form label, #comment-form small { display: block; margin: .6rem 0 .3rem; }
+#comment-form input, #comment-form textarea { box-sizing: border-box; width: 100%; max-width: 100%; }
+#comment-form button { margin-top: .75rem; }
+#comment-form-status, #comment-load-status { min-height: 1.4em; }

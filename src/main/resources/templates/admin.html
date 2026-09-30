@@ -6,9 +6,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog Content Management</title>
-    <link rel='stylesheet' href='/assets/css/admin.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/assets/css/admin.css?v=comments-1' type='text/css' media='all' />
 </head>
 <body>
+    <section id="comments-admin">
+        <h1>Comments</h1>
+        <label><input type="checkbox" id="comments-enabled" disabled> Allow comments</label>
+        <p id="comments-admin-status" role="status"></p>
+        <p id="comments-admin-message" role="status"></p>
+        <details id="comments-management">
+        <summary>Manage comments</summary>
+        <label for="comments-post-filter">Filter by post</label>
+        <select id="comments-post-filter">
+            <option value="">All posts</option>
+            <option th:each="post: ${posts}" th:value="${post.id}" th:text="${post.title}" th:attr="data-slug=${post.slug}"></option>
+        </select>
+        <button id="comments-refresh" type="button">Refresh</button>
+        <div id="comments-admin-list"></div>
+        <button id="comments-admin-more" type="button" hidden>Load more</button>
+        <form id="admin-comment-reply" hidden>
+            <h2 id="admin-comment-reply-title">Reply</h2>
+            <label for="admin-comment-body">Comment</label>
+            <textarea id="admin-comment-body" rows="5" maxlength="5000" required></textarea>
+            <button type="submit">Post as blog owner</button>
+            <button type="button" id="admin-comment-cancel">Cancel</button>
+        </form>
+        </details>
+    </section>
+    <hr>
+    <script src="/assets/js/comment-api.js?v=1" defer></script>
+    <script src="/assets/js/admin-comments.js?v=2" defer></script>
     <div>
         <h1>Upload Post Media</h1>
         <label for="postSelect">Select Post:</label>
