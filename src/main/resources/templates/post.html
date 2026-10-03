@@ -66,33 +66,42 @@
 
         <section class="section-inner comments" id="comments" th:attr="data-post-id=${post.id}" aria-labelledby="comments-title">
             <h2 id="comments-title">Comments <span id="comment-count"></span></h2>
+            <p id="comments-closed" hidden>Comments are currently closed.</p>
+            <form id="comment-form" hidden aria-label="Post a comment">
+                <div class="comment-composer-heading" id="comment-reply-heading" hidden>
+                    <h3 id="comment-form-title"></h3>
+                    <button id="comment-cancel-reply" type="button" hidden>Cancel reply</button>
+                </div>
+                <div class="comment-composer">
+                    <textarea id="comment-body" name="body" aria-label="Comment" placeholder="What are your thoughts?" maxlength="5000" rows="4" style="resize: none" required></textarea>
+                    <div class="comment-composer-footer">
+                        <div class="comment-field">
+                            <label for="comment-name">Name</label>
+                            <input type="text" id="comment-name" name="name" maxlength="80" autocomplete="name" required>
+                        </div>
+                        <div class="comment-field">
+                            <div class="comment-email-label">
+                                <label for="comment-email">Email <span class="comment-optional">(optional)</span></label>
+                                <details class="comment-email-info">
+                                    <summary aria-label="About email notifications">i</summary>
+                                    <p id="comment-email-help">Only for reply notifications. Never shown publicly.</p>
+                                </details>
+                            </div>
+                            <input id="comment-email" name="email" type="email" maxlength="254" autocomplete="email" aria-describedby="comment-email-help">
+                        </div>
+                        <button type="submit">Post</button>
+                    </div>
+                </div>
+                <p id="comment-form-status" role="status" aria-live="polite"></p>
+            </form>
             <p id="comment-load-status" role="status">Loading comments…</p>
             <div id="comment-list"></div>
             <button id="comment-more" type="button" hidden>Load more</button>
-            <p id="comments-closed" hidden>Comments are currently closed.</p>
-            <form id="comment-form" hidden>
-                <h3 id="comment-form-title">Leave a comment</h3>
-                <button id="comment-cancel-reply" type="button" hidden>Cancel reply</button>
-                <div class="comment-identity">
-                    <div class="comment-field">
-                        <label for="comment-name">Name</label>
-                        <input type="text" id="comment-name" name="name" maxlength="80" autocomplete="name" required>
-                    </div>
-                    <div class="comment-field">
-                        <label for="comment-email">Email <span class="comment-optional">(optional)</span></label>
-                        <input id="comment-email" name="email" type="email" maxlength="254" autocomplete="email" aria-describedby="comment-email-help">
-                    </div>
-                </div>
-                <small id="comment-email-help">Only for reply notifications. Never shown publicly.</small>
-                <label for="comment-body">Comment</label>
-                <textarea id="comment-body" name="body" maxlength="5000" rows="4" style="resize: none" required></textarea>
-                <button type="submit">Post comment</button>
-                <p id="comment-form-status" role="status" aria-live="polite"></p>
-            </form>
             <noscript>Enable JavaScript to read and post comments.</noscript>
         </section>
         <script src="/assets/js/comment-api.js?v=1" defer></script>
-        <script src="/assets/js/comments.js?v=4" defer></script>
+        <script src="/assets/js/vendor/jdenticon-3.3.0.min.js" defer></script>
+        <script src="/assets/js/comments.js?v=7" defer></script>
 
     </article>
     <script>

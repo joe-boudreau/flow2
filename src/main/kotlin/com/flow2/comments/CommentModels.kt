@@ -25,6 +25,7 @@ data class PublicComment(
     val replyingTo: String? = null,
     val deleted: Boolean = false,
     val owner: Boolean = false,
+    val avatarSeed: String? = null,
 )
 
 @Serializable

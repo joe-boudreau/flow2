@@ -29,7 +29,7 @@ class CommentIntegrationTest {
         val client = MongoClient.create(uri!!)
         val db = client.getDatabase("comment_test_" + UUID.randomUUID().toString().replace("-", ""))
         try {
-            val repo = CommentRepository(db)
+            val repo = CommentRepository(db, CommentAvatar("test-avatar-key"))
             repo.initialize()
             block(repo, MongoPostRepository(db), TestClock(), CommentConfig(ownerName = "flow2", smtpHost = "smtp.protonmail.ch", smtpPort = 587, smtpUser = "test", smtpToken = "test", sender = "blog@example.com", alertTo = "owner@example.com"), db)
         } finally { db.drop(); client.close() }

@@ -22,6 +22,21 @@
             const entry = element('article', null, comment.id === comment.threadId ? 'comment' : 'comment comment-reply');
             entry.id = `comment-${comment.id}`;
             const meta = element('p', null, 'comment-meta');
+            if (!comment.deleted && comment.avatarSeed) {
+                const avatar = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                avatar.setAttribute('width', '32');
+                avatar.setAttribute('height', '32');
+                avatar.setAttribute('class', 'comment-avatar');
+                avatar.setAttribute('aria-hidden', 'true');
+                avatar.setAttribute('focusable', 'false');
+                jdenticon.updateSvg(avatar, comment.avatarSeed, {
+                    saturation: {color: 0, grayscale: 0},
+                    lightness: {color: [0.25, 0.45], grayscale: [0.45, 0.7]},
+                    backColor: '#f0f0f0',
+                    padding: 0.12
+                });
+                meta.append(avatar);
+            }
             meta.append(element('strong', comment.deleted ? 'Comment deleted' : comment.name));
             if (comment.owner && !comment.deleted) {
                 const badge = element('span', 'OP', 'comment-owner-badge');
@@ -42,6 +57,7 @@
                 reply.addEventListener('click', () => {
                     replyToId = comment.id;
                     $('comment-form-title').textContent = `Reply to ${comment.name}`;
+                    $('comment-reply-heading').hidden = false;
                     $('comment-cancel-reply').hidden = false;
                     form.scrollIntoView({block: 'center', behavior: 'smooth'});
                     $('comment-body').focus();
@@ -53,7 +69,8 @@
     }
     function cancelReply() {
         replyToId = null;
-        $('comment-form-title').textContent = 'Leave a comment';
+        $('comment-form-title').textContent = '';
+        $('comment-reply-heading').hidden = true;
         $('comment-cancel-reply').hidden = true;
     }
     async function load(reset = false) {
@@ -70,7 +87,7 @@
                 $('comment-count').textContent = `(${data.total})`;
                 form.hidden = !enabled;
                 $('comments-closed').hidden = enabled;
-                $('comment-load-status').textContent = data.total ? '' : 'No comments yet.';
+                $('comment-load-status').textContent = '';
                 const anchor = location.hash.replace('#comment-', '');
                 if (!location.hash.startsWith('#comment-') || records.has(anchor) || next == null) break;
             } while (next != null);

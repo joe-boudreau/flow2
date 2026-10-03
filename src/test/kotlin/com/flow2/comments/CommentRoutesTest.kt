@@ -27,7 +27,7 @@ class CommentRoutesTest {
         val mongo = MongoClient.create(uri!!)
         val db = mongo.getDatabase("comment_routes_" + UUID.randomUUID().toString().replace("-", ""))
         try {
-            val repo = CommentRepository(db)
+            val repo = CommentRepository(db, CommentAvatar("test-avatar-key"))
             val posts = MongoPostRepository(db)
             val post = runBlocking {
                 repo.initialize(); repo.setCommentingEnabled(true)

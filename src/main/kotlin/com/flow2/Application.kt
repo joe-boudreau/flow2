@@ -83,16 +83,18 @@ fun Application.module() {
 }
 
 private fun Application.configureKoinModule() = module {
+    val schemeDomainPortConfig = environment.config.property("app.schemeDomainPort").getString()
+    val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
+
     val dbConnectionString = environment.config.property("app.db.connectionString").getString()
     val dbName = environment.config.property("app.db.dbName").getString()
     val mediaDirectoryPath = environment.config.property("app.media.directoryPath").getString()
     val assetDirectoryPath = environment.config.property("app.assets.directoryPath").getString()
-    val schemeDomainPortConfig = environment.config.property("app.schemeDomainPort").getString()
     val cloudfrontEnabled = environment.config.property("app.cloudfront.enabled").getString().toBoolean()
     val cloudfrontDistributionId = environment.config.property("app.cloudfront.distributionId").getString()
+    val digestSalt = environment.config.property("app.adminAuth.digestSalt").getString()
 
     val commentConfig = CommentConfig.fromApplicationConfig(environment.config)
-    val schemeDomainPort = schemeDomainPortConfig.removeSuffix("/")
 
     // The MongoClient instance actually represents a pool of connections to the database;
     // you will only need one instance of class MongoClient even with multiple threads.
@@ -108,7 +110,8 @@ private fun Application.configureKoinModule() = module {
     single<RequestUrlBuilder>{ RequestUrlBuilder(this@configureKoinModule, schemeDomainPort) }
     single<RssService>{ RssService(get(), get()) }
 
-    single<CommentRepository> { CommentRepository(get()) }
+    single { CommentAvatar(digestSalt) }
+    single<CommentRepository> { CommentRepository(get(), get()) }
     single<CommentMailer> { SmtpCommentMailer(commentConfig) }
     single<CommentService> { CommentService(get(), get(), get(), commentConfig, schemeDomainPort, appEventsMonitor = monitor) }
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 private const val DAILY_GLOBAL_COMMENT_LIMIT = 100
 private const val DAILY_IP_COMMENT_LIMIT = 5
 
-class CommentRepository(db: MongoDatabase) {
+class CommentRepository(db: MongoDatabase, private val avatars: CommentAvatar) {
 
     private val comments = db.getCollection<Document>("comments")
     private val settings = db.getCollection<Document>("comment_settings")
@@ -71,6 +71,7 @@ class CommentRepository(db: MongoDatabase) {
             .append("replyToId", replyToId)
             .append("owner", owner)
             .append("deleted", false)
+            .append("avatarSeed", avatars.seed(name, email))
 
         if (email != null) {
             comment.append("email", email).append("unsubscribeToken", UUID.randomUUID().toString())
@@ -160,7 +161,8 @@ class CommentRepository(db: MongoDatabase) {
                 set("body", ""),
                 unset("email"),
                 unset("unsubscribeToken"),
-                unset("notificationPending")
+                unset("notificationPending"),
+                unset("avatarSeed")
             )
         )
 
@@ -174,9 +176,10 @@ class CommentRepository(db: MongoDatabase) {
     }
 
     suspend fun unsubscribe(token: String): Boolean {
+        val comment = comments.find(eq("unsubscribeToken", token)).firstOrNull() ?: return false
         val result = comments.updateOne(
             eq("unsubscribeToken", token),
-            combine(unset("email"), unset("unsubscribeToken"))
+            combine(set("avatarSeed", comment.avatarSeed()), unset("email"), unset("unsubscribeToken"))
         )
         return result.matchedCount > 0
     }
@@ -276,18 +279,22 @@ class CommentRepository(db: MongoDatabase) {
             UpdateOptions().upsert(true)
         )
     }
-}
 
-private fun Document.toPublicComment(replyName: String? = null) =
-    PublicComment(
-        getString("_id"),
-        getString("postId"),
-        if (getBoolean("deleted", false)) "" else getString("name"),
-        if (getBoolean("deleted", false)) "" else getString("body"),
-        getLong("createdAt"),
-        getString("threadId"),
-        getString("replyToId"),
-        replyName,
-        getBoolean("deleted", false),
-        getBoolean("owner", false),
-)
+    private fun Document.toPublicComment(replyName: String? = null) =
+        PublicComment(
+            getString("_id"),
+            getString("postId"),
+            if (getBoolean("deleted", false)) "" else getString("name"),
+            if (getBoolean("deleted", false)) "" else getString("body"),
+            getLong("createdAt"),
+            getString("threadId"),
+            getString("replyToId"),
+            replyName,
+            getBoolean("deleted", false),
+            getBoolean("owner", false),
+            if (getBoolean("deleted", false)) null else avatarSeed(),
+        )
+
+    private fun Document.avatarSeed(): String =
+        getString("avatarSeed") ?: avatars.seed(getString("name"), getString("email"))
+}
